@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements – Coder Hub</title>
+    <style>       
+        .nav1 {
+            background-color: rgb(15, 15, 15);
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2A2730;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            padding: 0 20px 0 15px;
+        }
+        .nav-toggle {
+            background: none;
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .nav-toggle:hover { border-color: #C9A96E; color: #C9A96E; }
+        .p1 {
+            color: white;
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            white-space: nowrap;
+            text-decoration: none;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+        }
+        .nav-links .p2 a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            transition: color 0.2s;
+        }
+        .nav-links .p2 a:hover { color: #C9A96E; }
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search {
+            display: flex;
+            align-items: center;
+            background: #1a1820;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 360px;
+        }
+        .search:focus-within {
+            border-color: #C9A96E;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+        }
+        .search input {
+            flex: 1; height: 42px;
+            border: none; outline: none;
+            background: transparent;
+            color: white; font-size: 14px;
+            padding: 0 16px;
+            font-family: system-ui, sans-serif;
+        }
+        .search input::placeholder { color: #4a4550; }
+        .search button {
+            height: 42px; width: 44px;
+            border: none; background: transparent;
+            color: #7a6f78; cursor: pointer;
+            font-size: 16px; transition: color 0.2s;
+        }
+        .search button:hover { color: #C9A96E; }
+        .nav-right {
+            display: flex; align-items: center;
+            gap: 12px; flex-shrink: 0;
+        }
+        .nav-icon-btn {
+            text-decoration: none; color: #7a6f78;
+            font-size: 13px; border: 1px solid #2A2730;
+            padding: 8px 16px; border-radius: 6px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-icon-btn:hover { color: #C9A96E; border-color: #C9A96E; }
+        .user-avatar {
+            width: 70px; height: 70px;
+            background: rgba(201, 169, 110, 0.12);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 100px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+        }
+        .user-avatar:hover { background: rgba(201, 169, 110, 0.22); border-color: #C9A96E; }
+        .user-avatar-text {
+            color: #C9A96E; font-family: system-ui, sans-serif;
+            font-size: 36px; font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body { background-color: #000; font-family: system-ui, -apple-system, sans-serif; }
+        .layout { display: flex; }
+        .sidebar {
+            height: 100vh; width: 300px; position: sticky; top: 0;
+            background-color: rgb(15,15,15); border-right: 2px solid #2A2730;
+            display: flex; flex-direction: column;
+        }
+        .sidebar1 { display: flex; flex-direction: column; gap: 100px; margin-top: 50px; }
+        .sidebar1 a { text-decoration: none; }
+        .a123 { width: 300px; height: 40px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; }
+        .n123 { margin-bottom: 5px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a6f78; }
+        .nn123 { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a6f78; text-decoration: none; }
+        .an123 { color: #503401 !important; background-color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.03); }
+        .aa123:hover { color: #EDE8E3; }
+        .icon { margin-left: 10px; color: white; font-size: 20px; }
+        .icon1 { color: #503401; }
+
+        
+        .main { flex: 1; padding: 50px 60px; color: white; min-height: 100vh; }
+
+        
+        .page-label { color: #cfac6c; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: bold; margin-bottom: 12px; }
+        .page-title { font-family: Georgia, serif; font-size: 42px; display: flex; gap: 12px; align-items: baseline; margin-bottom: 10px; }
+        .page-title-white { color: white; }
+        .page-title-gold { color: #cfac6c; font-style: italic; }
+        .page-sub { font-size: 13px; color: #7a6f78; margin-bottom: 40px; }
+
+        
+        .xp-hero {
+            background: linear-gradient(135deg, #1a1200, #2a1e00, #141318);
+            border: 1px solid rgba(201,169,110,0.25); border-radius: 18px;
+            padding: 30px 36px; margin-bottom: 40px;
+            display: flex; align-items: center; gap: 36px; flex-wrap: wrap;
+            position: relative; overflow: hidden;
+        }
+        .xp-hero::before {
+            content: '🏆'; position: absolute; right: 40px; top: 50%;
+            transform: translateY(-50%); font-size: 100px; opacity: 0.07;
+        }
+        .xp-rank-badge {
+            width: 90px; height: 90px; border-radius: 50%;
+            background: linear-gradient(135deg, #C9A96E, #f0d080);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 38px; flex-shrink: 0; box-shadow: 0 0 30px rgba(201,169,110,0.3);
+        }
+        .xp-info { flex: 1; }
+        .xp-rank-name { font-family: Georgia, serif; font-size: 26px; color: #EDE8E3; margin-bottom: 4px; }
+        .xp-rank-sub { font-size: 13px; color: #7a6f78; margin-bottom: 14px; }
+        .xp-bar-wrap { background: #2A2730; border-radius: 8px; height: 8px; overflow: hidden; margin-bottom: 8px; }
+        .xp-bar-fill {
+            height: 100%; border-radius: 8px;
+            background: linear-gradient(to right, #C9A96E, #f0d080);
+            width: 0%; transition: width 1.2s cubic-bezier(.4,0,.2,1);
+        }
+        .xp-labels { display: flex; justify-content: space-between; font-size: 11px; color: #7a6f78; }
+        .xp-labels span:last-child { color: #C9A96E; font-weight: 600; }
+        .xp-stats { display: flex; gap: 30px; flex-shrink: 0; }
+        .xp-stat { display: flex; flex-direction: column; gap: 4px; text-align: center; }
+        .xp-stat-val { font-size: 28px; font-weight: 700; color: white; font-family: Georgia, serif; }
+        .xp-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6f78; }
+
+        
+        .filter-row { display: flex; gap: 10px; margin-bottom: 32px; flex-wrap: wrap; }
+        .filter-btn {
+            height: 36px; padding: 0 18px; background: transparent;
+            border: 1px solid #2A2730; color: #7a6f78; font-size: 12px;
+            letter-spacing: 0.08em; text-transform: uppercase; border-radius: 8px;
+            cursor: pointer; transition: all 0.2s; font-family: system-ui, sans-serif;
+        }
+        .filter-btn:hover { border-color: #C9A96E; color: #C9A96E; }
+        .filter-btn.active { background: #C9A96E; border-color: #C9A96E; color: #000; font-weight: 700; }
+
+        
+        .section-head { font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em; color: #7a6f78; margin-bottom: 18px; margin-top: 36px; }
+
+        
+        .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+
+        
+        .ach-card {
+            background: #141318; border: 2px solid #2A2730; border-radius: 14px;
+            padding: 22px; display: flex; gap: 18px; align-items: flex-start;
+            transition: border-color 0.25s, transform 0.2s; cursor: default;
+            animation: fadeUp 0.4s ease both;
+        }
+        @keyframes fadeUp { from { opacity:0; transform: translateY(14px); } to { opacity:1; transform: translateY(0); } }
+        .ach-card:hover { border-color: rgba(201,169,110,0.4); transform: translateY(-2px); }
+        .ach-card.locked { opacity: 0.42; filter: grayscale(0.6); }
+        .ach-card.locked:hover { border-color: #2A2730; transform: none; }
+
+        .ach-icon-wrap {
+            width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center; font-size: 26px;
+        }
+        .ach-icon-wrap.earned { background: rgba(201,169,110,0.12); border: 1px solid rgba(201,169,110,0.3); }
+        .ach-icon-wrap.locked-bg { background: rgba(255,255,255,0.04); border: 1px solid #2A2730; }
+
+        .ach-content { flex: 1; }
+        .ach-name { font-size: 15px; font-weight: 700; color: #EDE8E3; margin-bottom: 4px; font-family: Georgia, serif; }
+        .ach-card.locked .ach-name { color: #7a6f78; }
+        .ach-desc { font-size: 12px; color: #7a6f78; line-height: 1.6; margin-bottom: 10px; }
+        .ach-xp {
+            display: inline-block; font-size: 10px; letter-spacing: 0.1em;
+            padding: 2px 10px; border-radius: 20px; font-weight: 700;
+            background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.3); color: #C9A96E;
+        }
+        .ach-card.locked .ach-xp { background: rgba(255,255,255,0.04); border-color: #2A2730; color: #7a6f78; }
+        .ach-earned-label { font-size: 10px; color: #4ade80; margin-top: 6px; display: block; }
+        .ach-lock-label { font-size: 10px; color: #7a6f78; margin-top: 6px; display: block; }
+
+        
+        .ach-rarity { display: flex; align-items: center; gap: 5px; margin-top: 8px; }
+        .rarity-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .rarity-common .rarity-dot { background: #7a6f78; }
+        .rarity-rare .rarity-dot { background: #63b3ed; }
+        .rarity-epic .rarity-dot { background: #b794f4; }
+        .rarity-legendary .rarity-dot { background: #C9A96E; }
+        .rarity-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .rarity-common .rarity-label { color: #7a6f78; }
+        .rarity-rare .rarity-label { color: #63b3ed; }
+        .rarity-epic .rarity-label { color: #b794f4; }
+        .rarity-legendary .rarity-label { color: #C9A96E; }
+
+        
+        .footer { border-top: 2px solid #2A2730; color: white; }
+        .footer1 {
+            margin-left: 70px; display: flex; margin-top: 50px;
+            gap: 740px; align-items: center; justify-content: center; flex-wrap: wrap; padding-bottom: 50px;
+        }
+        .footer11 { font-size: 20px; font-family: Georgia, serif; color: white; }
+        .footer112 { color: #C9A96E; }
+        .footer12, .footer13 { font-size: 13px; color: #7a6f78; }
+        .sidebar {
+            width: 260px; min-height: calc(100vh - 70px); background-color: rgb(15,15,15);
+            border-right: 2px solid #2A2730; display: flex; flex-direction: column;
+            position: sticky; top: 70px; height: calc(100vh - 70px);
+            overflow-y: auto; transition: width 0.3s ease, opacity 0.3s ease; flex-shrink: 0;
+        }
+        .sidebar.collapsed { width: 0; opacity: 0; overflow: hidden; border: none; }
+        .a123 { width: 100%; height: 40px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding-left: 10px; transition: background 0.15s; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; white-space: nowrap; text-decoration: none; }
+        .n123 { margin-bottom: 4px; padding-left: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; }
+        .nn123 { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; text-decoration: none; }
+        .an123 { background: rgba(220,165,64,0.12); border-left: 3px solid #dca540; }
+        .an123 .aa123 { color: #dca540; }
+        .an123 .icon { color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.04); }
+        .a123:hover .aa123 { color: #EDE8E3; }
+        .icon { margin-left: 4px; color: #7a6f78; font-size: 17px; flex-shrink: 0; }
+        
+        @keyframes pageIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .main { animation: pageIn 0.35s ease both; }
+
+        </style>
+</head>
+<body>
+    <div class="nav1">
+        <button class="nav-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+        <a href="index2.html" class="p1">Coder Hub</a>
+        <div class="nav-links">
+            <p class="p2"><a href="index1.html">Home</a></p>
+            <p class="p2"><a href="index1.html#courses">Explore</a></p>
+            <p class="p2"><a href="degree.html">Degree</a></p>
+        </div>
+        <div class="nav-center">
+            <div class="search">
+                <input type="text" placeholder="Search courses..." id="navSearch">
+                <button onclick="doNavSearch()">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+            <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+            <a href="profile.html" class="user-avatar" id="navAvatar" title="Profile">
+                <span class="user-avatar-text" id="avatarLetter">A</span>
+            </a>
+        </div>
+    </div>
+
+<div class="layout">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar1">
+            <div class="menu">
+                <div class="n123"><span class="nn123">Menu</span></div>
+                <div class="a123" onclick="location.href='index2.html'"><div class="icon">⊞</div><span class="aa123">Dashboard</span></div>
+                <div class="a123" onclick="location.href='mycourses.html'"><div class="icon">📚</div><span class="aa123">My Courses</span></div>
+                <div class="a123 an123" onclick="location.href='achievements.html'"><div class="icon">🏆</div><span class="aa123">Achievements</span></div>
+                <div class="a123" onclick="location.href='progress.html'"><div class="icon">📊</div><span class="aa123">Progress</span></div>
+            </div>
+            <div class="explore">
+                <div class="n123"><span class="nn123">Explore</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🔥</div><span class="aa123">Trending</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🆓</div><span class="aa123">Free Courses</span></div>
+                <div class="a123" onclick="location.href='degree.html'"><div class="icon">🎓</div><span class="aa123">Degree</span></div>
+                <div class="a123"><div class="icon">🎯</div><a href="quiz.html" class="aa123">Take Quiz</a></div>
+                <div class="a123"><div class="icon">🛒</div><a href="cart.html" class="aa123">Cart</a></div>
+            </div>
+            <div class="account">
+                <div class="n123"><span class="nn123">Account</span></div>
+                <div class="a123" onclick="location.href='profile.html'"><div class="icon">👤</div><span class="aa123">Profile</span></div>
+                <div class="a123" onclick="location.href='settings.html'"><div class="icon">⚙</div><span class="aa123">Settings</span></div>
+                <div class="a123" id="signOutBtn"><div class="icon">→</div><span class="aa123">Sign Out</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="page-label">HALL OF FAME · 2026</div>
+        <div class="page-title">
+            <span class="page-title-white">Your</span>
+            <span class="page-title-gold">Achievements</span>
+        </div>
+        <div class="page-sub">Every badge tells a story. Keep earning, keep growing.</div>
+
+        <div class="xp-hero">
+            <div class="xp-rank-badge">⚡</div>
+            <div class="xp-info">
+                <div class="xp-rank-name">Code Apprentice</div>
+                <div class="xp-rank-sub">Rank 3 · 1,240 XP earned · Next rank at 2,000 XP</div>
+                <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xpBarFill"></div></div>
+                <div class="xp-labels"><span>1,240 XP</span><span>760 XP to Rank 4</span></div>
+            </div>
+            <div class="xp-stats">
+                <div class="xp-stat"><div class="xp-stat-val" id="earnedCount">0</div><div class="xp-stat-label">Earned</div></div>
+                <div class="xp-stat"><div class="xp-stat-val" style="color:#7a6f78;" id="totalCount">0</div><div class="xp-stat-label">Total</div></div>
+                <div class="xp-stat"><div class="xp-stat-val" style="color:#C9A96E;">7🔥</div><div class="xp-stat-label">Streak</div></div>
+            </div>
+        </div>
+
+        <div class="filter-row">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="earned">Earned</button>
+            <button class="filter-btn" data-filter="locked">Locked</button>
+            <button class="filter-btn" data-filter="legendary">Legendary</button>
+            <button class="filter-btn" data-filter="epic">Epic</button>
+            <button class="filter-btn" data-filter="rare">Rare</button>
+        </div>
+
+        <div class="section-head" id="sectionHead">All Achievements</div>
+        <div class="ach-grid" id="achGrid"></div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="footer1">
+        <span class="footer11">Coder<span class="footer112">Hub</span></span>
+        <div class="footer12">© 2026 CoderHub. All rights reserved.</div>
+        <div class="footer13">Built for developers, by developers.</div>
+    </div>
+</div>
+
+<script>
+const ACHIEVEMENTS = [
+    { id:1, icon:'🚀', name:'First Launch', desc:'Complete your very first lesson on Coder Hub.', xp:50, rarity:'common', earned:true, date:'Jan 5, 2026' },
+    { id:2, icon:'🔥', name:'On Fire', desc:'Maintain a 7-day learning streak.', xp:150, rarity:'rare', earned:true, date:'Mar 12, 2026' },
+    { id:3, icon:'⚡', name:'Speed Demon', desc:'Complete 5 lessons in a single day.', xp:100, rarity:'rare', earned:true, date:'Feb 18, 2026' },
+    { id:4, icon:'🧠', name:'Deep Thinker', desc:'Score 100% on any quiz without retrying.', xp:200, rarity:'epic', earned:true, date:'Feb 28, 2026' },
+    { id:5, icon:'📚', name:'Bookworm', desc:'Enroll in 4 or more courses.', xp:120, rarity:'common', earned:true, date:'Mar 20, 2026' },
+    { id:6, icon:'🏅', name:'Half Way There', desc:'Reach 50% completion on any course.', xp:75, rarity:'common', earned:true, date:'Mar 1, 2026' },
+    { id:7, icon:'🌙', name:'Night Owl', desc:'Complete a lesson after midnight.', xp:80, rarity:'rare', earned:true, date:'Jan 22, 2026' },
+    { id:8, icon:'🎯', name:'Bull\'s Eye', desc:'Take and pass a quiz on the first attempt.', xp:100, rarity:'common', earned:true, date:'Mar 5, 2026' },
+    { id:9, icon:'👑', name:'JavaScript King', desc:'Reach 70%+ completion on JavaScript Mastery.', xp:300, rarity:'epic', earned:true, date:'Apr 2, 2026' },
+    { id:10, icon:'🌟', name:'Rising Star', desc:'Earn 1,000 XP total.', xp:250, rarity:'epic', earned:true, date:'Apr 10, 2026' },
+    // Locked
+    { id:11, icon:'🏆', name:'Course Finisher', desc:'Complete any course from start to finish.', xp:500, rarity:'legendary', earned:false, hint:'Finish 1 full course' },
+    { id:12, icon:'💎', name:'Diamond Coder', desc:'Reach Rank 5 on Coder Hub.', xp:1000, rarity:'legendary', earned:false, hint:'Reach Rank 5' },
+    { id:13, icon:'🐍', name:'Python Prodigy', desc:'Reach 80% on Python & AI course.', xp:350, rarity:'epic', earned:false, hint:'80% progress in Python & AI' },
+    { id:14, icon:'⚛', name:'React Wizard', desc:'Complete your first React & Next.js lesson.', xp:80, rarity:'common', earned:false, hint:'Start React & Next.js' },
+    { id:15, icon:'🎨', name:'Design Guru', desc:'Complete CSS & Design Systems fully.', xp:400, rarity:'epic', earned:false, hint:'100% on CSS & Design Systems' },
+    { id:16, icon:'📅', name:'Month Streak', desc:'Learn every day for 30 days straight.', xp:600, rarity:'legendary', earned:false, hint:'30-day streak' },
+    { id:17, icon:'🤝', name:'Community Pillar', desc:'Share a course with 3 friends.', xp:150, rarity:'rare', earned:false, hint:'Refer 3 friends' },
+    { id:18, icon:'🔭', name:'Explorer', desc:'Visit every section of the dashboard.', xp:60, rarity:'common', earned:false, hint:'Visit all pages' },
+];
+
+let activeFilter = 'all';
+
+function renderAchievements(filter) {
+    const grid = document.getElementById('achGrid');
+    const head = document.getElementById('sectionHead');
+    const filtered = ACHIEVEMENTS.filter(a => {
+        if (filter === 'all') return true;
+        if (filter === 'earned') return a.earned;
+        if (filter === 'locked') return !a.earned;
+        return a.rarity === filter;
+    });
+    const earned = filtered.filter(a => a.earned).length;
+    head.textContent = `${filtered.length} achievement${filtered.length!==1?'s':''} · ${earned} earned`;
+    grid.innerHTML = '';
+    filtered.forEach((a, i) => {
+        const card = document.createElement('div');
+        card.className = `ach-card${a.earned ? '' : ' locked'}`;
+        
+        card.innerHTML = `
+            <div class="ach-icon-wrap ${a.earned ? 'earned' : 'locked-bg'}">${a.earned ? a.icon : '🔒'}</div>
+            <div class="ach-content">
+                <div class="ach-name">${a.name}</div>
+                <div class="ach-desc">${a.desc}</div>
+                <span class="ach-xp">+${a.xp} XP</span>
+                ${a.earned
+                    ? `<span class="ach-earned-label">✓ Earned · ${a.date}</span>`
+                    : `<span class="ach-lock-label">🔒 ${a.hint}</span>`}
+                <div class="ach-rarity rarity-${a.rarity}">
+                    <div class="rarity-dot"></div>
+                    <div class="rarity-label">${a.rarity}</div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+const earned = ACHIEVEMENTS.filter(a => a.earned).length;
+document.getElementById('earnedCount').textContent = earned;
+document.getElementById('totalCount').textContent = ACHIEVEMENTS.length;
+
+setTimeout(() => { document.getElementById('xpBarFill').style.width = '62%'; }, 300);
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeFilter = this.dataset.filter;
+        renderAchievements(activeFilter);
+    });
+});
+
+document.getElementById('signOutBtn')?.addEventListener('click', () => { if(confirm('Sign out?')) location.href='index1.html'; });
+
+renderAchievements('all');
+
+    function doNavSearch() {
+        var q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    document.getElementById('navSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') doNavSearch();
+    });
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+
+    </script>
+</body>
+</html>

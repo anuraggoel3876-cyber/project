@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - Coder Hub</title>
+    <style>
+        .nav1 {
+            background-color: rgb(15, 15, 15);
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2A2730;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            padding: 0 20px 0 15px;
+        }
+        .nav-toggle {
+            background: none;
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .nav-toggle:hover { border-color: #C9A96E; color: #C9A96E; }
+        .p1 {
+            color: white;
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            white-space: nowrap;
+            text-decoration: none;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+        }
+        .nav-links .p2 a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            transition: color 0.2s;
+        }
+        .nav-links .p2 a:hover { color: #C9A96E; }
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search {
+            display: flex;
+            align-items: center;
+            background: #1a1820;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 360px;
+        }
+        .search:focus-within {
+            border-color: #C9A96E;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+        }
+        .search input {
+            flex: 1; height: 42px;
+            border: none; outline: none;
+            background: transparent;
+            color: white; font-size: 14px;
+            padding: 0 16px;
+            font-family: system-ui, sans-serif;
+        }
+        .search input::placeholder { color: #4a4550; }
+        .search button {
+            height: 42px; width: 44px;
+            border: none; background: transparent;
+            color: #7a6f78; cursor: pointer;
+            font-size: 16px; transition: color 0.2s;
+        }
+        .search button:hover { color: #C9A96E; }
+        .nav-right {
+            display: flex; align-items: center;
+            gap: 12px; flex-shrink: 0;
+        }
+        .nav-icon-btn {
+            text-decoration: none; color: #7a6f78;
+            font-size: 13px; border: 1px solid #2A2730;
+            padding: 8px 16px; border-radius: 6px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-icon-btn:hover { color: #C9A96E; border-color: #C9A96E; }
+        .user-avatar {
+            width: 70px; height: 70px;
+            background: rgba(201, 169, 110, 0.12);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 100px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+        }
+        .user-avatar:hover { background: rgba(201, 169, 110, 0.22); border-color: #C9A96E; }
+        .user-avatar-text {
+            color: #C9A96E; font-family: system-ui, sans-serif;
+            font-size: 36px; font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #0C0B0F;
+            font-family: system-ui, -apple-system, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+        .hero {
+            text-align: center;
+            padding: 70px 20px 40px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(201,169,110,0.10);
+            border: 1px solid #C9A96E;
+            color: #C9A96E;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 22px;
+        }
+        .hero h1 {
+            font-size: 52px;
+            font-family: Georgia, serif;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 14px;
+        }
+        .hero h1 span { color: #C9A96E; font-style: italic; }
+        .hero p { color: #7a6f78; font-size: 16px; line-height: 1.7; max-width: 520px; margin: 0 auto; }
+
+        #discountBanner {
+            display: none;
+            background: linear-gradient(135deg, rgba(74,222,128,0.08), rgba(201,169,110,0.08));
+            border: 1px solid #4ade80;
+            border-radius: 12px;
+            padding: 18px 28px;
+            margin: 0 auto 30px;
+            max-width: 700px;
+            text-align: center;
+            color: #4ade80;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        #discountBanner .code-pill {
+            background: rgba(74,222,128,0.12);
+            border: 1px solid #4ade80;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 18px;
+            letter-spacing: 0.1em;
+            margin-left: 8px;
+            color: #4ade80;
+        }
+
+        .quiz-wrapper {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 24px 100px;
+        }
+
+        #stepSelect {
+            margin-top: 20px;
+        }
+        .step-label {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #7a6f78;
+            margin-bottom: 20px;
+        }
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .course-card {
+            background: #141318;
+            border: 2px solid #2A2730;
+            border-radius: 14px;
+            padding: 22px 18px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            text-align: center;
+        }
+        .course-card:hover { border-color: rgba(201,169,110,0.5); }
+        .course-card.selected { border-color: #C9A96E; background: rgba(201,169,110,0.06); }
+        .course-card .icon { font-size: 40px; margin-bottom: 10px; }
+        .course-card .name { font-size: 14px; font-weight: 600; color: #EDE8E3; margin-bottom: 4px; }
+        .course-card .price { font-size: 13px; color: #C9A96E; }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            margin-top: 28px;
+            height: 56px;
+            background: white;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .start-btn:hover { background: #C9A96E; }
+        .start-btn:disabled { background: #2A2730; color: #7a6f78; cursor: not-allowed; }
+
+        #stepQuiz { display: none; }
+
+        .quiz-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .quiz-meta { font-size: 13px; color: #7a6f78; }
+        .quiz-score-live { font-size: 13px; color: #C9A96E; }
+
+        .progress-bar-outer {
+            height: 4px;
+            background: #2A2730;
+            border-radius: 4px;
+            margin-bottom: 36px;
+            overflow: hidden;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(to right, #C9A96E, #4ade80);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .question-card {
+            background: #141318;
+            border: 1px solid #2A2730;
+            border-radius: 16px;
+            padding: 36px 32px 28px;
+        }
+        .q-number {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #C9A96E;
+            margin-bottom: 12px;
+        }
+        .q-text {
+            font-size: 20px;
+            font-family: Georgia, serif;
+            color: #EDE8E3;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        .option-btn {
+            background: #0C0B0F;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            padding: 14px 20px;
+            color: #EDE8E3;
+            font-size: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .option-btn:hover:not(:disabled) { border-color: #C9A96E; background: rgba(201,169,110,0.04); }
+        .option-btn.correct { border-color: #4ade80 !important; background: rgba(74,222,128,0.08) !important; color: #4ade80; }
+        .option-btn.wrong   { border-color: #ef4444 !important; background: rgba(239,68,68,0.08) !important; color: #ef4444; }
+        .option-btn.reveal  { border-color: #4ade80 !important; background: rgba(74,222,128,0.05) !important; }
+
+        .feedback-msg {
+            margin-top: 16px;
+            font-size: 14px;
+            min-height: 20px;
+            color: #7a6f78;
+        }
+        .feedback-msg.ok  { color: #4ade80; }
+        .feedback-msg.err { color: #ef4444; }
+
+        
+        .next-btn {
+            height: 48px;
+            padding: 0 32px;
+            background: white;
+            color: black;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            transition: background 0.2s;
+        }
+        .next-btn:hover { background: #C9A96E; }
+
+        #stepResult { display: none; text-align: center; padding: 60px 0 40px; }
+        .result-emoji { font-size: 72px; margin-bottom: 20px; }
+        .result-title { font-size: 42px; font-family: Georgia, serif; font-weight: 400; margin-bottom: 10px; }
+        .result-title span { color: #C9A96E; font-style: italic; }
+        .result-sub { color: #7a6f78; font-size: 16px; margin-bottom: 40px; }
+        .result-score-ring {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: conic-gradient(#C9A96E var(--pct), #2A2730 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        .result-score-ring::before {
+            content: '';
+            position: absolute;
+            width: 98px;
+            height: 98px;
+            background: #0C0B0F;
+            border-radius: 50%;
+        }
+        .result-score-inner {
+            position: relative;
+            z-index: 1;
+            font-size: 28px;
+            font-weight: 700;
+            color: #C9A96E;
+        }
+
+        .discount-awarded {
+            display: none;
+            background: rgba(74,222,128,0.06);
+            border: 1px solid #4ade80;
+            border-radius: 14px;
+            padding: 24px 32px;
+            margin: 0 auto 36px;
+            max-width: 480px;
+        }
+        .discount-awarded h3 { color: #4ade80; font-size: 20px; margin-bottom: 8px; }
+        .discount-awarded p { color: #7a6f78; font-size: 14px; line-height: 1.6; }
+        .discount-awarded .coupon {
+            font-family: monospace;
+            font-size: 26px;
+            letter-spacing: 0.15em;
+            color: #4ade80;
+            margin-top: 14px;
+            background: rgba(74,222,128,0.08);
+            border: 1px dashed #4ade80;
+            padding: 10px 24px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .no-discount {
+            display: none;
+            background: rgba(239,68,68,0.06);
+            border: 1px solid #ef4444;
+            border-radius: 14px;
+            padding: 20px 28px;
+            margin: 0 auto 36px;
+            max-width: 480px;
+            color: #ef4444;
+            font-size: 15px;
+        }
+
+        .result-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .btn-shop {
+            height: 52px; padding: 0 32px;
+            background: white; color: black;
+            font-size: 15px; font-weight: 700;
+            border: none; border-radius: 8px;
+            cursor: pointer; text-decoration: none;
+            display: inline-flex; align-items: center;
+            transition: background 0.2s;
+        }
+        .btn-shop:hover { background: #C9A96E; }
+        .btn-retry {
+            height: 52px; padding: 0 28px;
+            background: transparent; color: #7a6f78;
+            font-size: 15px;
+            border: 1px solid #2A2730; border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-retry:hover { border-color: #C9A96E; color: #C9A96E; }
+        .sidebar {
+            width: 260px; min-height: calc(100vh - 70px); background-color: rgb(15,15,15);
+            border-right: 2px solid #2A2730; display: flex; flex-direction: column;
+            position: sticky; top: 70px; height: calc(100vh - 70px);
+            overflow-y: auto; transition: width 0.3s ease, opacity 0.3s ease; flex-shrink: 0;
+        }
+        .sidebar.collapsed { width: 0; opacity: 0; overflow: hidden; border: none; }
+        .a123 { width: 100%; height: 40px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding-left: 10px; transition: background 0.15s; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; white-space: nowrap; text-decoration: none; }
+        .n123 { margin-bottom: 4px; padding-left: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; }
+        .nn123 { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; text-decoration: none; }
+        .an123 { background: rgba(220,165,64,0.12); border-left: 3px solid #dca540; }
+        .an123 .aa123 { color: #dca540; }
+        .an123 .icon { color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.04); }
+        .a123:hover .aa123 { color: #EDE8E3; }
+        .icon { margin-left: 4px; color: #7a6f78; font-size: 17px; flex-shrink: 0; }
+        
+        @keyframes pageIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .main { animation: pageIn 0.35s ease both; }
+
+        </style>
+</head>
+<body>
+
+    <div class="nav1">
+        <button class="nav-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+        <a href="index2.html" class="p1">Coder Hub</a>
+        <div class="nav-links">
+            <p class="p2"><a href="index1.html">Home</a></p>
+            <p class="p2"><a href="index1.html#courses">Explore</a></p>
+            <p class="p2"><a href="index1.html#review">Degree</a></p>
+        </div>
+        <div class="nav-center">
+            <div class="search">
+                <input type="text" placeholder="Search courses..." id="navSearch">
+                <button onclick="doNavSearch()">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+            <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+            <a href="profile.html" class="user-avatar" id="navAvatar" title="Profile">
+                <span class="user-avatar-text" id="avatarLetter">A</span>
+            </a>
+        </div>
+    </div>
+
+<div class="hero">
+    <div class="hero-badge">🎯 Skill Quiz</div>
+    <h1>Test Your Knowledge.<br>Earn a <span>Discount.</span></h1>
+    <p>Answer 2 or more questions correctly and unlock 10% off any paid course. Select Python for a full 10-question deep dive!</p>
+</div>
+
+<div class="quiz-wrapper">
+
+    <div id="discountBanner">
+        🎉 You earned <strong>10% OFF</strong> — use code <span class="code-pill" id="couponCode">QUIZ10</span> at checkout!
+    </div>
+
+    <div id="stepSelect">
+        <div class="step-label">Choose your course quiz</div>
+        <div class="course-grid" id="courseGrid">
+            <div class="course-card" data-course="python" onclick="selectCourse(this)">
+                <div class="icon">🐍</div>
+                <div class="name">Python & AI</div>
+                <div class="price">₹4,999 · 10 Questions</div>
+            </div>
+            <div class="course-card" data-course="react" onclick="selectCourse(this)">
+                <div class="icon">⚛</div>
+                <div class="name">React & Next.js</div>
+                <div class="price">₹4,499 · 5 Questions</div>
+            </div>
+            <div class="course-card" data-course="node" onclick="selectCourse(this)">
+                <div class="icon">🟢</div>
+                <div class="name">Node.js & APIs</div>
+                <div class="price">₹3,999 · 5 Questions</div>
+            </div>
+        </div>
+        <button class="start-btn" id="startBtn" disabled onclick="startQuiz()">SELECT A COURSE TO BEGIN</button>
+    </div>
+
+    <div id="stepQuiz">
+        <div class="quiz-header">
+            <span class="quiz-meta" id="quizMeta">Question 1 of 10</span>
+            <span class="quiz-score-live" id="scoreLive">Score: 0</span>
+        </div>
+        <div class="progress-bar-outer">
+            <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+        </div>
+        <div class="question-card">
+            <div class="q-number" id="qNumber">QUESTION 1</div>
+            <div class="q-text" id="qText">Loading…</div>
+            <div class="options" id="optionsEl"></div>
+            <div class="feedback-msg" id="feedbackMsg"></div>
+        </div>
+        <div class="nav-btns">
+            <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+        </div>
+    </div>
+
+    <div id="stepResult">
+        <div class="result-emoji" id="resultEmoji">🏆</div>
+        <div class="result-score-ring" id="scoreRing">
+            <div class="result-score-inner" id="scoreInner">0/0</div>
+        </div>
+        <div class="result-title" id="resultTitle">Quiz <span>Complete!</span></div>
+        <div class="result-sub" id="resultSub">Here's how you did.</div>
+
+        <div class="discount-awarded" id="discountAwarded">
+            <h3>🎉 10% Discount Unlocked!</h3>
+            <p>You got enough correct! Use this code at checkout for 10% off any PRO course:</p>
+            <div class="coupon" id="resultCoupon">QUIZ10</div>
+        </div>
+        <div class="no-discount" id="noDiscount">
+            ❌ You need at least 2 correct answers for the discount. Try again!
+        </div>
+
+        <div class="result-actions">
+            <a href="cart.html" class="btn-shop">🛒 Shop Courses</a>
+            <button class="btn-retry" onclick="resetQuiz()">↺ Try Again</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+const QUESTIONS = {
+    python: [
+        { q: "What does GIL stand for in Python?", opts: ["Global Iterator Lock","Global Interpreter Lock","General Input Layer","Generic Invocation Layer"], ans: 1 },
+        { q: "Which data type is IMMUTABLE in Python?", opts: ["List","Dictionary","Tuple","Set"], ans: 2 },
+        { q: "What keyword is used to create a generator function?", opts: ["return","async","yield","generate"], ans: 2 },
+        { q: "What does `__init__` do in a Python class?", opts: ["Deletes the object","Creates a module","Initializes the object","Imports a library"], ans: 2 },
+        { q: "Which Python library is most commonly used for data manipulation?", opts: ["NumPy","Pandas","Matplotlib","Scikit-learn"], ans: 1 },
+        { q: "What is a lambda function in Python?", opts: ["A class method","A multi-line function","An anonymous one-line function","A recursive function"], ans: 2 },
+        { q: "What does `list(range(5))` return?", opts: ["[1,2,3,4,5]","[0,1,2,3,4]","[0,1,2,3,4,5]","[1,2,3,4]"], ans: 1 },
+        { q: "Which of these is used for virtual environments in Python?", opts: ["npm","venv","brew","pip"], ans: 1 },
+        { q: "What does `**kwargs` represent in a function definition?", opts: ["A list of positional arguments","A dictionary of keyword arguments","A set of arguments","None of these"], ans: 1 },
+        { q: "Which module is used for regular expressions in Python?", opts: ["regex","re","regexp","pattern"], ans: 1 }
+    ],
+    react: [
+        { q: "What hook is used to manage state in a React functional component?", opts: ["useEffect","useContext","useState","useReducer"], ans: 2 },
+        { q: "What does JSX stand for?", opts: ["JavaScript XML","Java Syntax Extension","JSON XML","JavaScript eXtra"], ans: 0 },
+        { q: "Which file is the entry point of a Next.js app?", opts: ["index.jsx","app/page.jsx","main.jsx","root.jsx"], ans: 1 },
+        { q: "What does `useEffect` with an empty dependency array do?", opts: ["Runs on every render","Runs only on unmount","Runs only on mount","Never runs"], ans: 2 },
+        { q: "Which command creates a new Next.js project?", opts: ["npx create-react-app","npx create-next-app","npm init next","yarn add next"], ans: 1 }
+    ],
+    node: [
+        { q: "What is the default package manager for Node.js?", opts: ["yarn","pnpm","npm","bun"], ans: 2 },
+        { q: "Which module provides an HTTP server in Node.js?", opts: ["net","http","server","url"], ans: 1 },
+        { q: "What does `res.json()` do in Express?", opts: ["Parses JSON body","Sends a JSON response","Validates JSON","Imports JSON file"], ans: 1 },
+        { q: "What is middleware in Express?", opts: ["A database connector","A function with (req, res, next)","A template engine","An HTTP method"], ans: 1 },
+        { q: "Which of these is a popular Node.js ORM?", opts: ["Redux","Prisma","Webpack","Babel"], ans: 1 }
+    ]
+};
+
+let selectedCourse = null;
+let questions = [];
+let currentQ = 0;
+let score = 0;
+let answered = false;
+
+function selectCourse(el) {
+    document.querySelectorAll('.course-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedCourse = el.dataset.course;
+    const startBtn = document.getElementById('startBtn');
+    startBtn.disabled = false;
+    startBtn.textContent = 'START QUIZ →';
+}
+
+function startQuiz() {
+    if (!selectedCourse) return;
+    questions = QUESTIONS[selectedCourse];
+    currentQ = 0;
+    score = 0;
+    answered = false;
+
+    document.getElementById('stepSelect').style.display = 'none';
+    document.getElementById('discountBanner').style.display = 'none';
+    document.getElementById('stepQuiz').style.display = 'block';
+    renderQuestion();
+}
+
+function renderQuestion() {
+    const q = questions[currentQ];
+    const total = questions.length;
+
+    document.getElementById('quizMeta').textContent = `Question ${currentQ + 1} of ${total}`;
+    document.getElementById('scoreLive').textContent = `Score: ${score}`;
+    document.getElementById('qNumber').textContent = `QUESTION ${currentQ + 1}`;
+    document.getElementById('qText').textContent = q.q;
+    document.getElementById('progressBar').style.width = `${(currentQ / total) * 100}%`;
+    document.getElementById('feedbackMsg').textContent = '';
+    document.getElementById('feedbackMsg').className = 'feedback-msg';
+    document.getElementById('nextBtn').style.display = 'none';
+    answered = false;
+
+    const opts = document.getElementById('optionsEl');
+    opts.innerHTML = '';
+    q.opts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => selectAnswer(i, btn);
+        opts.appendChild(btn);
+    });
+}
+
+function selectAnswer(idx, btn) {
+    if (answered) return;
+    answered = true;
+    const q = questions[currentQ];
+    const allBtns = document.querySelectorAll('.option-btn');
+
+    allBtns.forEach(b => b.disabled = true);
+    allBtns[q.ans].classList.add('correct');
+
+    const fb = document.getElementById('feedbackMsg');
+    if (idx === q.ans) {
+        score++;
+        btn.classList.add('correct');
+        fb.textContent = '✓ Correct!';
+        fb.className = 'feedback-msg ok';
+    } else {
+        btn.classList.add('wrong');
+        fb.textContent = `✗ Wrong! Correct answer: "${q.opts[q.ans]}"`;
+        fb.className = 'feedback-msg err';
+    }
+
+    document.getElementById('scoreLive').textContent = `Score: ${score}`;
+    document.getElementById('nextBtn').style.display = 'block';
+    document.getElementById('nextBtn').textContent = currentQ < questions.length - 1 ? 'Next →' : 'See Results →';
+}
+
+function nextQuestion() {
+    currentQ++;
+    if (currentQ >= questions.length) {
+        showResult();
+    } else {
+        renderQuestion();
+    }
+}
+
+function showResult() {
+    document.getElementById('stepQuiz').style.display = 'none';
+    document.getElementById('stepResult').style.display = 'block';
+
+    const total = questions.length;
+    const pct = Math.round((score / total) * 100);
+    document.getElementById('scoreRing').style.setProperty('--pct', `${pct}%`);
+    document.getElementById('scoreInner').textContent = `${score}/${total}`;
+
+    let emoji = score >= total * 0.8 ? '🏆' : score >= 2 ? '🎯' : '📖';
+    document.getElementById('resultEmoji').textContent = emoji;
+
+    const titles = {
+        0: 'Keep Practising!', 1: 'Almost There!',
+        2: 'Nicely Done!', 3: 'Great Work!'
+    };
+    const tier = score >= total * 0.8 ? 3 : score >= Math.ceil(total * 0.5) ? 2 : score >= 2 ? 1 : 0;
+    document.getElementById('resultTitle').innerHTML = `${['Keep', 'Almost', 'Nicely', 'Great'][tier]} <span>${['Practising!','There!','Done!','Work!'][tier]}</span>`;
+    document.getElementById('resultSub').textContent = `You scored ${score} out of ${total} — ${pct}%`;
+
+    if (score >= 2) {
+        const code = 'QUIZ10';
+        localStorage.setItem('discountCode', code);
+        localStorage.setItem('discountPct', '10');
+        localStorage.setItem('discountCourse', selectedCourse.toUpperCase());
+
+        document.getElementById('discountAwarded').style.display = 'block';
+        document.getElementById('resultCoupon').textContent = code;
+        document.getElementById('discountBanner').style.display = 'block';
+        document.getElementById('couponCode').textContent = code;
+        document.getElementById('noDiscount').style.display = 'none';
+    } else {
+        localStorage.removeItem('discountCode');
+        document.getElementById('noDiscount').style.display = 'block';
+        document.getElementById('discountAwarded').style.display = 'none';
+    }
+}
+
+function resetQuiz() {
+    document.getElementById('stepResult').style.display = 'none';
+    document.getElementById('stepSelect').style.display = 'block';
+    selectedCourse = null;
+    document.querySelectorAll('.course-card').forEach(c => c.classList.remove('selected'));
+    const startBtn = document.getElementById('startBtn');
+    startBtn.disabled = true;
+    startBtn.textContent = 'SELECT A COURSE TO BEGIN';
+}
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+    
+    
+    window.addEventListener('load', function(){
+        const n = localStorage.getItem('profileName') || 'Anurag';
+        const av = document.getElementById('navAvatar');
+        if(av) av.textContent = n[0].toUpperCase();
+    });
+
+    function doNavSearch() {
+        var q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    document.getElementById('navSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') doNavSearch();
+    });
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In-Coder Hub</title>
+    <style>
+        * { margin: 0; }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #100f14;
+            height: 100vh;
+        }
+        .login-tab {
+            height: 950px;
+            width: 650px;
+            background-color: #18161d;
+            color: white;
+            border: 1px solid #2A2730;
+        }
+        .intro {
+            display: flex;
+            flex-direction: column;
+            padding: 30px 0px 0px 10px;
+        }
+        .intro h1 p.sign {
+            font-size: 50px;
+            margin-bottom: 25px;
+            margin-left: 20px;
+            font-family: Georgia, serif;
+        }
+        .intro p {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            margin-left: 20px;
+        }
+        .intro p.sign2 { margin-top: 90px; }
+        .sign3 {
+            width: 94%;
+            margin-left: 20px;
+            height: 50px;
+            margin-top: 10px;
+            margin-bottom: 60px;
+        }
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            margin-left: 17px;
+            margin-top: 15px;
+        }
+        .check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: white;
+            cursor: pointer;
+        }
+        .check label {
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            font-size: 15px;
+            color: white;
+            cursor: pointer;
+        }
+        .check p { margin-left: 370px; }
+        .continue {
+            color: black;
+            font-size: 25px;
+            text-decoration: none;
+        }
+        .cont {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            width: 94%;
+            background-color: white;
+            margin-left: 20px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+        .cont:hover { background-color: gray; }
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 20px;
+        }
+        .divider span {
+            font-size: 12px;
+            white-space: nowrap;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            color: #2A2730;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2A2730;
+        }
+        .log { display: flex; gap: 100px; }
+        .google {
+            display: flex;
+            height: 55px;
+            width: 250px;
+            background-color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            margin-left: 20px;
+            color: #3c4043;
+            border: 1px solid #141318;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            font-size: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        .apple {
+            display: flex;
+            height: 55px;
+            width: 250px;
+            background-color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            color: #3c4043;
+            border: 1px solid #141318;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            font-size: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+        .google:hover, .apple:hover { background-color: gray; }
+        .dont {
+            display: flex;
+            gap: 5px;
+            margin-left: 200px;
+            margin-top: 70px;
+        }
+        .dont span { color: white; font-size: 20px; }
+        .dont a { text-decoration: none; color: blue; font-size: 20px; }
+    </style>
+</head>
+
+<body>
+    <div class="login-tab">
+        <div class="intro">
+            <h1><p class="sign">Log In</p></h1>
+            <p>Enter your credential to access your account</p>
+            <p class="sign2">EMAIL ADDRESS</p>
+            <input type="text" class="sign3" id="emailInput" placeholder="name@company.com">
+            <p class="sign4">PASSWORD</p>
+            <div style="position:relative; width:94%; margin-left:20px; margin-top:10px; margin-bottom:25px;">
+                <input type="password" id="passInput" placeholder="• • • • • • • • • •"
+                    style="width:100%; height:50px; padding-right:50px; box-sizing:border-box;">
+                <button onclick="togglePassword()" id="eyeBtn"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-50%);
+                           background:none; border:none; cursor:pointer; font-size:18px; color:#888;">👁</button>
+            </div>
+            <p id="errorMsg" style="color:red; margin-left:20px; font-size:13px; display:none;">
+                ⚠ Please fill in both email and password.
+            </p>
+            <div class="check">
+                <input type="checkbox" id="remember">
+                <label for="remember">Remember me</label>
+                <p>Forget Password?</p>
+            </div>
+            <div class="cont" onclick="handleLogin()">
+                <span class="continue" style="cursor:pointer;">CONTINUE</span>
+            </div>
+            <div class="divider"><span>OR CONTINUE WITH</span></div>
+            <div class="log">
+                <button type="button" class="google">Google</button>
+                <button type="button" class="apple">Apple</button>
+            </div>
+            <div class="dont">
+                <span>Don't have an account? </span>
+                <div><a href="create.html">Create One</a></div>
+            </div>
+            <div style="text-align:center;margin-top:16px;">
+                <a href="index1.html" style="color:#4a4550;font-size:12px;font-family:system-ui,sans-serif;text-decoration:none;">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        window.addEventListener("load", function () {
+            const savedEmail    = localStorage.getItem("savedEmail");
+            const savedRemember = localStorage.getItem("rememberMe");
+
+            if (savedRemember === "true" && savedEmail) {
+                document.getElementById("emailInput").value = savedEmail;
+                document.getElementById("remember").checked = true;
+            }
+        });
+
+        function togglePassword() {
+            const input = document.getElementById("passInput");
+            const btn   = document.getElementById("eyeBtn");
+            if (input.type === "password") {
+                input.type      = "text";
+                btn.textContent = "🙈";
+            } else {
+                input.type      = "password";
+                btn.textContent = "👁";
+            }
+        }
+
+        function handleLogin() {
+            const email    = document.getElementById("emailInput").value.trim();
+            const password = document.getElementById("passInput").value.trim();
+            const remember = document.getElementById("remember").checked;
+            const errorMsg = document.getElementById("errorMsg");
+
+            if (email === "" || password === "") {
+                errorMsg.textContent   = "⚠ Please fill in both email and password.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (!email.includes("@") || !email.includes(".")) {
+                errorMsg.textContent   = "⚠ Please enter a valid email address.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            const registeredEmail    = localStorage.getItem("registeredEmail");
+            const registeredPassword = localStorage.getItem("registeredPassword");
+
+            if (!registeredEmail || !registeredPassword) {
+                errorMsg.textContent   = "⚠ No account found. Please sign up first.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (email !== registeredEmail || password !== registeredPassword) {
+                errorMsg.textContent   = "⚠ Incorrect email or password.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (remember) {
+                localStorage.setItem("savedEmail", email);
+                localStorage.setItem("rememberMe", "true");
+            } else {
+                localStorage.removeItem("savedEmail");
+                localStorage.setItem("rememberMe", "false");
+            }
+
+            localStorage.setItem("isLoggedIn",    "true");
+            localStorage.setItem("loggedInEmail", email);
+
+            errorMsg.style.display = "none";
+            window.location.href   = "index2.html";
+        }
+
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") { handleLogin(); }
+        });
+
+    </script>
+</body>
+</html>

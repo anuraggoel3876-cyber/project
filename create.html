@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up-Coder Hub</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            height: 100vh;
+        }
+
+        .login-tab {
+            height: 750px;
+            width: 700px;
+            background-color: #141318;
+            color: white;
+        }
+
+        .intro {
+            display: flex;
+            flex-direction: column;
+            padding: 30px 0px 0px 10px;
+        }
+
+        .intro p.sign {
+            font-size: 50px;
+            margin-bottom: 25px;
+            margin-left: 20px;
+            font-family: Georgia, serif;
+        }
+
+        .intro p {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            margin-left: 20px;
+        }
+
+        .intro p.sign2 {
+            margin-top: 90px;
+        }
+
+        .sign3 {
+            width: 94%;
+            margin-left: 20px;
+            height: 50px;
+            margin-top: 10px;
+            margin-bottom: 60px;
+        }
+
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-left: 17px;
+            margin-top: 15px;
+        }
+
+        .check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: white;
+            cursor: pointer;
+        }
+
+        .check label {
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            font-size: 15px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .continue {
+            color: black;
+            font-size: 25px;
+            text-decoration: none;
+        }
+
+        .cont {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            width: 94%;
+            background-color: white;
+            margin-left: 20px;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .cont:hover {
+            background-color: gray;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 20px;
+        }
+
+        .divider span {
+            font-size: 12px;
+            white-space: nowrap;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            color: #2A2730;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #2A2730;
+        }
+
+        .log {
+            display: flex;
+            gap: 150px;
+        }
+
+        .google {
+            display: flex;
+            height: 55px;
+            width: 250px;
+            background-color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            margin-left: 20px;
+            color: #3c4043;
+            border: 1px solid #141318;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            font-size: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .apple {
+            display: flex;
+            height: 55px;
+            width: 250px;
+            background-color: #ffffff;
+            align-items: center;
+            justify-content: center;
+            color: #3c4043;
+            border: 1px solid #141318;
+            font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+            font-size: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .google:hover,
+        .apple:hover {
+            background-color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-tab">
+        <div class="intro">
+            <p class="sign">Sign Up</p>
+            <p>Enter your credentials to create your account</p>
+            <p class="sign2">EMAIL ADDRESS</p>
+            <input type="text" class="sign3" id="emailInput" placeholder="name@company.com">
+            <p class="sign4">PASSWORD</p>
+            <div style="position:relative; width:94%; margin-left:20px; margin-top:10px; margin-bottom:25px;">
+                <input type="password" id="passInput" placeholder="• • • • • • • • • •"
+                    style="width:100%; height:50px; padding-right:50px; box-sizing:border-box;">
+                <button onclick="togglePassword()" id="eyeBtn"
+                    style="position:absolute; right:10px; top:50%; transform:translateY(-50%);
+                           background:none; border:none; cursor:pointer; font-size:18px; color:#888;">👁</button>
+            </div>
+
+            <p id="errorMsg" style="color:red; margin-left:20px; font-size:13px; display:none;">
+                ⚠ Please fill in all fields correctly.
+            </p>
+            <p id="successMsg" style="color:#4ade80; margin-left:20px; font-size:13px; display:none;">
+                ✅ Account created! Redirecting to login...
+            </p>
+
+            <div class="check">
+                <input type="checkbox" id="remember" checked>
+                <label for="remember">Remember me</label>
+            </div>
+            <div class="cont" onclick="handleSignUp()">
+                <span class="continue" style="cursor:pointer;">CONTINUE</span>
+            </div>
+            <div class="divider">
+                <span>OR CONTINUE WITH</span>
+            </div>
+            <div class="log">
+                <button type="button" class="google">Google</button>
+                <button type="button" class="apple">Apple</button>
+            </div>
+            <div style="display:flex;gap:6px;justify-content:center;margin-top:28px;">
+                <span style="color:#7a6f78;font-size:14px;font-family:system-ui,sans-serif;">Already have an account?</span>
+                <a href="sign.html" style="color:#C9A96E;font-size:14px;font-family:system-ui,sans-serif;text-decoration:none;">Log In</a>
+            </div>
+            <div style="text-align:center;margin-top:10px;">
+                <a href="index1.html" style="color:#4a4550;font-size:12px;font-family:system-ui,sans-serif;text-decoration:none;">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function togglePassword() {
+            const input = document.getElementById("passInput");
+            const btn   = document.getElementById("eyeBtn");
+
+            if (input.type === "password") {
+                input.type      = "text";
+                btn.textContent = "🙈";
+            } else {
+                input.type      = "password";
+                btn.textContent = "👁";
+            }
+        }
+
+        function handleSignUp() {
+            const email      = document.getElementById("emailInput").value.trim();
+            const password   = document.getElementById("passInput").value.trim();
+            const remember   = document.getElementById("remember").checked;
+            const errorMsg   = document.getElementById("errorMsg");
+            const successMsg = document.getElementById("successMsg");
+
+            if (email === "" || password === "") {
+                errorMsg.textContent   = "⚠ Please fill in both fields.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (!email.includes("@") || !email.includes(".")) {
+                errorMsg.textContent   = "⚠ Please enter a valid email address.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            if (password.length < 6) {
+                errorMsg.textContent   = "⚠ Password must be at least 6 characters.";
+                errorMsg.style.display = "block";
+                return;
+            }
+
+            localStorage.setItem("registeredEmail",    email);
+            localStorage.setItem("registeredPassword", password);
+
+            if (remember) {
+                localStorage.setItem("savedEmail",  email);
+                localStorage.setItem("rememberMe",  "true");
+            } else {
+                localStorage.removeItem("savedEmail");
+                localStorage.setItem("rememberMe", "false");
+            }
+
+            errorMsg.style.display   = "none";
+            successMsg.style.display = "block";
+
+
+                window.location.href = "index2.html";
+        }
+
+    </script>
+</body>
+
+</html>

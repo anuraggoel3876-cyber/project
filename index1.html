@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coder Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0C0B0F;
+        }
+
+        .nav1 {
+            background-color: #100f14;
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #2A2730;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .p1 {
+            color: white;
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            padding: 0px 300px 15px 15px;
+        }
+
+        .content {
+            color: white;
+            font-size: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            padding: 0px 45px;
+            display: flex;
+            align-items: center;
+            gap: 100px;
+            flex: 1;
+        }
+
+        .p2 a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .p2 a:hover {
+            color: blue;
+        }
+
+        .search {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid black;
+        }
+
+        .search input {
+            width: 250px;
+            height: 35px;
+            border: none;
+            outline: none;
+            background-color: rgb(250, 250, 250);
+        }
+
+        .search button {
+            height: 35px;
+            width: 30px;
+            border: none;
+            background-color: rgb(250, 250, 250);
+        }
+
+        .search button:hover {
+            background-color: gray;
+        }
+
+        .account {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: auto;
+        }
+
+        .account a {
+            text-decoration: none;
+            color: white;
+            font-size: 16px;
+        }
+
+        .nav-icon-link {
+            text-decoration: none;
+            color: #7a6f78;
+            font-size: 14px;
+            border: 1px solid #2A2730;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .nav-icon-link:hover {
+            color: #C9A96E;
+            border-color: #C9A96E;
+        }
+
+        .sign {
+            height: 50px;
+            width: 110px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+        }
+
+        .sign a {
+            color: black;
+        }
+
+        .account a:hover {
+            color: blue;
+        }
+
+        .lines {
+            width: 100%;
+            min-height: 900px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            gap: 150px;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-right: 20px;
+        }
+
+        .small {
+            width: 270px;
+            height: 30px;
+            background-color: rgba(201, 169, 110, 0.12);
+            border: 0.5px solid #C9A96E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+        }
+
+        .new {
+            color: #C9A96E;
+            font-family: system-ui, sans-serif;
+            font-size: 13px;
+        }
+
+        .lines2 h1 {
+            color: white;
+            font-size: 65px;
+            font-family: 'Big Caslon', 'Book Antiqua', serif;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+
+        .color {
+            color: #C9A96E;
+            font-style: italic;
+        }
+
+        .lines3 {
+            color: #7a6f78;
+            font-family: system-ui, sans-serif;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 460px;
+        }
+
+        .btn {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn input {
+            width: 200px;
+            height: 50px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: system-ui, sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .btn1 {
+            background-color: #C9A96E;
+            border: none;
+            color: #0C0B0F;
+        }
+
+        .btn1:hover {
+            background: #dbbf7a;
+        }
+
+        .btn2 {
+            background-color: transparent;
+            color: white;
+            border: 1px solid #2A2730;
+        }
+
+        .btn2:hover {
+            border-color: #C9A96E;
+            color: #C9A96E;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #2A2730;
+            width: 460px;
+        }
+
+        .rate {
+            color: white;
+            display: flex;
+            gap: 60px;
+        }
+
+        .number1 {
+            font-family: Georgia, serif;
+            font-size: 32px;
+            color: #EDE8E3;
+        }
+
+        .number2 {
+            font-family: system-ui, sans-serif;
+            font-size: 12px;
+            color: #7a6f78;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        .screenshot {
+            flex: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .screenshot img {
+            height: auto;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 18px;
+            border: 1px solid #2A2730;
+        }
+
+        .courses {
+            color: white;
+            margin-left: 450px;
+            font-size: 36px;
+            font-family: Georgia, serif;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+        }
+
+        .course {
+            color: #C9A96E;
+            font-style: italic;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #7a6f78;
+            margin-top: 8px;
+        }
+
+        .subtitle2 {
+            font-size: 16px;
+            color: #C9A96E;
+            margin-top: 8px;
+        }
+
+        .upper {
+            display: flex;
+            justify-content: space-between;
+            width: 1260px;
+            margin-top: 8px;
+        }
+
+        .card {
+            width: 80%;
+            height: 800px;
+            display: flex;
+            justify-content: center;
+            column-gap: 40px;
+            row-gap: 1px;
+            flex-wrap: wrap;
+            margin-left: 220px;
+            margin-top: 50px;
+        }
+
+        .card0 {
+            width: 400px;
+            height: 350px;
+            border-radius: 15px;
+        }
+
+        .card1 {
+            background-color: #141318;
+            border: 2px solid #2A2730;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card1:hover {
+            border-color: rgba(201, 169, 110, 0.4);
+            transform: translateY(-4px);
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(201, 169, 110, 0.08);
+        }
+
+        .card11 {
+            background: linear-gradient(135deg, #1a1600, #2a2000);
+            font-size: 62px;
+            height: 140px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card11 span {
+            font-weight: bold;
+            letter-spacing: 0.025em;
+        }
+
+        .text11 {
+            color: #EDE8E3;
+            margin-left: 25px;
+            font-size: 20px;
+            margin-top: 20px;
+            font-family: Georgia, serif;
+            font-weight: 400;
+        }
+
+        .text12 {
+            color: #7a6f78;
+            margin-left: 25px;
+            font-size: 14px;
+            margin-top: 30px;
+            font-family: system-ui, sans-serif;
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .divi {
+            margin-top: 30px;
+            width: 87%;
+            margin-left: 20px;
+            border: none;
+            border-top: 2px solid #2A2730;
+        }
+
+        .duraton1 {
+            display: flex;
+            margin-left: 25px;
+            margin-top: 15px;
+            gap: 190px;
+            color: white;
+            font-size: 15px;
+        }
+
+        .duraton12 {
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #C9A96E;
+        }
+
+        .free-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 4px;
+            padding: 3px 10px;
+            font-family: system-ui, sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            color: #4ade80;
+        }
+
+        .pro-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 4px;
+            padding: 3px 10px;
+            font-family: system-ui, sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            color: #C9A96E;
+        }
+
+        .card21 {
+            background: linear-gradient(135deg, #001a10, #002a18) !important;
+            font-size: 62px;
+            height: 140px;
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card31 {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important;
+            font-size: 62px;
+            height: 140px;
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card41 {
+            background: linear-gradient(135deg, #0f2027, #264DE4, #051b50) !important;
+            font-size: 62px;
+            height: 140px;
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card51 {
+            background: linear-gradient(135deg, #0d2303, #072a12) !important;
+            font-size: 62px;
+            height: 140px;
+            width: 100%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card61 {
+            background: linear-gradient(135deg, #2d1609, #1e0e05);
+            font-size: 62px;
+            height: 140px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-heading {
+            font-family: Georgia, serif;
+            font-size: 55px;
+            font-weight: 400;
+            color: white;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .section-heading span {
+            color: #C9A96E;
+            font-style: italic;
+        }
+
+        .section-sub {
+            font-family: system-ui, sans-serif;
+            font-size: 17px;
+            color: #7a6f78;
+            margin-bottom: 40px;
+        }
+
+        .reviews-section {
+            margin: 160px 220px 250px 400px;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 400px);
+            row-gap: 80px;
+            column-gap: 100px;
+        }
+
+        .review-card {
+            width: 390px;
+            background: #141318;
+            border: 1px solid #2A2730;
+            border-radius: 14px;
+            padding: 28px;
+        }
+
+        .review-card:hover {
+            border-color: rgba(201, 169, 110, 0.35);
+        }
+
+        .review-stars {
+            color: #C9A96E;
+            font-size: 14px;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .review-text {
+            font-family: system-ui, sans-serif;
+            font-size: 14px;
+            color: #7a6f78;
+            line-height: 1.75;
+            margin-bottom: 24px;
+        }
+
+        .review-text em {
+            color: #EDE8E3;
+            font-style: normal;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-top: 1px solid #2A2730;
+            padding-top: 18px;
+        }
+
+        .author-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(201, 169, 110, 0.10);
+            border: 1px solid rgba(201, 169, 110, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Georgia, serif;
+            font-size: 15px;
+            color: #C9A96E;
+            flex-shrink: 0;
+        }
+
+        .author-name {
+            font-family: system-ui, sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #EDE8E3;
+        }
+
+        .author-role {
+            font-family: system-ui, sans-serif;
+            font-size: 11px;
+            color: #7a6f78;
+            margin-top: 2px;
+        }
+
+        .author-course {
+            margin-left: auto;
+            font-family: system-ui, sans-serif;
+            font-size: 11px;
+            color: #C9A96E;
+            background: rgba(201, 169, 110, 0.08);
+            border: 1px solid rgba(201, 169, 110, 0.15);
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .faq-section {
+            margin: 140px 220px 120px 400px;
+        }
+
+        .faq-list {
+            max-width: 1100px;
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: 5fr 5fr;
+            column-gap: 180px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #2A2730;
+            border-top: 1px solid #2A2730;
+            padding: 24px 0;
+            margin-top: -1px;
+        }
+
+        .faq-q {
+            font-family: system-ui, sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: #EDE8E3;
+            margin-bottom: 10px;
+        }
+
+        .faq-a {
+            font-family: system-ui, sans-serif;
+            font-size: 15px;
+            color: #7a6f78;
+            line-height: 1.75;
+        }
+
+        .footer {
+            width: 100%;
+            height: 150px;
+            border-top: 1px solid #2A2730;
+            color: white;
+        }
+
+        .footer1 {
+            margin-left: 70px;
+            display: flex;
+            margin-top: 80px;
+            gap: 740px;
+        }
+
+        .footer11 {
+            font-size: 20px;
+            font-family: Georgia, serif;
+        }
+
+        .footer112 {
+            color: #C9A96E;
+        }
+
+        .footer12 {
+            font-size: 13px;
+            font-family: system-ui, sans-serif;
+            color: #7a6f78;
+        }
+
+        .footer13 {
+            font-size: 13px;
+            font-family: system-ui, sans-serif;
+            color: #7a6f78;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background: #141318;
+            border: 1px solid #2A2730;
+            border-radius: 20px;
+            width: 780px;
+            max-width: 95vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            border-color: #C9A96E;
+            color: #C9A96E;
+        }
+
+        .modal-banner {
+            height: 160px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+        }
+
+        .modal-tag {
+            position: absolute;
+            bottom: 14px;
+            left: 22px;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: system-ui, sans-serif;
+            font-weight: 700;
+        }
+
+        .modal-tag.free {
+            background: rgba(74,222,128,0.12);
+            border: 1px solid rgba(74,222,128,0.4);
+            color: #4ade80;
+        }
+
+        .modal-tag.pro {
+            background: rgba(201,169,110,0.12);
+            border: 1px solid rgba(201,169,110,0.4);
+            color: #C9A96E;
+        }
+
+        .modal-body {
+            padding: 28px 30px 32px;
+        }
+
+        .modal-title {
+            font-family: Georgia, serif;
+            font-size: 30px;
+            font-weight: 400;
+            color: #EDE8E3;
+            margin-bottom: 10px;
+        }
+
+        .modal-desc {
+            font-family: system-ui, sans-serif;
+            font-size: 15px;
+            color: #7a6f78;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .modal-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 26px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #2A2730;
+        }
+
+        .modal-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .modal-stat-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #7a6f78;
+            font-family: system-ui, sans-serif;
+        }
+
+        .modal-stat-val {
+            font-size: 16px;
+            font-weight: 600;
+            color: #EDE8E3;
+            font-family: system-ui, sans-serif;
+        }
+
+        .modal-stat-val.gold { color: #C9A96E; }
+        .modal-stat-val.green { color: #4ade80; }
+
+        .modal-learn-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #7a6f78;
+            margin-bottom: 14px;
+            font-family: system-ui, sans-serif;
+        }
+
+        .modal-learn-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .modal-learn-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-family: system-ui, sans-serif;
+            font-size: 14px;
+            color: #c8c3c8;
+            line-height: 1.5;
+        }
+
+        .modal-learn-list li::before {
+            content: '✓';
+            color: #C9A96E;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 14px;
+        }
+
+        .modal-btn-primary {
+            flex: 1;
+            height: 52px;
+            background: white;
+            color: black;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-btn-primary:hover { background: #C9A96E; }
+
+        .modal-btn-secondary {
+            height: 52px;
+            padding: 0 26px;
+            background: transparent;
+            color: #7a6f78;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-btn-secondary:hover {
+            border-color: #C9A96E;
+            color: #C9A96E;
+        }
+
+        .modal-price-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .modal-price {
+            font-family: Georgia, serif;
+            font-size: 26px;
+            color: #EDE8E3;
+        }
+
+        .modal-price-sub {
+            font-size: 12px;
+            color: #7a6f78;
+            font-family: system-ui, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav1">
+        <div>
+            <p class="p1">Coder Hub</p>
+        </div>
+        <div class="content">
+            <p class="p2"><a href="#">Home</a></p>
+            <p class="p2"><a href="#courses">Explore</a></p>
+            <p class="p2"><a href="degree.html">Degree</a></p>
+            <div class="search">
+                <input type="text" placeholder="Search...">
+                <button>🔍</button>
+            </div>
+            <div class="account">
+                <a href="quiz.html" class="nav-icon-link">🎯 Quiz</a>
+                <a href="cart.html" class="nav-icon-link">🛒 Cart</a>
+                <div class="sign"><a href="create.html">Sign Up</a></div>
+                <a href="sign.html">Log In</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="lines">
+        <div class="hero-left">
+            <div class="small">
+                <div class="new">● New — Python AI Course Available</div>
+            </div>
+            <div class="lines2">
+                <h1>Master Code.</h1>
+                <h1>Build <span class="color">Anything.</span></h1>
+            </div>
+            <div class="lines3">Industry-grade courses designed for real-world developers. Learn at your pace, build
+                your portfolio, and land your dream role.</div>
+            <div class="btn">
+                <input type="button" class="btn1" value="Start Learning Free">
+                <input type="button" class="btn2" value="Browse Course">
+            </div>
+            <hr class="divider">
+            <div class="rate">
+                <div>
+                    <div class="number1">48K+</div>
+                    <div class="number2">Students enrolled</div>
+                </div>
+                <div>
+                    <div class="number1">120+</div>
+                    <div class="number2">Expert Courses</div>
+                </div>
+                <div>
+                    <div class="number1">94%</div>
+                    <div class="number2">Completion rate</div>
+                </div>
+            </div>
+        </div>
+        <div class="screenshot"><img src="screenshot.png" alt="python code"></div>
+    </div>
+
+    <div class="courses" id="courses">
+        <span>Popular</span>
+        <span class="course">Courses</span>
+        <div class="upper">
+            <div class="subtitle">Handpicked by our expert instructors</div>
+            <div class="subtitle2">View all courses →</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card1 card0" data-course="0">
+            <div class="card11"><span>JS</span></div>
+            <div class="free-tag">FREE</div>
+            <div class="text11">JavaScript Mastery</div>
+            <div class="text12">From fundamentals to advanced patterns. Build real projects with modern JS.</div>
+            <hr class="divi">
+            <div class="duraton1">
+                <div>42 lessons · 18hrs</div>
+                <div class="duraton12">★ 4.9</div>
+            </div>
+        </div>
+        <div class="card1 card0" data-course="1">
+            <div class="card21"><span>🐍</span></div>
+            <div class="pro-tag">PRO</div>
+            <div class="text11">Python & AI</div>
+            <div class="text12">Machine learning, data science and automation with Python 3.11.</div>
+            <hr class="divi">
+            <div class="duraton1">
+                <div>68 lessons · 32hrs</div>
+                <div class="duraton12">★ 4.8</div>
+            </div>
+        </div>
+        <div class="card1 card0" data-course="2">
+            <div class="card31"><span>⚛</span></div>
+            <div class="pro-tag">PRO</div>
+            <div class="text11">React & Next.js</div>
+            <div class="text12">Build full-stack web apps with React 18, Next.js 14 and TypeScript.</div>
+            <hr class="divi">
+            <div class="duraton1">
+                <div>55 lessons · 26hrs</div>
+                <div class="duraton12">★ 4.9</div>
+            </div>
+        </div>
+        <div class="card1 card0" data-course="3">
+            <div class="card41"><span>🎨</span></div>
+            <div class="free-tag">FREE</div>
+            <div class="text11">CSS & Design Systems</div>
+            <div class="text12">Modern CSS, Flexbox, Grid and building scalable design systems.</div>
+            <hr class="divi">
+            <div class="duraton1">
+                <div>38 lessons · 14hrs</div>
+                <div class="duraton12">★ 4.7</div>
+            </div>
+        </div>
+        <div class="card1 card0" data-course="4">
+            <div class="card51"><span>🟢</span></div>
+            <div class="pro-tag">PRO</div>
+            <div class="text11">Node.js & APIs</div>
+            <div class="text12">Build scalable REST APIs, authentication and real-time apps.</div>
+            <hr class="divi">
+            <div class="duraton1">
+                <div>48 lessons · 22hrs</div>
+                <div class="duraton12">★ 4.8</div>
+            </div>
+        </div>
+        <div class="card1 card0" data-course="5">
+            <div class="card61"><span>🗄</span></div>
+            <div class="free-tag">FREE</div>
+            <div class="text11">SQL & Databases</div>
+            <div class="text12">Master SQL, PostgreSQL and database design for production apps.</div>
+            <hr class="divi">
+            <div class="duraton1">
+                <div>30 lessons · 12hrs</div>
+                <div class="duraton12">★ 4.5</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reviews-section" id="review">
+        <div class="section-heading">What our <span>Students Say</span></div>
+        <div class="section-sub">Real reviews from real developers who landed their dream roles</div>
+        <div class="reviews-grid">
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">"The JavaScript course is <em>unlike anything I've seen.</em> I went from
+                    confused to confident in 3 weeks."</div>
+                <div class="review-author">
+                    <div class="author-avatar">R</div>
+                    <div>
+                        <div class="author-name">Rahul Sharma</div>
+                        <div class="author-role">Frontend Dev · Delhi</div>
+                    </div>
+                    <div class="author-course">JS Mastery</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">"Python & AI blew my mind. I built my first ML model in week 2. <em>The
+                        instructor makes complex topics stick.</em>"</div>
+                <div class="review-author">
+                    <div class="author-avatar">P</div>
+                    <div>
+                        <div class="author-name">Priya Menon</div>
+                        <div class="author-role">Data Analyst · Bangalore</div>
+                    </div>
+                    <div class="author-course">Python & AI</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★☆</div>
+                <div class="review-text">"React & Next.js taught me exactly what the industry expects. <em>Got my first
+                        dev job within 2 months</em> of finishing."</div>
+                <div class="review-author">
+                    <div class="author-avatar">A</div>
+                    <div>
+                        <div class="author-name">Arjun Nair</div>
+                        <div class="author-role">Full Stack Dev · Mumbai</div>
+                    </div>
+                    <div class="author-course">React & Next.js</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">"CSS & Design Systems is free but feels premium. <em>My UI work completely
+                        transformed</em> after this course."</div>
+                <div class="review-author">
+                    <div class="author-avatar">S</div>
+                    <div>
+                        <div class="author-name">Sneha Rao</div>
+                        <div class="author-role">UI Designer · Hyderabad</div>
+                    </div>
+                    <div class="author-course">CSS & Design</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <div class="review-text">"Node.js & APIs helped me build a full backend from scratch. <em>The auth
+                        module is the best I've seen anywhere.</em>"</div>
+                <div class="review-author">
+                    <div class="author-avatar">V</div>
+                    <div>
+                        <div class="author-name">Vikram Patel</div>
+                        <div class="author-role">Backend Dev · Pune</div>
+                    </div>
+                    <div class="author-course">Node.js & APIs</div>
+                </div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-stars">★★★★☆</div>
+                <div class="review-text">"SQL & Databases is dense in the best way. <em>My database queries are 10x
+                        faster now.</em> Highly recommend."</div>
+                <div class="review-author">
+                    <div class="author-avatar">K</div>
+                    <div>
+                        <div class="author-name">Kavya Singh</div>
+                        <div class="author-role">Backend Dev · Chennai</div>
+                    </div>
+                    <div class="author-course">SQL & Databases</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="faq-section">
+        <div class="section-heading">Frequently Asked <span>Questions</span></div>
+        <div class="section-sub">Everything you need to know before you start</div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <div class="faq-q">Are the free courses really free?</div>
+                <div class="faq-a">Yes — completely free, no credit card required. You only need PRO for advanced
+                    courses and certificates.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">What is included in PRO?</div>
+                <div class="faq-a">PRO unlocks all advanced courses, certificates, mentor sessions, and lifetime access
+                    to updates.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Do I get a certificate after completing a course?</div>
+                <div class="faq-a">Certificates are available for all PRO courses, shareable on LinkedIn and your
+                    resume.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Can I learn at my own pace?</div>
+                <div class="faq-a">Absolutely. All courses are self-paced with no deadlines. Your progress is always
+                    saved.</div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-q">Can I cancel PRO anytime?</div>
+                <div class="faq-a">Yes, cancel anytime. We also offer a 7-day full refund if you're not satisfied.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How long do I have access to a course?</div>
+                <div class="faq-a">Once enrolled, you have lifetime access to the course material, including all future
+                    updates.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Is there a mobile app?</div>
+                <div class="faq-a">Yes, CoderHub is fully accessible on mobile browsers. A dedicated app is coming
+                    soon.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Do you offer team or corporate plans?</div>
+                <div class="faq-a">Yes — we offer team licenses with a central dashboard. Contact us for pricing.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer1">
+            <span class="footer11"><span>Coder</span><span class="footer112">Hub</span></span>
+            <div class="footer12">© 2026 CoderHub. All rights reserved.</div>
+            <div class="footer13">Built for developers, by developers.</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="courseModal">
+        <div class="modal-box" id="modalBox">
+            <button class="modal-close" id="modalClose">✕</button>
+            <div class="modal-banner" id="modalBanner"></div>
+            <div class="modal-body">
+                <div class="modal-price-row">
+                    <div class="modal-price" id="modalPrice"></div>
+                    <div class="modal-price-sub" id="modalPriceSub"></div>
+                </div>
+                <div class="modal-title" id="modalTitle"></div>
+                <div class="modal-desc" id="modalDesc"></div>
+                <div class="modal-stats" id="modalStats"></div>
+                <div class="modal-learn-title">WHAT YOU'LL LEARN</div>
+                <ul class="modal-learn-list" id="modalLearn"></ul>
+                <div class="modal-actions" id="modalActions"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const COURSES = [
+            {
+                id: 'js', icon: 'JS', iconText: true,
+                bg: 'linear-gradient(135deg, #1a1600, #2a2000)',
+                name: 'JavaScript Mastery', tag: 'FREE',
+                description: 'From fundamentals to advanced patterns. Build real projects with modern JavaScript.',
+                lessons: '42', hours: '18hrs', rating: '4.9', price: 'Free',
+                learn: [
+                    'ES6+ syntax and modern JavaScript patterns',
+                    'DOM manipulation and event handling',
+                    'Asynchronous JS: Promises & async/await',
+                    'Build real-world projects from scratch',
+                    'Interview prep and coding challenges'
+                ]
+            },
+            {
+                id: 'python', icon: '🐍', iconText: false,
+                bg: 'linear-gradient(135deg, #001a10, #002a18)',
+                name: 'Python & AI', tag: 'PRO',
+                description: 'Machine learning, data science and automation with Python 3.11.',
+                lessons: '68', hours: '32hrs', rating: '4.8', price: '₹4,999',
+                learn: [
+                    'Python fundamentals and advanced OOP',
+                    'Data science with NumPy & Pandas',
+                    'Machine learning with Scikit-learn',
+                    'Build and deploy AI models',
+                    'Automation scripts and real-world projects'
+                ]
+            },
+            {
+                id: 'react', icon: '⚛', iconText: false,
+                bg: 'linear-gradient(135deg, #0f2027, #203a43, #2c5364)',
+                name: 'React & Next.js', tag: 'PRO',
+                description: 'Build full-stack web apps with React 18, Next.js 14 and TypeScript.',
+                lessons: '55', hours: '26hrs', rating: '4.9', price: '₹4,499',
+                learn: [
+                    'React hooks, context and state management',
+                    'Next.js 14 App Router and Server Components',
+                    'TypeScript with React',
+                    'Full-stack with API routes and databases',
+                    'Deploy production apps to Vercel'
+                ]
+            },
+            {
+                id: 'css', icon: '🎨', iconText: false,
+                bg: 'linear-gradient(135deg, #0f2027, #264DE4, #051b50)',
+                name: 'CSS & Design Systems', tag: 'FREE',
+                description: 'Modern CSS, Flexbox, Grid and building scalable design systems.',
+                lessons: '38', hours: '14hrs', rating: '4.7', price: 'Free',
+                learn: [
+                    'CSS Flexbox and Grid mastery',
+                    'CSS variables and custom properties',
+                    'Build a complete component design system',
+                    'Responsive design and mobile-first workflow',
+                    'Animations, transitions and effects'
+                ]
+            },
+            {
+                id: 'node', icon: '🟢', iconText: false,
+                bg: 'linear-gradient(135deg, #0d2303, #072a12)',
+                name: 'Node.js & APIs', tag: 'PRO',
+                description: 'Build scalable REST APIs, authentication and real-time apps.',
+                lessons: '48', hours: '22hrs', rating: '4.8', price: '₹3,999',
+                learn: [
+                    'Node.js and Express from scratch',
+                    'REST API design and best practices',
+                    'JWT authentication and authorization',
+                    'Real-time apps with WebSockets',
+                    'Database integration with Prisma ORM'
+                ]
+            },
+            {
+                id: 'sql', icon: '🗄', iconText: false,
+                bg: 'linear-gradient(135deg, #2d1609, #1e0e05)',
+                name: 'SQL & Databases', tag: 'FREE',
+                description: 'Master SQL, PostgreSQL and database design for production apps.',
+                lessons: '30', hours: '12hrs', rating: '4.5', price: 'Free',
+                learn: [
+                    'SQL fundamentals: SELECT, JOIN, GROUP BY',
+                    'Database design and normalization',
+                    'PostgreSQL features and optimization',
+                    'Indexes, transactions and query performance',
+                    'Real-world schema design projects'
+                ]
+            }
+        ];
+
+        function openCourseModal(index) {
+            const c = COURSES[index];
+            const isPro = c.tag === 'PRO';
+
+            const banner = document.getElementById('modalBanner');
+            banner.style.background = c.bg;
+            banner.innerHTML = `
+                <span style="font-size:80px; font-weight:bold; color:white; letter-spacing:0.02em;">${c.icon}</span>
+                <span class="modal-tag ${isPro ? 'pro' : 'free'}">${c.tag}</span>
+            `;
+
+
+            document.getElementById('modalPrice').textContent = c.price;
+            document.getElementById('modalPriceSub').textContent = isPro ? 'One-time · Lifetime access' : '100% Free · No credit card';
+
+            document.getElementById('modalTitle').textContent = c.name;
+            document.getElementById('modalDesc').textContent = c.description;
+
+            document.getElementById('modalStats').innerHTML = `
+                <div class="modal-stat">
+                    <div class="modal-stat-label">Lessons</div>
+                    <div class="modal-stat-val">${c.lessons}</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-label">Duration</div>
+                    <div class="modal-stat-val">${c.hours}</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-label">Rating</div>
+                    <div class="modal-stat-val gold">★ ${c.rating}</div>
+                </div>
+                <div class="modal-stat">
+                    <div class="modal-stat-label">Level</div>
+                    <div class="modal-stat-val">All Levels</div>
+                </div>
+            `;
+
+            const learnEl = document.getElementById('modalLearn');
+            learnEl.innerHTML = c.learn.map(item => `<li>${item}</li>`).join('');
+
+
+            const actionsEl = document.getElementById('modalActions');
+            if (isPro) {
+                actionsEl.innerHTML = `
+                    <button class="modal-btn-primary" onclick="addToCartAndGo('${c.id}')">🛒 Add to Cart</button>
+                    <a href="create.html" class="modal-btn-secondary">Sign Up</a>
+                `;
+            } else {
+                actionsEl.innerHTML = `
+                    <a href="create.html" class="modal-btn-primary">Start Learning Free →</a>
+                    <button class="modal-btn-secondary" onclick="closeModal()">Maybe Later</button>
+                `;
+            }
+
+            document.getElementById('courseModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('courseModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function addToCartAndGo(courseId) {
+            const cart = JSON.parse(localStorage.getItem('chCart') || '[]');
+            if (!cart.includes(courseId)) {
+                cart.push(courseId);
+                localStorage.setItem('chCart', JSON.stringify(cart));
+            }
+            window.location.href = 'cart.html';
+        }
+
+        document.getElementById('courseModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        const searchInput = document.querySelector(".search input");
+        const searchBtn   = document.querySelector(".search button");
+
+        function filterCourses() {
+            const query = searchInput.value.toLowerCase();
+            const cards = document.querySelectorAll(".card1");
+            cards.forEach(function (card) {
+                const title = card.querySelector(".text11").textContent.toLowerCase();
+                card.style.display = title.includes(query) ? "flex" : "none";
+            });
+        }
+
+        searchInput.addEventListener("input", filterCourses);
+        searchBtn.addEventListener("click", filterCourses);
+
+        document.querySelector(".btn1").addEventListener("click", function () {
+            window.location.href = "create.html";
+        });
+
+        document.querySelector(".btn2").addEventListener("click", function () {
+            document.getElementById("courses").scrollIntoView({ behavior: "smooth" });
+        });
+
+        document.querySelectorAll(".card1").forEach(function (card) {
+            card.addEventListener("click", function () {
+                const index = parseInt(this.dataset.course);
+                openCourseModal(index);
+            });
+        });
+
+        window.addEventListener("scroll", function () {
+            const sections = ["courses", "review"];
+            const navLinks = document.querySelectorAll(".p2 a");
+            sections.forEach(function (id, index) {
+                const section = document.getElementById(id);
+                if (!section) return;
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 150 && rect.bottom >= 150) {
+                    navLinks.forEach(link => link.style.color = "white");
+                    navLinks[index + 1].style.color = "blue";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

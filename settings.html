@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings – Coder Hub</title>
+    <style>
+        .nav1 {
+            background-color: rgb(15, 15, 15);
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2A2730;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            padding: 0 20px 0 15px;
+        }
+        .nav-toggle {
+            background: none;
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .nav-toggle:hover { border-color: #C9A96E; color: #C9A96E; }
+        .p1 {
+            color: white;
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            white-space: nowrap;
+            text-decoration: none;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+        }
+        .nav-links .p2 a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            transition: color 0.2s;
+        }
+        .nav-links .p2 a:hover { color: #C9A96E; }
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search {
+            display: flex;
+            align-items: center;
+            background: #1a1820;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 360px;
+        }
+        .search:focus-within {
+            border-color: #C9A96E;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+        }
+        .search input {
+            flex: 1; height: 42px;
+            border: none; outline: none;
+            background: transparent;
+            color: white; font-size: 14px;
+            padding: 0 16px;
+            font-family: system-ui, sans-serif;
+        }
+        .search input::placeholder { color: #4a4550; }
+        .search button {
+            height: 42px; width: 44px;
+            border: none; background: transparent;
+            color: #7a6f78; cursor: pointer;
+            font-size: 16px; transition: color 0.2s;
+        }
+        .search button:hover { color: #C9A96E; }
+        .nav-right {
+            display: flex; align-items: center;
+            gap: 12px; flex-shrink: 0;
+        }
+        .nav-icon-btn {
+            text-decoration: none; color: #7a6f78;
+            font-size: 13px; border: 1px solid #2A2730;
+            padding: 8px 16px; border-radius: 6px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-icon-btn:hover { color: #C9A96E; border-color: #C9A96E; }
+        .user-avatar {
+            width: 70px; height: 70px;
+            background: rgba(201, 169, 110, 0.12);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 100px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+        }
+        .user-avatar:hover { background: rgba(201, 169, 110, 0.22); border-color: #C9A96E; }
+        .user-avatar-text {
+            color: #C9A96E; font-family: system-ui, sans-serif;
+            font-size: 36px; font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #000; font-family: system-ui, -apple-system, sans-serif; }
+        .layout { display: flex; }
+        .sidebar {
+            width: 260px; min-height: calc(100vh - 70px); background-color: rgb(15,15,15);
+            border-right: 2px solid #2A2730; display: flex; flex-direction: column;
+            position: sticky; top: 70px; height: calc(100vh - 70px);
+            overflow-y: auto; transition: width 0.3s ease, opacity 0.3s ease; flex-shrink: 0;
+        }
+        .sidebar.collapsed { width: 0; opacity: 0; overflow: hidden; border: none; }
+        .sidebar1 { display: flex; flex-direction: column; gap: 32px; margin-top: 28px; padding: 0 0 20px; }
+        .sidebar1 a { text-decoration: none; }
+        .menu,.explore,.account { display: flex; flex-direction: column; }
+        .a123 { width: 100%; height: 40px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding-left: 10px; transition: background 0.15s; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; white-space: nowrap; text-decoration: none; }
+        .n123 { margin-bottom: 4px; padding-left: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; }
+        .nn123 { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; text-decoration: none; }
+        .an123 { background: rgba(220,165,64,0.12); border-left: 3px solid #dca540; }
+        .an123 .aa123 { color: #dca540; }
+        .an123 .icon { color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.04); }
+        .a123:hover .aa123 { color: #EDE8E3; }
+        .icon { margin-left: 4px; color: #7a6f78; font-size: 17px; flex-shrink: 0; }
+
+        
+        @keyframes pageIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .main { flex: 1; padding: 50px 60px; color: white; min-height: calc(100vh - 70px); animation: pageIn 0.35s ease both; }
+
+        
+        .page-label { color: #cfac6c; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: bold; margin-bottom: 12px; }
+        .page-title { font-family: Georgia, serif; font-size: 38px; display: flex; gap: 12px; align-items: baseline; margin-bottom: 8px; }
+        .page-title-white { color: white; }
+        .page-title-gold { color: #cfac6c; font-style: italic; }
+        .page-sub { font-size: 13px; color: #7a6f78; margin-bottom: 40px; }
+
+        
+        .settings-grid { display: grid; grid-template-columns: 200px 1fr; gap: 32px; }
+        .settings-nav { display: flex; flex-direction: column; gap: 4px; position: sticky; top: 110px; align-self: start; }
+        .snav-item {
+            padding: 10px 14px; border-radius: 8px; cursor: pointer;
+            font-size: 13px; color: #7a6f78; transition: all 0.2s; border: 1px solid transparent;
+        }
+        .snav-item:hover { background: rgba(255,255,255,0.04); color: #EDE8E3; }
+        .snav-item.active { background: rgba(201,169,110,0.1); border-color: rgba(201,169,110,0.25); color: #C9A96E; font-weight: 700; }
+
+        
+        .settings-content { display: flex; flex-direction: column; gap: 24px; }
+        .panel { background: #141318; border: 1px solid #2A2730; border-radius: 16px; overflow: hidden; display: none; }
+        .panel.active { display: block; }
+        .panel-header { padding: 22px 28px 18px; border-bottom: 1px solid #2A2730; }
+        .panel-title { font-size: 16px; font-weight: 700; color: #EDE8E3; margin-bottom: 4px; }
+        .panel-desc { font-size: 12px; color: #7a6f78; }
+        .panel-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; }
+
+        
+        .setting-row { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+        .setting-row.stacked { flex-direction: column; align-items: stretch; }
+        .setting-info { flex: 1; }
+        .setting-label { font-size: 14px; color: #EDE8E3; margin-bottom: 3px; }
+        .setting-hint { font-size: 12px; color: #7a6f78; }
+        
+        .toggle-wrap { position: relative; flex-shrink: 0; }
+        .toggle-input { opacity: 0; width: 0; height: 0; position: absolute; }
+        .toggle-label {
+            display: block; width: 46px; height: 26px; background: #2A2730;
+            border-radius: 13px; cursor: pointer; transition: background 0.2s;
+            position: relative;
+        }
+        .toggle-label::after {
+            content: ''; position: absolute; top: 3px; left: 3px;
+            width: 20px; height: 20px; border-radius: 50%; background: #7a6f78;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .toggle-input:checked + .toggle-label { background: rgba(201,169,110,0.3); }
+        .toggle-input:checked + .toggle-label::after { transform: translateX(20px); background: #C9A96E; }
+        
+        .setting-select {
+            background: #0d0b10; border: 1px solid #2A2730; color: #EDE8E3;
+            padding: 8px 14px; border-radius: 8px; font-size: 13px; outline: none;
+            cursor: pointer; transition: border-color 0.2s; flex-shrink: 0;
+        }
+        .setting-select:focus { border-color: #C9A96E; }
+        
+        .setting-input {
+            width: 100%; background: #0d0b10; border: 1px solid #2A2730; color: #EDE8E3;
+            padding: 10px 14px; border-radius: 8px; font-size: 13px; outline: none;
+            transition: border-color 0.2s; font-family: system-ui, sans-serif;
+        }
+        .setting-input:focus { border-color: #C9A96E; }
+        
+        .danger-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #1a1720; }
+        .danger-row:last-child { border-bottom: none; }
+        .btn-danger {
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.35);
+            color: #ef4444; padding: 8px 18px; border-radius: 8px; cursor: pointer;
+            font-size: 13px; transition: all 0.2s;
+        }
+        .btn-danger:hover { background: rgba(239,68,68,0.2); }
+        
+        .save-row { display: flex; justify-content: flex-end; padding: 18px 28px; border-top: 1px solid #2A2730; }
+        .btn-save {
+            height: 42px; padding: 0 28px; background: white; color: black;
+            border: none; border-radius: 10px; font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .btn-save:hover { background: #C9A96E; }
+        
+        .toast {
+            position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+            background: #141318; border: 1px solid rgba(74,222,128,0.4); border-radius: 12px;
+            padding: 14px 22px; color: #4ade80; font-size: 14px;
+            transform: translateY(80px); opacity: 0; transition: all 0.3s;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="nav1">
+        <button class="nav-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+        <a href="index2.html" class="p1">Coder Hub</a>
+        <div class="nav-links">
+            <p class="p2"><a href="index1.html">Home</a></p>
+            <p class="p2"><a href="index1.html#courses">Explore</a></p>
+            <p class="p2"><a href="degree.html">Degree</a></p>
+        </div>
+        <div class="nav-center">
+            <div class="search">
+                <input type="text" placeholder="Search courses..." id="navSearch">
+                <button onclick="doNavSearch()">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+            <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+            <a href="profile.html" class="user-avatar" id="navAvatar" title="Profile">
+                <span class="user-avatar-text" id="avatarLetter">A</span>
+            </a>
+        </div>
+    </div>
+
+<div class="layout">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar1">
+            <div class="menu">
+                <div class="n123"><span class="nn123">Menu</span></div>
+                <div class="a123" onclick="location.href='index2.html'"><div class="icon">⊞</div><span class="aa123">Dashboard</span></div>
+                <div class="a123" onclick="location.href='mycourses.html'"><div class="icon">📚</div><span class="aa123">My Courses</span></div>
+                <div class="a123" onclick="location.href='achievements.html'"><div class="icon">🏆</div><span class="aa123">Achievements</span></div>
+                <div class="a123" onclick="location.href='progress.html'"><div class="icon">📊</div><span class="aa123">Progress</span></div>
+            </div>
+            <div class="explore">
+                <div class="n123"><span class="nn123">Explore</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🔥</div><span class="aa123">Trending</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🆓</div><span class="aa123">Free Courses</span></div>
+                <div class="a123" onclick="location.href='degree.html'"><div class="icon">🎓</div><span class="aa123">Degree</span></div>
+                <div class="a123"><div class="icon">🎯</div><a href="quiz.html" class="aa123">Take Quiz</a></div>
+                <div class="a123"><div class="icon">🛒</div><a href="cart.html" class="aa123">Cart</a></div>
+            </div>
+            <div class="account">
+                <div class="n123"><span class="nn123">Account</span></div>
+                <div class="a123" onclick="location.href='profile.html'"><div class="icon">👤</div><span class="aa123">Profile</span></div>
+                <div class="a123 an123"><div class="icon">⚙</div><span class="aa123">Settings</span></div>
+                <div class="a123" id="signOutBtn"><div class="icon">→</div><span class="aa123">Sign Out</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="page-label">ACCOUNT · CODER HUB</div>
+        <div class="page-title">
+            <span class="page-title-white">Account</span>
+            <span class="page-title-gold">Settings</span>
+        </div>
+        <div class="page-sub">Manage your account preferences and notifications.</div>
+
+        <div class="settings-grid">
+            <div class="settings-nav">
+                <div class="snav-item active" onclick="showPanel('account', this)">👤 Account</div>
+                <div class="snav-item" onclick="showPanel('notifications', this)">🔔 Notifications</div>
+                <div class="snav-item" onclick="showPanel('appearance', this)">🎨 Appearance</div>
+                <div class="snav-item" onclick="showPanel('privacy', this)">🔒 Privacy</div>
+                <div class="snav-item" onclick="showPanel('security', this)">🛡 Security</div>
+                <div class="snav-item" onclick="showPanel('danger', this)" style="color:#ef4444;">⚠ Danger Zone</div>
+            </div>
+
+            <div class="settings-content">
+
+                <div class="panel active" id="panel-account">
+                    <div class="panel-header">
+                        <div class="panel-title">Account Information</div>
+                        <div class="panel-desc">Update your personal details and preferences.</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="setting-row stacked">
+                            <div class="setting-label">Display Name</div>
+                            <input class="setting-input" id="setName" placeholder="Your name">
+                        </div>
+                        <div class="setting-row stacked">
+                            <div class="setting-label">Email Address</div>
+                            <input class="setting-input" id="setEmail" placeholder="email@example.com">
+                        </div>
+                        <div class="setting-row stacked">
+                            <div class="setting-label">Username</div>
+                            <input class="setting-input" id="setUsername" value="@anurag_dev" placeholder="@username">
+                        </div>
+                        <div class="setting-row stacked">
+                            <div class="setting-label">Phone Number</div>
+                            <input class="setting-input" id="setPhone" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                    </div>
+                    <div class="save-row"><button class="btn-save" onclick="saveSettings()">Save Changes</button></div>
+                </div>
+
+                <div class="panel" id="panel-notifications">
+                    <div class="panel-header">
+                        <div class="panel-title">Notifications</div>
+                        <div class="panel-desc">Choose what you want to be notified about.</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Course Reminders</div>
+                                <div class="setting-hint">Daily reminder to continue your courses</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="notif1" checked>
+                                <label class="toggle-label" for="notif1"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Achievement Alerts</div>
+                                <div class="setting-hint">Notify when you earn a new achievement</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="notif2" checked>
+                                <label class="toggle-label" for="notif2"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Streak Reminders</div>
+                                <div class="setting-hint">Remind before your streak breaks</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="notif3" checked>
+                                <label class="toggle-label" for="notif3"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">New Course Alerts</div>
+                                <div class="setting-hint">Get notified about new courses in your interests</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="notif4">
+                                <label class="toggle-label" for="notif4"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Marketing Emails</div>
+                                <div class="setting-hint">Promotions, discounts and special offers</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="notif5">
+                                <label class="toggle-label" for="notif5"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Weekly Progress Report</div>
+                                <div class="setting-hint">Email summary of your weekly learning</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="notif6" checked>
+                                <label class="toggle-label" for="notif6"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save-row"><button class="btn-save" onclick="saveSettings()">Save Changes</button></div>
+                </div>
+
+
+                <div class="panel" id="panel-appearance">
+                    <div class="panel-header">
+                        <div class="panel-title">Appearance</div>
+                        <div class="panel-desc">Customize how Coder Hub looks for you.</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Language</div>
+                                <div class="setting-hint">Interface language</div>
+                            </div>
+                            <select class="setting-select">
+                                <option>English</option>
+                                <option>Hindi</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Code Font Size</div>
+                                <div class="setting-hint">Font size for code editors</div>
+                            </div>
+                            <select class="setting-select">
+                                <option>12px</option>
+                                <option selected>14px</option>
+                                <option>16px</option>
+                                <option>18px</option>
+                            </select>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Sidebar Default</div>
+                                <div class="setting-hint">Show sidebar expanded on page load</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="app1" checked>
+                                <label class="toggle-label" for="app1"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Page Animations</div>
+                                <div class="setting-hint">Smooth transitions when navigating</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="app2" checked>
+                                <label class="toggle-label" for="app2"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save-row"><button class="btn-save" onclick="saveSettings()">Save Changes</button></div>
+                </div>
+
+                <div class="panel" id="panel-privacy">
+                    <div class="panel-header">
+                        <div class="panel-title">Privacy</div>
+                        <div class="panel-desc">Control your data and visibility settings.</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Public Profile</div>
+                                <div class="setting-hint">Allow others to see your profile and progress</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="priv1" checked>
+                                <label class="toggle-label" for="priv1"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Show Streak on Profile</div>
+                                <div class="setting-hint">Display your learning streak publicly</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="priv2" checked>
+                                <label class="toggle-label" for="priv2"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Activity Tracking</div>
+                                <div class="setting-hint">Track learning activity for recommendations</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="priv3" checked>
+                                <label class="toggle-label" for="priv3"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Data Collection</div>
+                                <div class="setting-hint">Help improve CoderHub by sharing analytics</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="priv4">
+                                <label class="toggle-label" for="priv4"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save-row"><button class="btn-save" onclick="saveSettings()">Save Changes</button></div>
+                </div>
+
+                <div class="panel" id="panel-security">
+                    <div class="panel-header">
+                        <div class="panel-title">Security</div>
+                        <div class="panel-desc">Keep your account safe.</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="setting-row stacked">
+                            <div class="setting-label">Current Password</div>
+                            <input class="setting-input" type="password" placeholder="••••••••••">
+                        </div>
+                        <div class="setting-row stacked">
+                            <div class="setting-label">New Password</div>
+                            <input class="setting-input" type="password" placeholder="••••••••••">
+                        </div>
+                        <div class="setting-row stacked">
+                            <div class="setting-label">Confirm New Password</div>
+                            <input class="setting-input" type="password" placeholder="••••••••••">
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Two-Factor Authentication</div>
+                                <div class="setting-hint">Add an extra layer of security</div>
+                            </div>
+                            <div class="toggle-wrap">
+                                <input type="checkbox" class="toggle-input" id="sec1">
+                                <label class="toggle-label" for="sec1"></label>
+                            </div>
+                        </div>
+                        <div class="setting-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Active Sessions</div>
+                                <div class="setting-hint">1 active session on this device</div>
+                            </div>
+                            <button class="btn-danger" onclick="showToast('All other sessions signed out.')">Sign Out All</button>
+                        </div>
+                    </div>
+                    <div class="save-row"><button class="btn-save" onclick="saveSettings()">Update Password</button></div>
+                </div>
+
+                <div class="panel" id="panel-danger">
+                    <div class="panel-header">
+                        <div class="panel-title" style="color:#ef4444;">⚠ Danger Zone</div>
+                        <div class="panel-desc">These actions are irreversible. Proceed with caution.</div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="danger-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Clear Learning History</div>
+                                <div class="setting-hint">Remove all progress and activity data</div>
+                            </div>
+                            <button class="btn-danger" onclick="showToast('Learning history cleared.')">Clear History</button>
+                        </div>
+                        <div class="danger-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Reset All Achievements</div>
+                                <div class="setting-hint">Remove all earned achievements and XP</div>
+                            </div>
+                            <button class="btn-danger" onclick="showToast('Achievements reset.')">Reset Achievements</button>
+                        </div>
+                        <div class="danger-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Deactivate Account</div>
+                                <div class="setting-hint">Temporarily disable your account</div>
+                            </div>
+                            <button class="btn-danger" onclick="confirmDeactivate()">Deactivate</button>
+                        </div>
+                        <div class="danger-row">
+                            <div class="setting-info">
+                                <div class="setting-label">Delete Account</div>
+                                <div class="setting-hint">Permanently delete your account and all data</div>
+                            </div>
+                            <button class="btn-danger" onclick="confirmDelete()">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast">✓ Settings saved!</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+    function showPanel(id, el) {
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.snav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('panel-' + id).classList.add('active');
+        el.classList.add('active');
+    }
+    function saveSettings() {
+        const name = document.getElementById('setName').value.trim();
+        if (name) {
+            localStorage.setItem('profileName', name);
+            document.getElementById('navAvatar').textContent = name[0].toUpperCase();
+        }
+        showToast('✓ Settings saved!');
+    }
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2800);
+    }
+    function confirmDeactivate() {
+        if (confirm('Deactivate your account? You can reactivate anytime.')) showToast('Account deactivated.');
+    }
+    function confirmDelete() {
+        if (confirm('DELETE your account permanently? This cannot be undone!')) {
+            localStorage.clear();
+            location.href = 'index1.html';
+        }
+    }
+    function doSearch() {
+        const q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    
+    document.getElementById('signOutBtn').addEventListener('click', () => {
+        if (confirm('Are you sure you want to sign out?')) location.href = 'index1.html';
+    });
+    window.addEventListener('load', () => {
+        const name  = localStorage.getItem('profileName')  || 'Anurag';
+        const email = localStorage.getItem('loggedInEmail') || '';
+        document.getElementById('setName').value  = name;
+        document.getElementById('setEmail').value = email;
+        document.getElementById('navAvatar').textContent = name[0].toUpperCase();
+    });
+    function doNavSearch() {
+        var q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    document.getElementById('navSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') doNavSearch();
+    });
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Coder Hub</title>
+    <style>     
+        .nav1 {
+            background-color: rgb(15, 15, 15);
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2A2730;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            padding: 0 20px 0 15px;
+        }
+        .nav-toggle {
+            background: none;
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .nav-toggle:hover { border-color: #C9A96E; color: #C9A96E; }
+        .p1 {
+            color: white;
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            white-space: nowrap;
+            text-decoration: none;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+        }
+        .nav-links .p2 a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            transition: color 0.2s;
+        }
+        .nav-links .p2 a:hover { color: #C9A96E; }
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search {
+            display: flex;
+            align-items: center;
+            background: #1a1820;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 360px;
+        }
+        .search:focus-within {
+            border-color: #C9A96E;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+        }
+        .search input {
+            flex: 1; height: 42px;
+            border: none; outline: none;
+            background: transparent;
+            color: white; font-size: 14px;
+            padding: 0 16px;
+            font-family: system-ui, sans-serif;
+        }
+        .search input::placeholder { color: #4a4550; }
+        .search button {
+            height: 42px; width: 44px;
+            border: none; background: transparent;
+            color: #7a6f78; cursor: pointer;
+            font-size: 16px; transition: color 0.2s;
+        }
+        .search button:hover { color: #C9A96E; }
+        .nav-right {
+            display: flex; align-items: center;
+            gap: 12px; flex-shrink: 0;
+        }
+        .nav-icon-btn {
+            text-decoration: none; color: #7a6f78;
+            font-size: 13px; border: 1px solid #2A2730;
+            padding: 8px 16px; border-radius: 6px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-icon-btn:hover { color: #C9A96E; border-color: #C9A96E; }
+        .user-avatar {
+            width: 70px; height: 70px;
+            background: rgba(201, 169, 110, 0.12);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 100px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+        }
+        .user-avatar:hover { background: rgba(201, 169, 110, 0.22); border-color: #C9A96E; }
+        .user-avatar-text {
+            color: #C9A96E; font-family: system-ui, sans-serif;
+            font-size: 36px; font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0C0B0F; color: white; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; }
+        .page { max-width: 1100px; margin: 0 auto; padding: 50px 24px 100px; display: grid; grid-template-columns: 1fr 360px; gap: 40px; }
+
+        .cart-left h1 {
+            font-family: Georgia, serif;
+            font-size: 38px;
+            font-weight: 400;
+            margin-bottom: 6px;
+        }
+        .cart-left h1 span { color: #C9A96E; font-style: italic; }
+        .cart-sub { color: #7a6f78; font-size: 14px; margin-bottom: 32px; }
+
+        .cart-list { display: flex; flex-direction: column; gap: 14px; }
+
+        .cart-item {
+            background: #141318;
+            border: 1px solid #2A2730;
+            border-radius: 14px;
+            padding: 20px 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: border-color 0.2s;
+        }
+        .cart-item:hover { border-color: rgba(201,169,110,0.3); }
+        .item-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+        .item-info { flex: 1; }
+        .item-name { font-size: 16px; font-weight: 600; color: #EDE8E3; margin-bottom: 4px; }
+        .item-meta { font-size: 12px; color: #7a6f78; }
+        .item-badge {
+            font-size: 11px;
+            background: rgba(201,169,110,0.10);
+            border: 1px solid rgba(201,169,110,0.3);
+            color: #C9A96E;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+        }
+        .item-price { font-size: 18px; font-weight: 700; color: #EDE8E3; white-space: nowrap; margin-right: 14px; }
+        .item-remove {
+            background: none;
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .item-remove:hover { border-color: #ef4444; color: #ef4444; }
+
+        .empty-state {
+            display: none;
+            text-align: center;
+            padding: 60px 0;
+            color: #7a6f78;
+        }
+        .empty-state .empty-icon { font-size: 60px; margin-bottom: 16px; }
+        .empty-state p { font-size: 16px; margin-bottom: 24px; }
+        .empty-state a {
+            text-decoration: none;
+            background: white;
+            color: black;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 12px 28px;
+            border-radius: 8px;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .empty-state a:hover { background: #C9A96E; }
+
+        .cart-right { position: sticky; top: 100px; align-self: start; }
+        .summary-box {
+            background: #141318;
+            border: 1px solid #2A2730;
+            border-radius: 16px;
+            padding: 28px;
+        }
+        .summary-title {
+            font-family: Georgia, serif;
+            font-size: 22px;
+            margin-bottom: 24px;
+            color: #EDE8E3;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #7a6f78;
+            margin-bottom: 12px;
+        }
+        .summary-row.discount { color: #4ade80; }
+        .summary-divider { height: 1px; background: #2A2730; margin: 16px 0; }
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 700;
+            color: #EDE8E3;
+            margin-bottom: 24px;
+        }
+
+        .coupon-section { margin-bottom: 20px; }
+        .coupon-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6f78; margin-bottom: 8px; }
+        .coupon-row { display: flex; gap: 8px; }
+        .coupon-input {
+            flex: 1;
+            height: 42px;
+            background: #0C0B0F;
+            border: 1px solid #2A2730;
+            border-radius: 8px;
+            color: white;
+            padding: 0 14px;
+            font-size: 14px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .coupon-input:focus { border-color: #C9A96E; }
+        .coupon-btn {
+            height: 42px;
+            padding: 0 16px;
+            background: #2A2730;
+            color: #EDE8E3;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .coupon-btn:hover { background: #C9A96E; color: black; }
+        .coupon-msg { font-size: 12px; margin-top: 6px; min-height: 16px; }
+        .coupon-msg.ok  { color: #4ade80; }
+        .coupon-msg.err { color: #ef4444; }
+
+        .checkout-btn {
+            width: 100%;
+            height: 54px;
+            background: white;
+            color: black;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: background 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .checkout-btn:hover { background: #C9A96E; }
+        .checkout-btn:disabled { background: #2A2730; color: #7a6f78; cursor: not-allowed; }
+
+        .secure-note {
+            text-align: center;
+            font-size: 12px;
+            color: #7a6f78;
+            margin-top: 14px;
+        }
+        .secure-note span { color: #4ade80; }
+
+        
+        .available-section { margin-top: 50px; }
+        .avail-title {
+            font-family: Georgia, serif;
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #EDE8E3;
+        }
+        .avail-title span { color: #C9A96E; font-style: italic; }
+        .avail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        .avail-card {
+            background: #141318;
+            border: 1px solid #2A2730;
+            border-radius: 12px;
+            padding: 18px 16px;
+            transition: border-color 0.2s;
+            position: relative;
+        }
+        .avail-card:hover { border-color: rgba(201,169,110,0.4); }
+        .avail-card .a-icon { font-size: 30px; margin-bottom: 8px; }
+        .avail-card .a-name { font-size: 14px; font-weight: 600; color: #EDE8E3; margin-bottom: 4px; }
+        .avail-card .a-price { font-size: 13px; color: #C9A96E; margin-bottom: 12px; }
+        .avail-card .a-meta { font-size: 11px; color: #7a6f78; margin-bottom: 14px; }
+        .add-btn {
+            width: 100%;
+            height: 36px;
+            background: #2A2730;
+            color: #EDE8E3;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .add-btn:hover { background: white; color: black; }
+        .add-btn.in-cart { background: rgba(74,222,128,0.1); color: #4ade80; border: 1px solid #4ade80; cursor: default; }
+        .sidebar {
+            width: 260px; min-height: calc(100vh - 70px); background-color: rgb(15,15,15);
+            border-right: 2px solid #2A2730; display: flex; flex-direction: column;
+            position: sticky; top: 70px; height: calc(100vh - 70px);
+            overflow-y: auto; transition: width 0.3s ease, opacity 0.3s ease; flex-shrink: 0;
+        }
+        .sidebar.collapsed { width: 0; opacity: 0; overflow: hidden; border: none; }
+        .a123 { width: 100%; height: 40px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding-left: 10px; transition: background 0.15s; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; white-space: nowrap; text-decoration: none; }
+        .n123 { margin-bottom: 4px; padding-left: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; }
+        .nn123 { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; text-decoration: none; }
+        .an123 { background: rgba(220,165,64,0.12); border-left: 3px solid #dca540; }
+        .an123 .aa123 { color: #dca540; }
+        .an123 .icon { color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.04); }
+        .a123:hover .aa123 { color: #EDE8E3; }
+        .icon { margin-left: 4px; color: #7a6f78; font-size: 17px; flex-shrink: 0; }
+        
+        @keyframes pageIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .main { animation: pageIn 0.35s ease both; }
+
+        </style>
+</head>
+<body>
+
+    <div class="nav1">
+        <button class="nav-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+        <a href="index2.html" class="p1">Coder Hub</a>
+        <div class="nav-links">
+            <p class="p2"><a href="index1.html">Home</a></p>
+            <p class="p2"><a href="index1.html#courses">Explore</a></p>
+            <p class="p2"><a href="degree.html">Degree</a></p>
+        </div>
+        <div class="nav-center">
+            <div class="search">
+                <input type="text" placeholder="Search courses..." id="navSearch">
+                <button onclick="doNavSearch()">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+            <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+            <a href="profile.html" class="user-avatar" id="navAvatar" title="Profile">
+                <span class="user-avatar-text" id="avatarLetter">A</span>
+            </a>
+        </div>
+    </div>
+
+<div class="page">
+
+    <div class="cart-left">
+        <h1>Your <span>Cart</span></h1>
+        <p class="cart-sub" id="cartSub">0 courses · ready to checkout</p>
+
+        <div class="cart-list" id="cartList"></div>
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🛒</div>
+            <p>Your cart is empty. Add some courses below!</p>
+            <a href="#available">Browse Courses</a>
+        </div>
+
+
+        <div class="available-section" id="available">
+            <div class="avail-title">Add <span>Courses</span></div>
+            <div class="avail-grid" id="availGrid"></div>
+        </div>
+    </div>
+
+
+    <div class="cart-right">
+        <div class="summary-box">
+            <div class="summary-title">Order Summary</div>
+
+            <div class="summary-row"><span>Subtotal</span><span id="subtotalEl">₹0</span></div>
+            <div class="summary-row discount" id="discountRow" style="display:none">
+                <span>Discount (10%)</span><span id="discountEl">-₹0</span>
+            </div>
+
+            <div class="coupon-section">
+                <div class="coupon-label">Promo Code</div>
+                <div class="coupon-row">
+                    <input type="text" class="coupon-input" id="couponInput" placeholder="e.g. QUIZ10">
+                    <button class="coupon-btn" onclick="applyCoupon()">Apply</button>
+                </div>
+                <div class="coupon-msg" id="couponMsg"></div>
+            </div>
+
+            <div class="summary-divider"></div>
+            <div class="summary-total"><span>Total</span><span id="totalEl">₹0</span></div>
+
+            <a href="checkout.html" class="checkout-btn" id="checkoutBtn" onclick="saveCartForCheckout()">
+                PROCEED TO CHECKOUT →
+            </a>
+            <div class="secure-note"><span>🔒</span> Secure payment · Instant access</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const PAID_COURSES = [
+    { id: 'python', icon: '🐍', name: 'Python & AI', price: 4999, lessons: '68 lessons · 32hrs', rating: '★ 4.8', bg: 'linear-gradient(135deg,#001a10,#002a18)' },
+    { id: 'react',  icon: '⚛',  name: 'React & Next.js', price: 4499, lessons: '55 lessons · 26hrs', rating: '★ 4.9', bg: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364)' },
+    { id: 'node',   icon: '🟢', name: 'Node.js & APIs', price: 3999, lessons: '48 lessons · 22hrs', rating: '★ 4.8', bg: 'linear-gradient(135deg,#0d2303,#072a12)' },
+];
+
+let cart = JSON.parse(localStorage.getItem('chCart') || '[]');
+let discountApplied = false;
+let discountPct = 0;
+
+
+const savedCode = localStorage.getItem('discountCode');
+const savedPct  = parseInt(localStorage.getItem('discountPct') || '0');
+if (savedCode) {
+    document.getElementById('couponInput').value = savedCode;
+}
+
+function saveCart() {
+    localStorage.setItem('chCart', JSON.stringify(cart));
+}
+
+function renderCart() {
+    const list = document.getElementById('cartList');
+    const empty = document.getElementById('emptyState');
+    list.innerHTML = '';
+
+    if (cart.length === 0) {
+        empty.style.display = 'block';
+        document.getElementById('checkoutBtn').style.pointerEvents = 'none';
+        document.getElementById('checkoutBtn').style.opacity = '0.4';
+    } else {
+        empty.style.display = 'none';
+        document.getElementById('checkoutBtn').style.pointerEvents = '';
+        document.getElementById('checkoutBtn').style.opacity = '1';
+    }
+
+    cart.forEach(courseId => {
+        const c = PAID_COURSES.find(x => x.id === courseId);
+        if (!c) return;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <div class="item-icon" style="background:${c.bg}">${c.icon}</div>
+            <div class="item-info">
+                <div class="item-name">${c.name} <span class="item-badge">PRO</span></div>
+                <div class="item-meta">${c.lessons} · ${c.rating}</div>
+            </div>
+            <div class="item-price">₹${c.price.toLocaleString('en-IN')}</div>
+            <button class="item-remove" title="Remove" onclick="removeFromCart('${c.id}')">✕</button>
+        `;
+        list.appendChild(div);
+    });
+
+    updateSummary();
+    renderAvail();
+    document.getElementById('cartSub').textContent = `${cart.length} course${cart.length !== 1 ? 's' : ''} · ready to checkout`;
+}
+
+function addToCart(id) {
+    if (!cart.includes(id)) {
+        cart.push(id);
+        saveCart();
+        renderCart();
+    }
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(x => x !== id);
+    saveCart();
+    renderCart();
+}
+
+function updateSummary() {
+    const subtotal = cart.reduce((sum, id) => {
+        const c = PAID_COURSES.find(x => x.id === id);
+        return sum + (c ? c.price : 0);
+    }, 0);
+
+    const discAmt = discountApplied ? Math.round(subtotal * discountPct / 100) : 0;
+    const total = subtotal - discAmt;
+
+    document.getElementById('subtotalEl').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+    document.getElementById('totalEl').textContent    = `₹${total.toLocaleString('en-IN')}`;
+
+    if (discAmt > 0) {
+        document.getElementById('discountRow').style.display = 'flex';
+        document.getElementById('discountEl').textContent = `-₹${discAmt.toLocaleString('en-IN')}`;
+    } else {
+        document.getElementById('discountRow').style.display = 'none';
+    }
+}
+
+function applyCoupon() {
+    const code = document.getElementById('couponInput').value.trim().toUpperCase();
+    const msg  = document.getElementById('couponMsg');
+
+    if (code === 'QUIZ10') {
+        discountApplied = true;
+        discountPct = 10;
+        msg.textContent = '✓ 10% discount applied!';
+        msg.className = 'coupon-msg ok';
+        updateSummary();
+    } else {
+        msg.textContent = '✗ Invalid coupon code.';
+        msg.className = 'coupon-msg err';
+        discountApplied = false;
+        discountPct = 0;
+        updateSummary();
+    }
+}
+
+function renderAvail() {
+    const grid = document.getElementById('availGrid');
+    grid.innerHTML = '';
+    PAID_COURSES.forEach(c => {
+        const inCart = cart.includes(c.id);
+        const div = document.createElement('div');
+        div.className = 'avail-card';
+        div.innerHTML = `
+            <div class="a-icon">${c.icon}</div>
+            <div class="a-name">${c.name}</div>
+            <div class="a-price">₹${c.price.toLocaleString('en-IN')}</div>
+            <div class="a-meta">${c.lessons} · ${c.rating}</div>
+            <button class="add-btn ${inCart ? 'in-cart' : ''}" onclick="${inCart ? '' : `addToCart('${c.id}')`}">
+                ${inCart ? '✓ In Cart' : '+ Add to Cart'}
+            </button>
+        `;
+        grid.appendChild(div);
+    });
+}
+
+function saveCartForCheckout() {
+    const subtotal = cart.reduce((sum, id) => {
+        const c = PAID_COURSES.find(x => x.id === id);
+        return sum + (c ? c.price : 0);
+    }, 0);
+    const discAmt = discountApplied ? Math.round(subtotal * discountPct / 100) : 0;
+    const total = subtotal - discAmt;
+
+    const cartItems = cart.map(id => PAID_COURSES.find(x => x.id === id)).filter(Boolean);
+    localStorage.setItem('checkoutCart', JSON.stringify({
+        items: cartItems,
+        subtotal,
+        discAmt,
+        discountPct: discountApplied ? discountPct : 0,
+        total
+    }));
+}
+
+
+if (savedCode && savedPct) {
+    discountApplied = true;
+    discountPct = savedPct;
+}
+
+renderCart();
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('collapsed');
+    }
+    
+    window.addEventListener('load', function(){
+        const n = localStorage.getItem('profileName') || 'Anurag';
+        const av = document.getElementById('navAvatar');
+        if(av) av.textContent = n[0].toUpperCase();
+    });
+
+    function doNavSearch() {
+        var q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    document.getElementById('navSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') doNavSearch();
+    });
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+
+    </script>
+</body>
+</html>

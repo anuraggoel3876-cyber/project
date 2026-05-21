@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Test – Coder Hub</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#000; font-family:system-ui,-apple-system,sans-serif; min-height:100vh; }
+
+        .nav1 { background-color:rgb(15,15,15); height:120px; width:100%; display:flex; align-items:center; border-bottom:2px solid #2A2730; position:sticky; top:0; z-index:200; padding:0 20px 0 15px; }
+        .nav-toggle { background:none; border:1px solid #2A2730; color:#7a6f78; width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; margin-right:18px; }
+        .nav-toggle:hover { border-color:#C9A96E; color:#C9A96E; }
+        .p1 { color:white; font-size:50px; font-family:'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS'; white-space:nowrap; text-decoration:none; padding-bottom:10px; flex-shrink:0; margin-right:40px; }
+        .nav-links { display:flex; align-items:center; gap:40px; flex-shrink:0; }
+        .nav-links .p2 a { text-decoration:none; color:white; font-size:15px; font-family:'Gill Sans',Calibri,sans-serif; transition:color 0.2s; }
+        .nav-links .p2 a:hover { color:#C9A96E; }
+        .nav-center { flex:1; display:flex; justify-content:center; align-items:center; }
+        .search { display:flex; align-items:center; background:#1a1820; border:1px solid #2A2730; border-radius:10px; overflow:hidden; transition:border-color 0.2s,box-shadow 0.2s; width:360px; }
+        .search:focus-within { border-color:#C9A96E; box-shadow:0 0 0 3px rgba(201,169,110,0.12); }
+        .search input { flex:1; height:42px; border:none; outline:none; background:transparent; color:white; font-size:14px; padding:0 16px; }
+        .search input::placeholder { color:#4a4550; }
+        .search button { height:42px; width:44px; border:none; background:transparent; color:#7a6f78; cursor:pointer; font-size:16px; transition:color 0.2s; }
+        .search button:hover { color:#C9A96E; }
+        .nav-right { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+        .nav-icon-btn { text-decoration:none; color:#7a6f78; font-size:13px; border:1px solid #2A2730; padding:8px 16px; border-radius:6px; transition:all 0.2s; white-space:nowrap; }
+        .nav-icon-btn:hover { color:#C9A96E; border-color:#C9A96E; }
+        .user-avatar { width:70px; height:70px; background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.3); border-radius:100px; display:flex; align-items:center; justify-content:center; text-decoration:none; transition:all 0.2s; flex-shrink:0; }
+        .user-avatar:hover { background:rgba(201,169,110,0.22); border-color:#C9A96E; }
+        .user-avatar-text { color:#C9A96E; font-family:system-ui,sans-serif; font-size:36px; font-weight:bold; }
+
+        @keyframes pageIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .main { max-width:760px; margin:0 auto; padding:60px 24px 80px; animation:pageIn 0.35s ease both; }
+
+        .test-header { margin-bottom:40px; }
+        .test-label { color:#cfac6c; font-size:13px; letter-spacing:0.12em; text-transform:uppercase; font-weight:700; margin-bottom:10px; }
+        .test-title { font-family:Georgia,serif; font-size:38px; color:white; margin-bottom:8px; }
+        .test-title span { font-style:italic; color:#cfac6c; }
+        .test-sub { font-size:13px; color:#7a6f78; }
+
+        .test-progress-bar { background:#1a1720; border-radius:10px; height:6px; margin-bottom:8px; overflow:hidden; }
+        .test-progress-fill { height:100%; background:linear-gradient(to right,#C9A96E,#f0d080); border-radius:10px; transition:width 0.4s ease; }
+        .test-progress-label { font-size:12px; color:#7a6f78; display:flex; justify-content:space-between; margin-bottom:32px; }
+
+        .q-card { background:#141318; border:1px solid #2A2730; border-radius:16px; padding:32px; margin-bottom:0; }
+        .q-num { font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:#7a6f78; margin-bottom:14px; font-weight:700; }
+        .q-text { font-size:20px; color:#EDE8E3; font-weight:600; line-height:1.5; margin-bottom:28px; }
+        .options { display:flex; flex-direction:column; gap:12px; }
+        .option {
+            background:#0d0b10; border:1px solid #2A2730; border-radius:10px;
+            padding:16px 20px; font-size:15px; color:#c8c3c8;
+            cursor:pointer; transition:all 0.18s; text-align:left;
+        }
+        .option:hover:not(.locked) { border-color:#C9A96E; color:#EDE8E3; background:#1a1720; }
+        .option.selected { border-color:#C9A96E; background:rgba(201,169,110,0.1); color:#EDE8E3; }
+        .option.correct  { border-color:#4ade80; background:rgba(74,222,128,0.1); color:#4ade80; }
+        .option.wrong    { border-color:#ef4444; background:rgba(239,68,68,0.1);  color:#ef4444; }
+        .option.locked   { cursor:default; }
+
+        .q-nav { display:flex; justify-content:space-between; align-items:center; margin-top:28px; }
+        .q-feedback { font-size:13px; padding:10px 16px; border-radius:8px; font-weight:600; }
+        .q-feedback.correct { background:rgba(74,222,128,0.1); color:#4ade80; border:1px solid rgba(74,222,128,0.3); }
+        .q-feedback.wrong   { background:rgba(239,68,68,0.1);  color:#ef4444; border:1px solid rgba(239,68,68,0.3); }
+        .btn-next { background:white; color:black; border:none; border-radius:10px; padding:12px 28px; font-size:14px; font-weight:700; cursor:pointer; transition:background 0.2s; }
+        .btn-next:hover { background:#C9A96E; }
+        .btn-next:disabled { background:#2A2730; color:#7a6f78; cursor:default; }
+
+        .result { display:none; text-align:center; }
+        .result-icon { font-size:72px; margin-bottom:20px; }
+        .result-score { font-family:Georgia,serif; font-size:56px; color:white; margin-bottom:6px; }
+        .result-score span { color:#C9A96E; }
+        .result-label { font-size:18px; color:#7a6f78; margin-bottom:32px; }
+        .result-badge { display:inline-flex; align-items:center; gap:10px; background:rgba(201,169,110,0.1); border:1px solid rgba(201,169,110,0.4); border-radius:12px; padding:14px 24px; margin-bottom:32px; }
+        .result-badge-text { font-size:14px; color:#C9A96E; font-weight:700; }
+        .result-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+        .btn-home { background:white; color:black; border:none; border-radius:10px; padding:14px 30px; font-size:14px; font-weight:700; cursor:pointer; transition:background 0.2s; text-decoration:none; display:inline-flex; align-items:center; }
+        .btn-home:hover { background:#C9A96E; }
+        .btn-retry { background:transparent; color:#7a6f78; border:1px solid #2A2730; border-radius:10px; padding:14px 30px; font-size:14px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+        .btn-retry:hover { border-color:#C9A96E; color:#C9A96E; }
+        .breakdown { background:#141318; border:1px solid #2A2730; border-radius:14px; padding:24px; margin-bottom:32px; text-align:left; }
+        .breakdown-title { font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:#7a6f78; margin-bottom:16px; font-weight:700; }
+        .bk-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1a1720; font-size:13px; color:#c8c3c8; }
+        .bk-row:last-child { border-bottom:none; }
+        .bk-mark { font-size:16px; }
+    </style>
+</head>
+<body>
+
+<div class="nav1">
+    <button class="nav-toggle" onclick="history.back()" title="Back">←</button>
+    <a href="index2.html" class="p1">Coder Hub</a>
+    <div class="nav-links">
+        <p class="p2"><a href="index1.html">Home</a></p>
+        <p class="p2"><a href="index1.html#courses">Explore</a></p>
+        <p class="p2"><a href="index1.html#review">Degree</a></p>
+    </div>
+    <div class="nav-center">
+        <div class="search">
+            <input type="text" placeholder="Search courses..." id="navSearch">
+            <button onclick="location.href='mycourses.html'">🔍</button>
+        </div>
+    </div>
+    <div class="nav-right">
+        <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+        <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+        <a href="profile.html" class="user-avatar" title="Profile">
+            <span class="user-avatar-text" id="avatarLetter">A</span>
+        </a>
+    </div>
+</div>
+
+<div class="main">
+    <div class="test-header">
+        <div class="test-label">JavaScript Mastery · Module Test</div>
+        <div class="test-title">JS <span>Knowledge Test</span></div>
+        <div class="test-sub">10 questions · Based on your 72% progress · Earn your progress badge</div>
+    </div>
+
+    <div id="quizArea">
+        <div class="test-progress-bar">
+            <div class="test-progress-fill" id="progressFill" style="width:10%"></div>
+        </div>
+        <div class="test-progress-label">
+            <span id="qCounter">Question 1 of 10</span>
+            <span id="scoreTracker">Score: 0</span>
+        </div>
+
+        <div class="q-card">
+            <div class="q-num" id="qNum">Question 1</div>
+            <div class="q-text" id="qText"></div>
+            <div class="options" id="optionsDiv"></div>
+            <div class="q-nav">
+                <div class="q-feedback" id="feedback" style="display:none;"></div>
+                <button class="btn-next" id="btnNext" onclick="nextQuestion()" disabled>Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="result" id="resultArea">
+        <div class="result-icon" id="resultIcon">🏆</div>
+        <div class="result-score" id="resultScore"><span id="finalScore">0</span>/10</div>
+        <div class="result-label" id="resultLabel"></div>
+        <div class="result-badge" id="resultBadge">
+            <span style="font-size:24px;">🎖</span>
+            <div class="result-badge-text" id="badgeText">Progress Badge Earned!</div>
+        </div>
+        <div class="breakdown" id="breakdown">
+            <div class="breakdown-title">Question Breakdown</div>
+            <div id="bkList"></div>
+        </div>
+        <div class="result-actions">
+            <a href="index2.html" class="btn-home">← Back to Dashboard</a>
+            <button class="btn-retry" onclick="restartTest()">🔄 Retry Test</button>
+            <a href="mycourses.html" class="btn-home" style="background:#C9A96E;">📚 Continue Course</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const QUESTIONS = [
+        {
+            q: "What does `typeof null` return in JavaScript?",
+            opts: ["null", "undefined", "object", "string"],
+            ans: 2,
+            exp: "`typeof null` returns `\"object\"` — a famous JavaScript quirk."
+        },
+        {
+            q: "Which method is used to add an element to the END of an array?",
+            opts: ["push()", "pop()", "shift()", "unshift()"],
+            ans: 0,
+            exp: "`push()` adds elements to the end of an array."
+        },
+        {
+            q: "What is the output of: `console.log(0.1 + 0.2 === 0.3)`?",
+            opts: ["true", "false", "undefined", "NaN"],
+            ans: 1,
+            exp: "Due to floating point precision, `0.1 + 0.2` is `0.30000000000000004`, not exactly `0.3`."
+        },
+        {
+            q: "Which keyword declares a block-scoped variable that CAN be reassigned?",
+            opts: ["var", "let", "const", "static"],
+            ans: 1,
+            exp: "`let` is block-scoped and allows reassignment. `const` is block-scoped but cannot be reassigned."
+        },
+        {
+            q: "What does the `===` operator check?",
+            opts: ["Value only", "Type only", "Value AND type", "Reference equality"],
+            ans: 2,
+            exp: "`===` is strict equality — it checks both value and type without type coercion."
+        },
+        {
+            q: "What will `[1,2,3].map(x => x * 2)` return?",
+            opts: ["[1,2,3]", "[2,4,6]", "6", "undefined"],
+            ans: 1,
+            exp: "`map()` creates a new array with the results of calling the function on each element."
+        },
+        {
+            q: "What is a closure in JavaScript?",
+            opts: [
+                "A function that has access to its outer scope even after the outer function has returned",
+                "A way to close a browser window",
+                "A method to end a loop",
+                "A type of object literal"
+            ],
+            ans: 0,
+            exp: "A closure gives a function access to variables in its outer lexical scope even after the outer function completes."
+        },
+        {
+            q: "Which of these correctly creates a Promise that resolves immediately?",
+            opts: [
+                "new Promise(resolve => resolve('done'))",
+                "Promise.reject('done')",
+                "async { return 'done' }",
+                "Promise.create('done')"
+            ],
+            ans: 0,
+            exp: "`new Promise(resolve => resolve('done'))` creates a promise that resolves with `'done'`."
+        },
+        {
+            q: "What does the `...` (spread) operator do in `[...arr1, ...arr2]`?",
+            opts: [
+                "Multiplies arrays",
+                "Merges two arrays into one",
+                "Creates a deep copy only",
+                "Deletes array elements"
+            ],
+            ans: 1,
+            exp: "The spread operator expands an iterable, so `[...arr1, ...arr2]` merges both arrays into a new one."
+        },
+        {
+            q: "What is the difference between `null` and `undefined` in JavaScript?",
+            opts: [
+                "They are identical",
+                "`null` means no value assigned, `undefined` means intentional absence of value",
+                "`undefined` is assigned by the developer; `null` is assigned by JavaScript",
+                "`null` is assigned by JavaScript for uninitialized variables; `undefined` is explicitly set by the developer"
+            ],
+            ans: 3,
+            exp: "`undefined` is JavaScript's default for uninitialized variables. `null` is explicitly set by the programmer to represent intentional absence."
+        }
+    ];
+
+    let current = 0, score = 0, answered = false;
+    const results = [];
+
+    function loadQuestion() {
+        const q = QUESTIONS[current];
+        document.getElementById('qNum').textContent = `Question ${current + 1}`;
+        document.getElementById('qCounter').textContent = `Question ${current + 1} of 10`;
+        document.getElementById('qText').textContent = q.q;
+        document.getElementById('progressFill').style.width = ((current + 1) / 10 * 100) + '%';
+        document.getElementById('feedback').style.display = 'none';
+        document.getElementById('btnNext').disabled = true;
+        answered = false;
+
+        const opts = document.getElementById('optionsDiv');
+        opts.innerHTML = '';
+        q.opts.forEach((o, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'option';
+            btn.textContent = o;
+            btn.onclick = () => selectAnswer(i, btn);
+            opts.appendChild(btn);
+        });
+    }
+
+    function selectAnswer(idx, btn) {
+        if (answered) return;
+        answered = true;
+        const q = QUESTIONS[current];
+        const isCorrect = idx === q.ans;
+        const fb = document.getElementById('feedback');
+
+        document.querySelectorAll('.option').forEach((b, i) => {
+            b.classList.add('locked');
+            if (i === q.ans) b.classList.add('correct');
+            else if (i === idx && !isCorrect) b.classList.add('wrong');
+        });
+
+        if (isCorrect) {
+            score++;
+            fb.className = 'q-feedback correct';
+            fb.textContent = '✓ Correct! ' + q.exp;
+        } else {
+            fb.className = 'q-feedback wrong';
+            fb.textContent = '✗ ' + q.exp;
+        }
+        fb.style.display = 'block';
+        document.getElementById('scoreTracker').textContent = `Score: ${score}`;
+        document.getElementById('btnNext').disabled = false;
+
+        results.push({ q: q.q, correct: isCorrect });
+    }
+
+    function nextQuestion() {
+        current++;
+        if (current < QUESTIONS.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quizArea').style.display = 'none';
+        const r = document.getElementById('resultArea');
+        r.style.display = 'block';
+
+        document.getElementById('finalScore').textContent = score;
+
+        let icon, label, badge;
+        if (score >= 9)      { icon='🏆'; label="Outstanding! You've mastered JavaScript fundamentals!"; badge='🏆 JS Master Badge'; }
+        else if (score >= 7) { icon='🎯'; label="Great job! You have a solid grasp of JavaScript."; badge='⭐ JS Proficient Badge'; }
+        else if (score >= 5) { icon='📚'; label="Good effort! Review the topics you missed and try again."; badge='📖 Progress Badge'; }
+        else                 { icon='💪'; label="Keep learning! Revisit the course material and retry."; badge='🔄 Keep Going Badge'; }
+
+        document.getElementById('resultIcon').textContent = icon;
+        document.getElementById('resultLabel').textContent = label;
+        document.getElementById('badgeText').textContent = badge;
+
+        localStorage.setItem('jsTestScore', score);
+        localStorage.setItem('jsTestDate', new Date().toLocaleDateString());
+
+        const bkList = document.getElementById('bkList');
+        results.forEach((r, i) => {
+            const row = document.createElement('div');
+            row.className = 'bk-row';
+            row.innerHTML = `<span>Q${i+1}: ${r.q.substring(0,45)}...</span><span class="bk-mark">${r.correct ? '✅' : '❌'}</span>`;
+            bkList.appendChild(row);
+        });
+    }
+
+    function restartTest() {
+        current = 0; score = 0; answered = false; results.length = 0;
+        document.getElementById('scoreTracker').textContent = 'Score: 0';
+        document.getElementById('resultArea').style.display = 'none';
+        document.getElementById('quizArea').style.display = 'block';
+        loadQuestion();
+    }
+
+    loadQuestion();
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+    document.getElementById('navSearch').addEventListener('keydown', e => {
+        if (e.key === 'Enter') location.href = 'mycourses.html';
+    });
+</script>
+</body>
+</html>

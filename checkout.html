@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout – Coder Hub</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:#000; font-family:system-ui,-apple-system,sans-serif; min-height:100vh; }
+
+        .nav1 { background-color:rgb(15,15,15); height:120px; width:100%; display:flex; align-items:center; border-bottom:2px solid #2A2730; position:sticky; top:0; z-index:200; padding:0 20px 0 15px; }
+        .nav-toggle { background:none; border:1px solid #2A2730; color:#7a6f78; width:38px; height:38px; border-radius:8px; cursor:pointer; font-size:20px; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; margin-right:18px; }
+        .nav-toggle:hover { border-color:#C9A96E; color:#C9A96E; }
+        .p1 { color:white; font-size:50px; font-family:'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS'; white-space:nowrap; text-decoration:none; padding-bottom:10px; flex-shrink:0; margin-right:40px; }
+        .nav-links { display:flex; align-items:center; gap:40px; flex-shrink:0; }
+        .nav-links .p2 a { text-decoration:none; color:white; font-size:15px; font-family:'Gill Sans',Calibri,sans-serif; transition:color 0.2s; }
+        .nav-links .p2 a:hover { color:#C9A96E; }
+        .nav-center { flex:1; display:flex; justify-content:center; align-items:center; }
+        .search { display:flex; align-items:center; background:#1a1820; border:1px solid #2A2730; border-radius:10px; overflow:hidden; width:360px; }
+        .search input { flex:1; height:42px; border:none; outline:none; background:transparent; color:white; font-size:14px; padding:0 16px; }
+        .search input::placeholder { color:#4a4550; }
+        .search button { height:42px; width:44px; border:none; background:transparent; color:#7a6f78; cursor:pointer; font-size:16px; }
+        .nav-right { display:flex; align-items:center; gap:12px; flex-shrink:0; }
+        .nav-icon-btn { text-decoration:none; color:#7a6f78; font-size:13px; border:1px solid #2A2730; padding:8px 16px; border-radius:6px; transition:all 0.2s; white-space:nowrap; }
+        .nav-icon-btn:hover { color:#C9A96E; border-color:#C9A96E; }
+        .user-avatar { width:70px; height:70px; background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.3); border-radius:100px; display:flex; align-items:center; justify-content:center; text-decoration:none; flex-shrink:0; }
+        .user-avatar-text { color:#C9A96E; font-size:36px; font-weight:bold; }
+
+        @keyframes pageIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        .main { max-width:880px; margin:0 auto; padding:60px 24px 80px; animation:pageIn 0.35s ease both; color:white; }
+
+        .breadcrumb { display:flex; align-items:center; gap:10px; font-size:13px; color:#7a6f78; margin-bottom:36px; }
+        .breadcrumb a { color:#7a6f78; text-decoration:none; transition:color 0.2s; }
+        .breadcrumb a:hover { color:#C9A96E; }
+        .breadcrumb span { color:#4a4550; }
+        .breadcrumb .active { color:#C9A96E; font-weight:700; }
+
+        .steps { display:flex; align-items:center; gap:0; margin-bottom:48px; }
+        .step { display:flex; align-items:center; gap:10px; }
+        .step-circle { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; }
+        .step-circle.done { background:#C9A96E; color:#000; }
+        .step-circle.active { background:white; color:#000; }
+        .step-circle.inactive { background:#1a1720; border:1px solid #2A2730; color:#7a6f78; }
+        .step-label { font-size:13px; font-weight:600; }
+        .step-label.active { color:white; }
+        .step-label.inactive { color:#7a6f78; }
+        .step-line { flex:1; height:1px; background:#2A2730; margin:0 12px; }
+
+        .page-title { font-family:Georgia,serif; font-size:36px; margin-bottom:6px; }
+        .page-title span { font-style:italic; color:#cfac6c; }
+        .page-sub { font-size:13px; color:#7a6f78; margin-bottom:40px; }
+
+        .checkout-grid { display:grid; grid-template-columns:1fr 380px; gap:32px; align-items:start; }
+
+        .panel { background:#141318; border:1px solid #2A2730; border-radius:16px; overflow:hidden; }
+        .panel-head { padding:22px 28px 18px; border-bottom:1px solid #2A2730; }
+        .panel-head-title { font-size:14px; font-weight:700; color:#EDE8E3; }
+        .panel-head-sub { font-size:12px; color:#7a6f78; margin-top:3px; }
+        .panel-body { padding:28px; }
+
+        .qr-wrap { display:flex; flex-direction:column; align-items:center; gap:20px; }
+        .qr-box {
+            width:220px; height:220px;
+            background:white; border-radius:12px;
+            display:flex; align-items:center; justify-content:center;
+            position:relative; overflow:hidden;
+        }
+        .qr-svg { width:180px; height:180px; }
+        .qr-amount { font-size:22px; font-weight:700; color:#EDE8E3; }
+        .qr-amount span { color:#C9A96E; }
+        .qr-upi { font-size:12px; color:#7a6f78; text-align:center; }
+        .qr-upi strong { color:#c8c3c8; }
+
+        /* timer */
+        .qr-timer { display:flex; align-items:center; gap:8px; background:rgba(201,169,110,0.08); border:1px solid rgba(201,169,110,0.2); border-radius:8px; padding:8px 16px; font-size:13px; color:#C9A96E; }
+        .timer-dot { width:8px; height:8px; background:#C9A96E; border-radius:50%; animation:blink 1s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+        .pay-steps { display:flex; flex-direction:column; gap:12px; width:100%; }
+        .pay-step { display:flex; align-items:center; gap:14px; padding:14px 16px; background:#0d0b10; border:1px solid #2A2730; border-radius:10px; }
+        .pay-step-num { width:28px; height:28px; background:rgba(201,169,110,0.12); border:1px solid rgba(201,169,110,0.3); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; color:#C9A96E; flex-shrink:0; }
+        .pay-step-text { font-size:13px; color:#c8c3c8; line-height:1.4; }
+
+        .confirm-section { margin-top:24px; }
+        .confirm-label { font-size:12px; text-transform:uppercase; letter-spacing:0.1em; color:#7a6f78; margin-bottom:10px; font-weight:700; }
+        .confirm-input { width:100%; height:46px; background:#0d0b10; border:1px solid #2A2730; border-radius:10px; color:white; font-size:14px; padding:0 16px; outline:none; transition:border-color 0.2s; }
+        .confirm-input:focus { border-color:#C9A96E; }
+        .confirm-input::placeholder { color:#4a4550; }
+        .btn-confirm { width:100%; height:52px; background:white; color:black; border:none; border-radius:12px; font-size:15px; font-weight:700; cursor:pointer; transition:background 0.2s; margin-top:16px; letter-spacing:0.03em; }
+        .btn-confirm:hover { background:#C9A96E; }
+        .secure-note { display:flex; align-items:center; gap:6px; justify-content:center; font-size:11px; color:#7a6f78; margin-top:12px; }
+
+        .order-item { display:flex; align-items:center; gap:14px; padding:16px 0; border-bottom:1px solid #1a1720; }
+        .order-item:last-child { border-bottom:none; }
+        .order-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:bold; color:#C9A96E; flex-shrink:0; }
+        .order-info { flex:1; }
+        .order-name { font-size:14px; color:#EDE8E3; margin-bottom:3px; }
+        .order-meta { font-size:11px; color:#7a6f78; }
+        .order-price { font-size:15px; font-weight:700; color:#EDE8E3; flex-shrink:0; }
+        .order-price.free { color:#4ade80; }
+
+        .divider-line { border:none; border-top:1px solid #2A2730; margin:20px 0; }
+        .total-row { display:flex; justify-content:space-between; align-items:center; }
+        .total-label { font-size:13px; color:#7a6f78; margin-bottom:8px; }
+        .total-val { font-size:13px; color:#EDE8E3; }
+        .total-final { font-size:18px; font-weight:700; color:white; }
+        .total-final-val { font-size:22px; font-weight:700; color:#C9A96E; }
+
+        .success-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:9999; display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:24px; }
+        .success-overlay.show { display:flex; }
+        .success-icon { font-size:80px; margin-bottom:20px; animation:pop 0.5s cubic-bezier(.175,.885,.32,1.275); }
+        @keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
+        .success-title { font-family:Georgia,serif; font-size:36px; color:white; margin-bottom:10px; }
+        .success-sub { font-size:15px; color:#7a6f78; margin-bottom:32px; max-width:420px; }
+        .success-btn { background:#C9A96E; color:black; border:none; border-radius:12px; padding:16px 36px; font-size:15px; font-weight:700; cursor:pointer; transition:background 0.2s; text-decoration:none; }
+        .success-btn:hover { background:white; }
+    </style>
+</head>
+<body>
+
+<div class="nav1">
+    <button class="nav-toggle" onclick="history.back()" title="Back">←</button>
+    <a href="index2.html" class="p1">Coder Hub</a>
+    <div class="nav-links">
+        <p class="p2"><a href="index1.html">Home</a></p>
+        <p class="p2"><a href="index1.html#courses">Explore</a></p>
+        <p class="p2"><a href="index1.html#review">Degree</a></p>
+    </div>
+    <div class="nav-center">
+        <div class="search">
+            <input type="text" placeholder="Search courses..." id="navSearch">
+            <button onclick="location.href='mycourses.html'">🔍</button>
+        </div>
+    </div>
+    <div class="nav-right">
+        <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+        <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+        <a href="profile.html" class="user-avatar" title="Profile">
+            <span class="user-avatar-text" id="avatarLetter">A</span>
+        </a>
+    </div>
+</div>
+
+<div class="main">
+    <div class="breadcrumb">
+        <a href="index2.html">Dashboard</a>
+        <span>›</span>
+        <a href="cart.html">Cart</a>
+        <span>›</span>
+        <span class="active">Checkout</span>
+    </div>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-circle done">✓</div>
+            <div class="step-label inactive">Cart</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+            <div class="step-circle active">2</div>
+            <div class="step-label active">Payment</div>
+        </div>
+        <div class="step-line"></div>
+        <div class="step">
+            <div class="step-circle inactive">3</div>
+            <div class="step-label inactive">Confirmation</div>
+        </div>
+    </div>
+
+    <div class="page-title">Secure <span>Checkout</span></div>
+    <div class="page-sub">Scan the QR code with any UPI app to complete payment.</div>
+
+    <div class="checkout-grid">
+
+        <div class="panel">
+            <div class="panel-head">
+                <div class="panel-head-title">📱 Pay via QR Code</div>
+                <div class="panel-head-sub">UPI · Google Pay · PhonePe · Paytm · Any UPI app</div>
+            </div>
+            <div class="panel-body">
+                <div class="qr-wrap">
+                    <div class="qr-amount">Total: <span id="totalDisplay">₹0</span></div>
+
+                    <div class="qr-box">
+                        <svg class="qr-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="200" height="200" fill="white"/>
+                            <rect x="10" y="10" width="60" height="60" fill="#000" rx="4"/>
+                            <rect x="18" y="18" width="44" height="44" fill="white" rx="2"/>
+                            <rect x="26" y="26" width="28" height="28" fill="#000" rx="2"/>
+                            <rect x="130" y="10" width="60" height="60" fill="#000" rx="4"/>
+                            <rect x="138" y="18" width="44" height="44" fill="white" rx="2"/>
+                            <rect x="146" y="26" width="28" height="28" fill="#000" rx="2"/>
+                            <rect x="10" y="130" width="60" height="60" fill="#000" rx="4"/>
+                            <rect x="18" y="138" width="44" height="44" fill="white" rx="2"/>
+                            <rect x="26" y="146" width="28" height="28" fill="#000" rx="2"/>
+
+                            <rect x="80" y="10" width="8" height="8" fill="#000"/>
+                            <rect x="96" y="10" width="8" height="8" fill="#000"/>
+                            <rect x="112" y="10" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="26" width="8" height="8" fill="#000"/>
+                            <rect x="112" y="26" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="42" width="8" height="8" fill="#000"/>
+                            <rect x="96" y="42" width="8" height="8" fill="#000"/>
+                            <rect x="10" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="26" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="42" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="58" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="96" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="112" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="128" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="144" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="160" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="176" y="80" width="8" height="8" fill="#000"/>
+                            <rect x="10" y="96" width="8" height="8" fill="#000"/>
+                            <rect x="42" y="96" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="96" width="8" height="8" fill="#000"/>
+                            <rect x="112" y="96" width="8" height="8" fill="#000"/>
+                            <rect x="144" y="96" width="8" height="8" fill="#000"/>
+                            <rect x="176" y="96" width="8" height="8" fill="#000"/>
+                            <rect x="10" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="26" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="58" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="96" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="128" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="160" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="176" y="112" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="128" width="8" height="8" fill="#000"/>
+                            <rect x="112" y="128" width="8" height="8" fill="#000"/>
+                            <rect x="144" y="128" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="144" width="8" height="8" fill="#000"/>
+                            <rect x="96" y="144" width="8" height="8" fill="#000"/>
+                            <rect x="128" y="144" width="8" height="8" fill="#000"/>
+                            <rect x="160" y="144" width="8" height="8" fill="#000"/>
+                            <rect x="176" y="144" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="160" width="8" height="8" fill="#000"/>
+                            <rect x="112" y="160" width="8" height="8" fill="#000"/>
+                            <rect x="144" y="160" width="8" height="8" fill="#000"/>
+                            <rect x="80" y="176" width="8" height="8" fill="#000"/>
+                            <rect x="96" y="176" width="8" height="8" fill="#000"/>
+                            <rect x="128" y="176" width="8" height="8" fill="#000"/>
+                            <rect x="160" y="176" width="8" height="8" fill="#000"/>
+                            <rect x="88" y="88" width="24" height="24" fill="white" rx="4"/>
+                            <text x="100" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#C9A96E">CH</text>
+                        </svg>
+                    </div>
+
+                    <div class="qr-upi">
+                        Pay to: <strong>coderhub@upi</strong><br>
+                        <span style="font-size:11px;">Coder Hub Private Ltd.</span>
+                    </div>
+
+                    <div class="qr-timer">
+                        <div class="timer-dot"></div>
+                        QR expires in <strong id="timerDisplay">10:00</strong>
+                    </div>
+
+                    <div class="pay-steps">
+                        <div class="pay-step">
+                            <div class="pay-step-num">1</div>
+                            <div class="pay-step-text">Open any UPI app (Google Pay, PhonePe, Paytm)</div>
+                        </div>
+                        <div class="pay-step">
+                            <div class="pay-step-num">2</div>
+                            <div class="pay-step-text">Tap "Scan QR" and scan the code above</div>
+                        </div>
+                        <div class="pay-step">
+                            <div class="pay-step-num">3</div>
+                            <div class="pay-step-text">Verify amount and complete payment</div>
+                        </div>
+                        <div class="pay-step">
+                            <div class="pay-step-num">4</div>
+                            <div class="pay-step-text">Enter your UPI Transaction ID below and confirm</div>
+                        </div>
+                    </div>
+
+                    <div class="confirm-section" style="width:100%;">
+                        <div class="confirm-label">UPI Transaction ID</div>
+                        <input class="confirm-input" id="upiId" placeholder="e.g. 407845623019" maxlength="20">
+                        <button class="btn-confirm" onclick="confirmPayment()">✓ Confirm Payment</button>
+                        <div class="secure-note">🔒 256-bit SSL secured · Your data is safe</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel">
+                <div class="panel-head">
+                    <div class="panel-head-title">Order Summary</div>
+                </div>
+                <div class="panel-body">
+                    <div id="orderItems"></div>
+                    <hr class="divider-line">
+                    <div class="total-row" style="margin-bottom:8px;">
+                        <div class="total-label">Subtotal</div>
+                        <div class="total-val" id="subtotalVal">₹0</div>
+                    </div>
+                    <div class="total-row" style="margin-bottom:8px;">
+                        <div class="total-label">GST (18%)</div>
+                        <div class="total-val" id="gstVal">₹0</div>
+                    </div>
+                    <div class="total-row" style="margin-bottom:16px;">
+                        <div class="total-label">Discount</div>
+                        <div class="total-val" style="color:#4ade80;" id="discVal">-₹0</div>
+                    </div>
+                    <hr class="divider-line" style="margin-top:0;">
+                    <div class="total-row">
+                        <div class="total-final">Total</div>
+                        <div class="total-final-val" id="totalVal">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:16px; background:#141318; border:1px solid rgba(74,222,128,0.2); border-radius:12px; padding:16px 20px; display:flex; gap:10px; align-items:flex-start;">
+                <span style="font-size:20px;">🛡</span>
+                <div>
+                    <div style="font-size:13px; color:#4ade80; font-weight:700; margin-bottom:4px;">30-Day Money Back</div>
+                    <div style="font-size:12px; color:#7a6f78;">Not satisfied? Get a full refund within 30 days, no questions asked.</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">Payment Successful!</div>
+    <div class="success-sub">Your courses have been unlocked. Start learning right away and build something amazing!</div>
+    <a href="mycourses.html" class="success-btn">Go to My Courses →</a>
+</div>
+
+<script>
+    let checkoutData = null;
+    try { checkoutData = JSON.parse(localStorage.getItem('checkoutCart')); } catch(e) {}
+
+    const ALL_COURSES = [
+        { id:'python',  name:'Python & AI',           tag:'PRO',  icon:'🐍', bg:'linear-gradient(135deg,#001a10,#002a18)',              price:1999 },
+        { id:'react',   name:'React & Next.js',        tag:'PRO',  icon:'⚛', bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)',       price:2499 },
+        { id:'js',      name:'JavaScript Mastery',     tag:'FREE', icon:'JS', bg:'linear-gradient(135deg,#1a1600,#2a2000)',               price:0    },
+        { id:'css',     name:'CSS & Design Systems',   tag:'FREE', icon:'🎨', bg:'linear-gradient(135deg,#0f2027,#264DE4,#051b50)',       price:0    },
+        { id:'node',    name:'Node.js & Backend',      tag:'PRO',  icon:'🟢', bg:'linear-gradient(135deg,#001a0a,#003a15)',               price:2199 },
+        { id:'ts',      name:'TypeScript Mastery',     tag:'PRO',  icon:'TS', bg:'linear-gradient(135deg,#001226,#002a50)',               price:1799 },
+        { id:'git',     name:'Git & GitHub',           tag:'FREE', icon:'⑂',  bg:'linear-gradient(135deg,#1a0a00,#3a1500)',               price:0    },
+        { id:'sql',     name:'SQL & Databases',        tag:'PRO',  icon:'🗄', bg:'linear-gradient(135deg,#0d0020,#1a0040)',               price:1599 }
+    ];
+
+    let items = [];
+    let preCalcSubtotal = 0, preCalcDisc = 0, preCalcDiscPct = 0;
+
+    if (checkoutData && checkoutData.items && checkoutData.items.length) {
+        items = checkoutData.items;
+        preCalcSubtotal = checkoutData.subtotal || 0;
+        preCalcDisc     = checkoutData.discAmt   || 0;
+        preCalcDiscPct  = checkoutData.discountPct || 0;
+    } else {
+        let rawIds = [];
+        try { rawIds = JSON.parse(localStorage.getItem('chCart') || '[]'); } catch(e) {}
+        if (rawIds.length) {
+            items = rawIds.map(id => ALL_COURSES.find(c => c.id === id)).filter(Boolean);
+        } else {
+            items = [
+                ALL_COURSES.find(c => c.id === 'python'),
+                ALL_COURSES.find(c => c.id === 'react')
+            ];
+        }
+    }
+
+    function buildSummary() {
+        const list = document.getElementById('orderItems');
+        list.innerHTML = '';
+        let subtotal = 0;
+
+        items.forEach(item => {
+            const isFree = item.price === 0 || item.tag === 'FREE';
+            subtotal += isFree ? 0 : (item.price || 1999);
+            list.innerHTML += `
+                <div class="order-item">
+                    <div class="order-icon" style="background:${item.bg || '#141318'}">${item.icon || '📚'}</div>
+                    <div class="order-info">
+                        <div class="order-name">${item.name}</div>
+                        <div class="order-meta">${item.tag || 'COURSE'} · Lifetime access</div>
+                    </div>
+                    <div class="order-price ${isFree ? 'free' : ''}">${isFree ? 'FREE' : '₹' + (item.price || 1999)}</div>
+                </div>`;
+        });
+
+        const finalSubtotal = preCalcSubtotal || subtotal;
+        const gst  = Math.round(finalSubtotal * 0.18);
+        const disc = preCalcDisc || (items.length > 1 ? Math.round(finalSubtotal * 0.1) : 0);
+        const total = finalSubtotal + gst - disc;
+
+        document.getElementById('subtotalVal').textContent  = '₹' + finalSubtotal;
+        document.getElementById('gstVal').textContent       = '₹' + gst;
+        document.getElementById('discVal').textContent      = preCalcDiscPct ? `-₹${disc} (${preCalcDiscPct}% off)` : `-₹${disc}`;
+        document.getElementById('totalVal').textContent     = '₹' + total;
+        document.getElementById('totalDisplay').textContent = '₹' + total;
+    }
+
+    buildSummary();
+
+
+    let seconds = 600;
+    const timer = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) { clearInterval(timer); document.getElementById('timerDisplay').textContent = 'Expired'; return; }
+        const m = String(Math.floor(seconds/60)).padStart(2,'0');
+        const s = String(seconds%60).padStart(2,'0');
+        document.getElementById('timerDisplay').textContent = m + ':' + s;
+    }, 1000);
+
+    function confirmPayment() {
+        const id = document.getElementById('upiId').value.trim();
+        if (!id || id.length < 6) {
+            alert('Please enter a valid UPI Transaction ID (at least 6 digits).');
+            return;
+        }
+        localStorage.setItem('paymentDone', 'true');
+        localStorage.setItem('txnId', id);
+        document.getElementById('successOverlay').classList.add('show');
+    }
+
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+    document.getElementById('navSearch').addEventListener('keydown', e => {
+        if (e.key === 'Enter') location.href = 'mycourses.html';
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress – Coder Hub</title>
+    <style>
+        .nav1 {
+            background-color: rgb(15, 15, 15);
+            height: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #2A2730;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            padding: 0 20px 0 15px;
+        }
+        .nav-toggle {
+            background: none;
+            border: 1px solid #2A2730;
+            color: #7a6f78;
+            width: 38px; height: 38px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            margin-right: 18px;
+        }
+        .nav-toggle:hover { border-color: #C9A96E; color: #C9A96E; }
+        .p1 {
+            color: white;
+            font-size: 50px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            white-space: nowrap;
+            text-decoration: none;
+            padding-bottom: 10px;
+            flex-shrink: 0;
+            margin-right: 40px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-shrink: 0;
+        }
+        .nav-links .p2 a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS';
+            transition: color 0.2s;
+        }
+        .nav-links .p2 a:hover { color: #C9A96E; }
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search {
+            display: flex;
+            align-items: center;
+            background: #1a1820;
+            border: 1px solid #2A2730;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            width: 360px;
+        }
+        .search:focus-within {
+            border-color: #C9A96E;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.12);
+        }
+        .search input {
+            flex: 1; height: 42px;
+            border: none; outline: none;
+            background: transparent;
+            color: white; font-size: 14px;
+            padding: 0 16px;
+            font-family: system-ui, sans-serif;
+        }
+        .search input::placeholder { color: #4a4550; }
+        .search button {
+            height: 42px; width: 44px;
+            border: none; background: transparent;
+            color: #7a6f78; cursor: pointer;
+            font-size: 16px; transition: color 0.2s;
+        }
+        .search button:hover { color: #C9A96E; }
+        .nav-right {
+            display: flex; align-items: center;
+            gap: 12px; flex-shrink: 0;
+        }
+        .nav-icon-btn {
+            text-decoration: none; color: #7a6f78;
+            font-size: 13px; border: 1px solid #2A2730;
+            padding: 8px 16px; border-radius: 6px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-icon-btn:hover { color: #C9A96E; border-color: #C9A96E; }
+        .user-avatar {
+            width: 70px; height: 70px;
+            background: rgba(201, 169, 110, 0.12);
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            border-radius: 100px;
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: all 0.2s; flex-shrink: 0;
+        }
+        .user-avatar:hover { background: rgba(201, 169, 110, 0.22); border-color: #C9A96E; }
+        .user-avatar-text {
+            color: #C9A96E; font-family: system-ui, sans-serif;
+            font-size: 36px; font-weight: bold;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #000; font-family: system-ui, -apple-system, sans-serif; }
+        .layout { display: flex; }
+        .sidebar {
+            height: 100vh; width: 300px; position: sticky; top: 0;
+            background-color: rgb(15,15,15); border-right: 2px solid #2A2730;
+            display: flex; flex-direction: column;
+        }
+        .sidebar1 { display: flex; flex-direction: column; gap: 100px; margin-top: 50px; }
+        .sidebar1 a { text-decoration: none; }
+        .a123 { width: 300px; height: 40px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; }
+        .n123 { margin-bottom: 5px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a6f78; }
+        .nn123 { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a6f78; text-decoration: none; }
+        .an123 { color: #503401 !important; background-color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.03); }
+        .aa123:hover { color: #EDE8E3; }
+        .icon { margin-left: 10px; color: white; font-size: 20px; }
+        .icon1 { color: #503401; }
+
+        
+        .main { flex: 1; padding: 50px 60px; color: white; min-height: 100vh; }
+
+        .page-label { color: #cfac6c; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: bold; margin-bottom: 12px; }
+        .page-title { font-family: Georgia, serif; font-size: 42px; display: flex; gap: 12px; align-items: baseline; margin-bottom: 10px; }
+        .page-title-white { color: white; }
+        .page-title-gold { color: #cfac6c; font-style: italic; }
+        .page-sub { font-size: 13px; color: #7a6f78; margin-bottom: 40px; }
+
+        
+        .stat-row { display: flex; gap: 20px; margin-bottom: 36px; flex-wrap: wrap; }
+        .stat-card {
+            flex: 1; min-width: 160px; background: #141318;
+            border: 2px solid #2A2730; border-radius: 14px; padding: 22px 24px;
+            transition: border-color 0.2s;
+        }
+        .stat-card:hover { border-color: rgba(201,169,110,0.35); }
+        .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6f78; margin-bottom: 10px; }
+        .stat-val { font-size: 36px; font-weight: 700; color: white; font-family: Georgia, serif; line-height: 1; margin-bottom: 6px; }
+        .stat-val.gold { color: #C9A96E; }
+        .stat-val.green { color: #4ade80; }
+        .stat-sub { font-size: 11px; color: #4ade80; }
+        .stat-sub.muted { color: #7a6f78; }
+
+        
+        .sec-title {
+            font-size: 11px; text-transform: uppercase; letter-spacing: 0.14em;
+            color: #7a6f78; margin-bottom: 20px; margin-top: 40px;
+        }
+
+        
+        .course-progress-list { display: flex; flex-direction: column; gap: 16px; margin-bottom: 10px; }
+        .cp-item {
+            background: #141318; border: 2px solid #2A2730; border-radius: 14px;
+            padding: 22px 26px; transition: border-color 0.2s;
+            
+        }
+        
+        .cp-item:hover { border-color: rgba(201,169,110,0.35); }
+        .cp-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .cp-left { display: flex; align-items: center; gap: 14px; }
+        .cp-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+        }
+        .cp-name { font-family: Georgia, serif; font-size: 17px; color: #EDE8E3; }
+        .cp-meta { font-size: 12px; color: #7a6f78; margin-top: 3px; }
+        .cp-pct { font-size: 22px; font-weight: 700; color: #C9A96E; font-family: Georgia, serif; }
+        .cp-bar-track { height: 6px; background: #2A2730; border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+        .cp-bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(to right, #C9A96E, #f0d080); transition: width 1s cubic-bezier(.4,0,.2,1); }
+        .cp-stats { display: flex; gap: 28px; }
+        .cp-stat { display: flex; flex-direction: column; gap: 2px; }
+        .cp-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6f78; }
+        .cp-stat-val { font-size: 14px; font-weight: 600; color: #EDE8E3; }
+        .cp-stat-val.gold { color: #C9A96E; }
+        .cp-stat-val.green { color: #4ade80; }
+
+        
+        .heatmap-wrap {
+            background: #141318; border: 2px solid #2A2730; border-radius: 14px;
+            padding: 26px; margin-bottom: 10px;
+        }
+        .heatmap-title { font-size: 14px; color: #EDE8E3; margin-bottom: 18px; font-family: Georgia, serif; }
+        .heatmap-grid { display: flex; gap: 4px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 8px; }
+        .hm-col { display: flex; flex-direction: column; gap: 4px; }
+        .hm-cell {
+            width: 14px; height: 14px; border-radius: 3px; cursor: default;
+            transition: transform 0.15s;
+        }
+        .hm-cell:hover { transform: scale(1.3); }
+        .hm-0 { background: #1e1c22; }
+        .hm-1 { background: rgba(201,169,110,0.2); }
+        .hm-2 { background: rgba(201,169,110,0.45); }
+        .hm-3 { background: rgba(201,169,110,0.7); }
+        .hm-4 { background: #C9A96E; }
+        .hm-legend { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+        .hm-legend span { font-size: 11px; color: #7a6f78; }
+
+        
+        .bar-chart-wrap {
+            background: #141318; border: 2px solid #2A2730; border-radius: 14px;
+            padding: 26px;
+        }
+        .bar-chart-title { font-size: 14px; color: #EDE8E3; margin-bottom: 24px; font-family: Georgia, serif; }
+        .bar-chart { display: flex; align-items: flex-end; gap: 14px; height: 140px; }
+        .bar-col { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+        .bar-fill {
+            width: 100%; border-radius: 6px 6px 0 0;
+            background: linear-gradient(to top, #C9A96E, #f0d080);
+            transition: height 1s cubic-bezier(.4,0,.2,1);
+            min-height: 4px; position: relative;
+        }
+        .bar-fill.today { background: linear-gradient(to top, #4ade80, #86efac); }
+        .bar-fill:hover::after {
+            content: attr(data-hours) 'h'; position: absolute;
+            top: -26px; left: 50%; transform: translateX(-50%);
+            background: #2A2730; color: #EDE8E3; font-size: 11px;
+            padding: 3px 8px; border-radius: 6px; white-space: nowrap;
+        }
+        .bar-day { font-size: 11px; color: #7a6f78; text-transform: uppercase; letter-spacing: 0.06em; }
+        .bar-day.today { color: #4ade80; }
+
+        
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+        
+        .skill-list { display: flex; flex-direction: column; gap: 14px; }
+        .skill-item { display: flex; flex-direction: column; gap: 6px; }
+        .skill-top { display: flex; justify-content: space-between; font-size: 13px; }
+        .skill-name { color: #EDE8E3; }
+        .skill-pct { color: #C9A96E; font-weight: 600; }
+        .skill-track { height: 5px; background: #2A2730; border-radius: 5px; overflow: hidden; }
+        .skill-fill { height: 100%; border-radius: 5px; transition: width 1.1s cubic-bezier(.4,0,.2,1); }
+
+        
+        .footer { border-top: 2px solid #2A2730; color: white; }
+        .footer1 {
+            margin-left: 70px; display: flex; margin-top: 50px;
+            gap: 740px; align-items: center; justify-content: center; flex-wrap: wrap; padding-bottom: 50px;
+        }
+        .footer11 { font-size: 20px; font-family: Georgia, serif; color: white; }
+        .footer112 { color: #C9A96E; }
+        .footer12, .footer13 { font-size: 13px; color: #7a6f78; }
+        .sidebar {
+            width: 260px; min-height: calc(100vh - 70px); background-color: rgb(15,15,15);
+            border-right: 2px solid #2A2730; display: flex; flex-direction: column;
+            position: sticky; top: 70px; height: calc(100vh - 70px);
+            overflow-y: auto; transition: width 0.3s ease, opacity 0.3s ease; flex-shrink: 0;
+        }
+        .sidebar.collapsed { width: 0; opacity: 0; overflow: hidden; border: none; }
+        .a123 { width: 100%; height: 40px; display: flex; align-items: center; gap: 12px; cursor: pointer; padding-left: 10px; transition: background 0.15s; }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; white-space: nowrap; text-decoration: none; }
+        .n123 { margin-bottom: 4px; padding-left: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; }
+        .nn123 { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; text-decoration: none; }
+        .an123 { background: rgba(220,165,64,0.12); border-left: 3px solid #dca540; }
+        .an123 .aa123 { color: #dca540; }
+        .an123 .icon { color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.04); }
+        .a123:hover .aa123 { color: #EDE8E3; }
+        .icon { margin-left: 4px; color: #7a6f78; font-size: 17px; flex-shrink: 0; }
+        
+        @keyframes pageIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .main { animation: pageIn 0.35s ease both; }
+
+        </style>
+</head>
+<body>
+
+    <div class="nav1">
+        <button class="nav-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+        <a href="index2.html" class="p1">Coder Hub</a>
+        <div class="nav-links">
+            <p class="p2"><a href="index1.html">Home</a></p>
+            <p class="p2"><a href="index1.html#courses">Explore</a></p>
+            <p class="p2"><a href="degree.html">Degree</a></p>
+        </div>
+        <div class="nav-center">
+            <div class="search">
+                <input type="text" placeholder="Search courses..." id="navSearch">
+                <button onclick="doNavSearch()">🔍</button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+            <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+            <a href="profile.html" class="user-avatar" id="navAvatar" title="Profile">
+                <span class="user-avatar-text" id="avatarLetter">A</span>
+            </a>
+        </div>
+    </div>
+
+<div class="layout">
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar1">
+            <div class="menu">
+                <div class="n123"><span class="nn123">Menu</span></div>
+                <div class="a123" onclick="location.href='index2.html'"><div class="icon">⊞</div><span class="aa123">Dashboard</span></div>
+                <div class="a123" onclick="location.href='mycourses.html'"><div class="icon">📚</div><span class="aa123">My Courses</span></div>
+                <div class="a123" onclick="location.href='achievements.html'"><div class="icon">🏆</div><span class="aa123">Achievements</span></div>
+                <div class="a123 an123" onclick="location.href='progress.html'"><div class="icon">📊</div><span class="aa123">Progress</span></div>
+            </div>
+            <div class="explore">
+                <div class="n123"><span class="nn123">Explore</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🔥</div><span class="aa123">Trending</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🆓</div><span class="aa123">Free Courses</span></div>
+                <div class="a123" onclick="location.href='degree.html'"><div class="icon">🎓</div><span class="aa123">Degree</span></div>
+                <div class="a123"><div class="icon">🎯</div><a href="quiz.html" class="aa123">Take Quiz</a></div>
+                <div class="a123"><div class="icon">🛒</div><a href="cart.html" class="aa123">Cart</a></div>
+            </div>
+            <div class="account">
+                <div class="n123"><span class="nn123">Account</span></div>
+                <div class="a123" onclick="location.href='profile.html'"><div class="icon">👤</div><span class="aa123">Profile</span></div>
+                <div class="a123" onclick="location.href='settings.html'"><div class="icon">⚙</div><span class="aa123">Settings</span></div>
+                <div class="a123" id="signOutBtn"><div class="icon">→</div><span class="aa123">Sign Out</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="page-label">ANALYTICS · 2026</div>
+        <div class="page-title">
+            <span class="page-title-white">Your</span>
+            <span class="page-title-gold">Progress</span>
+        </div>
+        <div class="page-sub">Track every hour, every lesson, every milestone. You're building something great.</div>
+
+        <div class="stat-row">
+            <div class="stat-card">
+                <div class="stat-label">Hours Learned</div>
+                <div class="stat-val">28</div>
+                <div class="stat-sub">↑ 6 this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Lessons Done</div>
+                <div class="stat-val green">66</div>
+                <div class="stat-sub">of 203 total</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Streak</div>
+                <div class="stat-val gold">7🔥</div>
+                <div class="stat-sub">Personal best!</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg. Daily</div>
+                <div class="stat-val">2.1<span style="font-size:18px;color:#7a6f78;">h</span></div>
+                <div class="stat-sub">↑ from 1.4h last wk</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">XP Earned</div>
+                <div class="stat-val gold">1,240</div>
+                <div class="stat-sub" class="muted">Rank 3 · Apprentice</div>
+            </div>
+        </div>
+
+        <div class="sec-title">Course-by-Course Breakdown</div>
+        <div class="course-progress-list" id="courseList"></div>
+
+        <div class="sec-title">Weekly Activity & Skills</div>
+        <div class="two-col">
+            <div class="bar-chart-wrap">
+                <div class="bar-chart-title">Hours Learned This Week</div>
+                <div class="bar-chart" id="barChart"></div>
+            </div>
+            <div class="bar-chart-wrap">
+                <div class="bar-chart-title">Skill Breakdown</div>
+                <div class="skill-list" id="skillList"></div>
+            </div>
+        </div>
+
+        <div class="sec-title">Activity Heatmap · Last 12 Weeks</div>
+        <div class="heatmap-wrap">
+            <div class="heatmap-title">Daily learning activity</div>
+            <div class="heatmap-grid" id="heatmapGrid"></div>
+            <div class="hm-legend">
+                <span>Less</span>
+                <div class="hm-cell hm-0" style="width:12px;height:12px;"></div>
+                <div class="hm-cell hm-1" style="width:12px;height:12px;"></div>
+                <div class="hm-cell hm-2" style="width:12px;height:12px;"></div>
+                <div class="hm-cell hm-3" style="width:12px;height:12px;"></div>
+                <div class="hm-cell hm-4" style="width:12px;height:12px;"></div>
+                <span>More</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    <div class="footer1">
+        <span class="footer11">Coder<span class="footer112">Hub</span></span>
+        <div class="footer12">© 2026 CoderHub. All rights reserved.</div>
+        <div class="footer13">Built for developers, by developers.</div>
+    </div>
+</div>
+
+<script>
+    const COURSES = [
+        { name:'JavaScript Mastery', icon:'JS', bg:'linear-gradient(135deg,#1a1600,#2a2000)', progress:72, lesson:31, total:42, hours:18, rating:4.9, tag:'FREE' },
+        { name:'Python & AI',        icon:'🐍', bg:'linear-gradient(135deg,#001a10,#002a18)', progress:38, lesson:26, total:68, hours:32, rating:4.8, tag:'PRO'  },
+        { name:'CSS & Design Systems',icon:'🎨', bg:'linear-gradient(135deg,#0f2027,#264DE4,#051b50)', progress:15, lesson:6, total:38, hours:14, rating:4.7, tag:'FREE' },
+        { name:'React & Next.js',    icon:'⚛',  bg:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)', progress:5,  lesson:3, total:55, hours:26, rating:4.9, tag:'PRO'  },
+    ];
+
+    const courseList = document.getElementById('courseList');
+    COURSES.forEach((c, i) => {
+        const el = document.createElement('div');
+        el.className = 'cp-item';
+        
+        const statusColor = c.progress >= 70 ? '#4ade80' : c.progress >= 30 ? '#63b3ed' : '#C9A96E';
+        const statusLabel = c.progress >= 70 ? 'On Track' : c.progress >= 30 ? 'In Progress' : 'Just Started';
+        el.innerHTML = `
+            <div class="cp-top">
+                <div class="cp-left">
+                    <div class="cp-icon" style="background:${c.bg}">${c.icon}</div>
+                    <div>
+                        <div class="cp-name">${c.name}</div>
+                        <div class="cp-meta">Lesson ${c.lesson} of ${c.total} · ${c.hours}h total · ★ ${c.rating}
+                            <span style="margin-left:10px;color:${statusColor};font-weight:600;">${statusLabel}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cp-pct">${c.progress}%</div>
+            </div>
+            <div class="cp-bar-track">
+                <div class="cp-bar-fill" style="width:0%" data-target="${c.progress}%"></div>
+            </div>
+            <div class="cp-stats">
+                <div class="cp-stat"><div class="cp-stat-label">Completed</div><div class="cp-stat-val green">${c.lesson} lessons</div></div>
+                <div class="cp-stat"><div class="cp-stat-label">Remaining</div><div class="cp-stat-val">${c.total - c.lesson} lessons</div></div>
+                <div class="cp-stat"><div class="cp-stat-label">Rating</div><div class="cp-stat-val gold">★ ${c.rating}</div></div>
+                <div class="cp-stat"><div class="cp-stat-label">Type</div><div class="cp-stat-val">${c.tag}</div></div>
+            </div>
+        `;
+        courseList.appendChild(el);
+    });
+
+    setTimeout(() => {
+        document.querySelectorAll('.cp-bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.target;
+        });
+    }, 200);
+
+    const DAYS = [
+        { day:'Mon', hours:1.5, today:false },
+        { day:'Tue', hours:3.0, today:false },
+        { day:'Wed', hours:2.0, today:false },
+        { day:'Thu', hours:4.5, today:false },
+        { day:'Fri', hours:2.5, today:false },
+        { day:'Sat', hours:1.0, today:false },
+        { day:'Sun', hours:3.0, today:true  },
+    ];
+    const maxH = Math.max(...DAYS.map(d => d.hours));
+    const barChart = document.getElementById('barChart');
+    DAYS.forEach(d => {
+        const pct = (d.hours / maxH) * 100;
+        const col = document.createElement('div');
+        col.className = 'bar-col';
+        col.innerHTML = `
+            <div class="bar-fill${d.today ? ' today' : ''}" style="height:0%" data-h="${pct}%" data-hours="${d.hours}"></div>
+            <div class="bar-day${d.today ? ' today' : ''}">${d.day}</div>
+        `;
+        barChart.appendChild(col);
+    });
+    setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(b => { b.style.height = b.dataset.h; });
+    }, 300);
+
+    const SKILLS = [
+        { name:'JavaScript', pct:72, color:'#C9A96E' },
+        { name:'Python',     pct:38, color:'#4ade80' },
+        { name:'CSS / Design', pct:15, color:'#63b3ed' },
+        { name:'React',      pct:5,  color:'#b794f4' },
+        { name:'Problem Solving', pct:55, color:'#f6ad55' },
+    ];
+    const skillList = document.getElementById('skillList');
+    SKILLS.forEach(s => {
+        const el = document.createElement('div');
+        el.className = 'skill-item';
+        el.innerHTML = `
+            <div class="skill-top">
+                <span class="skill-name">${s.name}</span>
+                <span class="skill-pct">${s.pct}%</span>
+            </div>
+            <div class="skill-track">
+                <div class="skill-fill" style="width:0%;background:${s.color};" data-w="${s.pct}%"></div>
+            </div>
+        `;
+        skillList.appendChild(el);
+    });
+    setTimeout(() => {
+        document.querySelectorAll('.skill-fill').forEach(f => { f.style.width = f.dataset.w; });
+    }, 400);
+
+    const heatmapGrid = document.getElementById('heatmapGrid');
+    const seed = [0,0,1,2,0,3,4,2,1,0,2,3,1,0,4,2,0,1,3,2,0,0,2,1,4,3,0,2,
+                  1,0,0,3,2,1,4,0,2,3,1,0,2,0,1,3,4,2,0,1,3,2,4,0,1,2,3,0,
+                  2,1,0,4,3,2,1,0,2,3,4,1,0,2,1,3,0,2,4,1,3,2,0,1,4,3,2];
+    for (let week = 0; week < 12; week++) {
+        const col = document.createElement('div');
+        col.className = 'hm-col';
+        for (let day = 0; day < 7; day++) {
+            const cell = document.createElement('div');
+            const val = seed[(week * 7 + day) % seed.length];
+            cell.className = `hm-cell hm-${val}`;
+            col.appendChild(cell);
+        }
+        heatmapGrid.appendChild(col);
+    }
+
+    document.getElementById('signOutBtn')?.addEventListener('click', () => { if(confirm('Sign out?')) location.href='index1.html'; });
+
+    function doNavSearch() {
+        var q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    document.getElementById('navSearch').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') doNavSearch();
+    });
+    window.addEventListener('load', function() {
+        var name = localStorage.getItem('profileName') || 'Anurag';
+        var el = document.getElementById('avatarLetter');
+        if (el) el.textContent = name[0].toUpperCase();
+    });
+
+    </script>
+</body>
+</html>

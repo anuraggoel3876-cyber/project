@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degree Programs – Coder Hub</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: rgb(0,0,0); font-family: system-ui, -apple-system, sans-serif; }
+
+        .nav1 {
+            background-color: rgb(15,15,15);
+            height: 90px; width: 100%;
+            display: flex; align-items: center;
+            border-bottom: 2px solid #2A2730;
+            position: sticky; top: 0; z-index: 200;
+            padding: 0 36px; gap: 24px;
+        }
+        .nav-toggle {
+            background: none; border: 1px solid #2A2730; color: #7a6f78;
+            width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
+            font-size: 18px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s; flex-shrink: 0;
+        }
+        .nav-toggle:hover { border-color: #C9A96E; color: #C9A96E; }
+        .p1 {
+            color: white; font-size: 32px;
+            font-family: 'Gill Sans','Gill Sans MT',Calibri,'Trebuchet MS';
+            white-space: nowrap; text-decoration: none; margin-right: 16px;
+        }
+        .nav-links { display: flex; align-items: center; gap: 36px; }
+        .nav-links .p2 a { text-decoration: none; color: #7a6f78; font-size: 14px; transition: color 0.2s; }
+        .nav-links .p2 a:hover { color: #C9A96E; }
+        .nav-center { flex: 1; display: flex; justify-content: center; align-items: center; }
+        .search {
+            display: flex; align-items: center;
+            background: #141318; border: 1px solid #2A2730;
+            border-radius: 10px; overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            flex: 1; max-width: 420px;
+        }
+        .search:focus-within { border-color: #C9A96E; box-shadow: 0 0 0 3px rgba(201,169,110,0.12); }
+        .search input {
+            flex: 1; height: 44px; border: none; outline: none;
+            background: transparent; color: white; font-size: 14px; padding: 0 16px;
+        }
+        .search input::placeholder { color: #4a4550; }
+        .search button {
+            height: 44px; width: 44px; border: none;
+            background: transparent; color: #7a6f78; cursor: pointer; font-size: 16px;
+            transition: color 0.2s;
+        }
+        .search button:hover { color: #C9A96E; }
+        .nav-right { display: flex; align-items: center; gap: 14px; }
+        .nav-icon-btn {
+            text-decoration: none; color: #7a6f78; font-size: 13px;
+            border: 1px solid #2A2730; padding: 10px 20px; border-radius: 8px;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .nav-icon-btn:hover { color: #C9A96E; border-color: #C9A96E; }
+        .user-avatar {
+            width: 38px; height: 38px;
+            background: rgba(201,169,110,0.15); border: 1px solid rgba(201,169,110,0.4);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: #C9A96E; font-size: 18px; font-weight: bold;
+            flex-shrink: 0; cursor: pointer; text-decoration: none;
+        }
+        .user-avatar:hover { background: rgba(201,169,110,0.25); border-color: #C9A96E; }
+
+        .layout { display: flex; }
+
+        .sidebar {
+            width: 260px;
+            min-height: calc(100vh - 90px);
+            background-color: rgb(15,15,15);
+            border-right: 2px solid #2A2730;
+            display: flex; flex-direction: column;
+            position: sticky; top: 90px;
+            height: calc(100vh - 90px);
+            overflow-y: auto;
+            transition: width 0.3s ease, opacity 0.3s ease, min-width 0.3s ease;
+            flex-shrink: 0;
+        }
+        .sidebar.collapsed { width: 0; min-width: 0; opacity: 0; overflow: hidden; border: none; }
+        .sidebar1 { display: flex; flex-direction: column; gap: 28px; margin-top: 28px; padding-bottom: 20px; }
+        .sidebar1 a { text-decoration: none; }
+        .menu, .explore, .account { display: flex; flex-direction: column; }
+        .a123 {
+            width: 100%; height: 40px; display: flex; align-items: center;
+            gap: 12px; cursor: pointer; padding-left: 10px; transition: background 0.15s;
+        }
+        .aa123 { font-size: 13px; color: #7a6f78; font-weight: bold; white-space: nowrap; text-decoration: none; }
+        .n123 { margin-bottom: 4px; padding-left: 12px; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; }
+        .nn123 { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #4a4550; text-decoration: none; }
+        .an123 { background: rgba(220,165,64,0.12); border-left: 3px solid #dca540; }
+        .an123 .aa123 { color: #dca540; }
+        .an123 .icon { color: #dca540; }
+        .a123:hover { background: rgba(255,255,255,0.04); }
+        .a123:hover .aa123 { color: #EDE8E3; }
+        .icon { margin-left: 4px; color: #7a6f78; font-size: 17px; flex-shrink: 0; }
+
+        @keyframes pageIn { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+        .main { flex: 1; padding: 60px; color: white; animation: pageIn 0.35s ease both; }
+
+        .degree-hero {
+            background: linear-gradient(135deg, #0d0b10 0%, #1a1200 50%, #0d0b10 100%);
+            border: 1px solid rgba(201,169,110,0.2);
+            border-radius: 20px;
+            padding: 56px 60px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .degree-hero::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(201,169,110,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-label {
+            font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+            color: #C9A96E; font-weight: 700; margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .hero-label::before { content: ''; width: 24px; height: 1px; background: #C9A96E; }
+        .hero-title {
+            font-family: Georgia, serif; font-size: 52px; font-weight: 400;
+            color: white; line-height: 1.1; margin-bottom: 18px;
+        }
+        .hero-title span { color: #C9A96E; font-style: italic; }
+        .hero-sub {
+            font-size: 16px; color: #7a6f78; line-height: 1.7;
+            max-width: 560px; margin-bottom: 36px;
+        }
+        .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; }
+        .hero-stat-val { font-family: Georgia, serif; font-size: 28px; color: #EDE8E3; margin-bottom: 4px; }
+        .hero-stat-label { font-size: 12px; color: #7a6f78; letter-spacing: 0.06em; }
+
+        .section-header { margin-bottom: 28px; }
+        .section-title {
+            font-family: Georgia, serif; font-size: 32px; font-weight: 400;
+            display: flex; gap: 10px; align-items: baseline;
+        }
+        .section-title-white { color: white; }
+        .section-title-gold { color: #cfac6c; font-style: italic; }
+        .section-sub { font-size: 13px; color: #7a6f78; margin-top: 8px; }
+
+        .tracks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+            gap: 28px;
+            margin-bottom: 60px;
+        }
+
+        .track-card {
+            background: #141318;
+            border: 2px solid #2A2730;
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.25s, transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .track-card:hover {
+            border-color: rgba(201,169,110,0.45);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(201,169,110,0.07);
+        }
+
+        .track-banner {
+            height: 120px;
+            display: flex; align-items: center;
+            padding: 0 28px; gap: 20px; position: relative;
+        }
+        .track-icon {
+            width: 64px; height: 64px;
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; flex-shrink: 0;
+            background: rgba(0,0,0,0.25);
+        }
+        .track-name { font-family: Georgia, serif; font-size: 20px; color: #EDE8E3; margin-bottom: 6px; }
+        .track-badge {
+            display: inline-block; font-size: 10px; letter-spacing: 0.12em;
+            padding: 3px 11px; border-radius: 20px; font-weight: 700;
+        }
+        .badge-pro { background: rgba(201,169,110,0.12); border: 1px solid rgba(201,169,110,0.4); color: #C9A96E; }
+        .badge-free { background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.4); color: #4ade80; }
+        .badge-new { background: rgba(99,179,237,0.12); border: 1px solid rgba(99,179,237,0.35); color: #63b3ed; }
+
+        .track-duration-badge {
+            position: absolute; top: 16px; right: 16px;
+            background: rgba(0,0,0,0.6); border: 1px solid #2A2730;
+            border-radius: 8px; padding: 4px 12px;
+            font-size: 11px; color: #7a6f78; font-family: system-ui, sans-serif;
+        }
+
+        .track-body { padding: 20px 28px 26px; }
+        .track-desc { font-size: 13px; color: #7a6f78; line-height: 1.7; margin-bottom: 20px; }
+
+        .track-courses { margin-bottom: 20px; }
+        .track-courses-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: #4a4550; margin-bottom: 10px; }
+        .track-course-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+        .course-pill {
+            background: rgba(255,255,255,0.04); border: 1px solid #2A2730;
+            border-radius: 20px; padding: 4px 12px;
+            font-size: 11px; color: #c8c3c8; font-family: system-ui, sans-serif;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .course-pill-icon { font-size: 12px; }
+
+        .track-stats { display: flex; gap: 24px; margin-bottom: 20px; padding-bottom: 18px; border-bottom: 1px solid #2A2730; flex-wrap: wrap; }
+        .track-stat { display: flex; flex-direction: column; gap: 3px; }
+        .track-stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6f78; }
+        .track-stat-val { font-size: 15px; font-weight: 600; color: #EDE8E3; }
+        .track-stat-val.gold { color: #C9A96E; }
+        .track-stat-val.green { color: #4ade80; }
+
+        .track-progress-row { margin-bottom: 18px; }
+        .track-progress-label { display: flex; justify-content: space-between; font-size: 11px; color: #7a6f78; margin-bottom: 7px; }
+        .track-progress-label span:last-child { color: #C9A96E; font-weight: 600; }
+        .track-progress-track { height: 5px; background: #2A2730; border-radius: 5px; overflow: hidden; }
+        .track-progress-fill { height: 100%; border-radius: 5px; background: linear-gradient(to right, #C9A96E, #f0d080); }
+
+        .track-cta {
+            width: 100%; height: 48px; background: white; color: black;
+            font-size: 13px; font-weight: 700; border: none; border-radius: 10px;
+            cursor: pointer; transition: background 0.2s; letter-spacing: 0.03em;
+        }
+        .track-cta:hover { background: #C9A96E; }
+
+        .cert-section { margin-bottom: 60px; }
+        .cert-strip {
+            background: linear-gradient(135deg, #110d00, #1a1400);
+            border: 1px solid rgba(201,169,110,0.25);
+            border-radius: 16px;
+            padding: 32px 36px;
+            display: flex; align-items: center; gap: 36px;
+            flex-wrap: wrap;
+        }
+        .cert-icon-wrap {
+            width: 80px; height: 80px; flex-shrink: 0;
+            background: rgba(201,169,110,0.1); border: 2px solid rgba(201,169,110,0.3);
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 38px;
+        }
+        .cert-info { flex: 1; min-width: 220px; }
+        .cert-title { font-family: Georgia, serif; font-size: 22px; color: #EDE8E3; margin-bottom: 8px; }
+        .cert-desc { font-size: 13px; color: #7a6f78; line-height: 1.7; }
+        .cert-features { display: flex; flex-direction: column; gap: 8px; min-width: 200px; }
+        .cert-feature { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #c8c3c8; }
+        .cert-feature::before { content: '✓'; color: #C9A96E; font-weight: 700; flex-shrink: 0; }
+        .cert-btn {
+            height: 48px; padding: 0 28px;
+            background: white; color: black;
+            border: none; border-radius: 10px;
+            font-size: 13px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .cert-btn:hover { background: #C9A96E; }
+
+        .compare-section { margin-bottom: 60px; }
+        .compare-table { width: 100%; border-collapse: collapse; }
+        .compare-table th, .compare-table td {
+            padding: 16px 20px; text-align: left;
+            border-bottom: 1px solid #2A2730;
+            font-family: system-ui, sans-serif; font-size: 13px;
+        }
+        .compare-table th {
+            background: #141318; color: #7a6f78;
+            font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+            border-bottom: 2px solid #2A2730;
+        }
+        .compare-table th:first-child { border-radius: 12px 0 0 0; }
+        .compare-table th:last-child { border-radius: 0 12px 0 0; }
+        .compare-table td { color: #c8c3c8; background: #0d0b10; }
+        .compare-table tr:last-child td { border-bottom: none; }
+        .compare-table tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+        .compare-table tr:last-child td:last-child { border-radius: 0 0 12px 0; }
+        .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .compare-check { color: #4ade80; font-size: 16px; }
+        .compare-cross { color: #4a4550; font-size: 16px; }
+        .compare-badge-col { font-weight: 700; }
+        .compare-badge-col.free { color: #4ade80; }
+        .compare-badge-col.pro { color: #C9A96E; }
+
+        .footer { width: 100%; border-top: 2px solid #2A2730; }
+        .footer1 {
+            margin-left: 70px; display: flex; margin-top: 50px;
+            gap: 740px; text-align: center; align-items: center; justify-content: center;
+            flex-wrap: wrap; padding-bottom: 40px;
+        }
+        .footer11 { font-size: 20px; font-family: Georgia, serif; color: white; }
+        .footer112 { color: #C9A96E; }
+        .footer12, .footer13 { font-size: 13px; font-family: system-ui, sans-serif; color: #7a6f78; }
+
+        .modal-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-box {
+            background: #141318; border: 1px solid #2A2730; border-radius: 20px;
+            width: 680px; max-width: 95vw; max-height: 88vh; overflow-y: auto;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0; position: relative;
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0) scale(1); opacity: 1; }
+        .modal-close {
+            position: absolute; top: 18px; right: 20px;
+            background: rgba(255,255,255,0.05); border: 1px solid #2A2730;
+            color: #7a6f78; width: 34px; height: 34px; border-radius: 8px;
+            cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center;
+            z-index: 10; transition: all 0.2s;
+        }
+        .modal-close:hover { border-color: #C9A96E; color: #C9A96E; }
+        .modal-banner {
+            height: 140px; border-radius: 20px 20px 0 0;
+            display: flex; align-items: center; padding: 0 30px; gap: 20px;
+        }
+        .modal-banner-icon { font-size: 50px; }
+        .modal-banner-info { flex: 1; }
+        .modal-banner-title { font-family: Georgia, serif; font-size: 28px; color: #EDE8E3; margin-bottom: 6px; }
+        .modal-body { padding: 24px 28px 30px; }
+        .modal-desc { font-size: 14px; color: #7a6f78; line-height: 1.7; margin-bottom: 22px; }
+        .modal-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #7a6f78; margin-bottom: 12px; }
+        .modal-course-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+        .modal-course-row {
+            display: flex; align-items: center; gap: 14px;
+            background: rgba(255,255,255,0.02); border: 1px solid #2A2730;
+            border-radius: 10px; padding: 12px 16px;
+        }
+        .modal-course-icon { font-size: 20px; width: 32px; text-align: center; flex-shrink: 0; }
+        .modal-course-name { flex: 1; font-size: 13px; color: #EDE8E3; }
+        .modal-course-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; padding: 2px 9px; border-radius: 20px; }
+        .modal-actions { display: flex; gap: 12px; }
+        .modal-btn-primary {
+            flex: 1; height: 50px; background: white; color: black;
+            font-size: 14px; font-weight: 700; border: none; border-radius: 10px;
+            cursor: pointer; transition: background 0.2s;
+            text-decoration: none; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-btn-primary:hover { background: #C9A96E; }
+        .modal-btn-secondary {
+            height: 50px; padding: 0 22px; background: transparent;
+            color: #7a6f78; font-size: 13px; font-weight: 600;
+            border: 1px solid #2A2730; border-radius: 10px; cursor: pointer;
+            transition: all 0.2s; text-decoration: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-btn-secondary:hover { border-color: #C9A96E; color: #C9A96E; }
+    </style>
+</head>
+<body>
+
+<div class="nav1">
+    <button class="nav-toggle" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+    <a href="index2.html" class="p1" style="text-decoration:none;">Coder Hub</a>
+    <div class="nav-links">
+        <p class="p2"><a href="index1.html">Home</a></p>
+        <p class="p2"><a href="index1.html#courses">Explore</a></p>
+        <p class="p2"><a href="degree.html" style="color:#C9A96E;">Degree</a></p>
+    </div>
+    <div class="nav-center">
+        <div class="search">
+            <input type="text" placeholder="Search programs..." id="navSearch">
+            <button onclick="doNavSearch()">🔍</button>
+        </div>
+    </div>
+    <div class="nav-right">
+        <a href="quiz.html" class="nav-icon-btn">🎯 Quiz</a>
+        <a href="cart.html" class="nav-icon-btn">🛒 Cart</a>
+        <a href="profile.html" class="user-avatar" id="navAvatar" title="Profile">A</a>
+    </div>
+</div>
+
+<div class="layout">
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar1">
+            <div class="menu">
+                <div class="n123"><span class="nn123">Menu</span></div>
+                <div class="a123" onclick="location.href='index2.html'"><div class="icon">⊞</div><span class="aa123">Dashboard</span></div>
+                <div class="a123" onclick="location.href='mycourses.html'"><div class="icon">📚</div><span class="aa123">My Courses</span></div>
+                <div class="a123" onclick="location.href='achievements.html'"><div class="icon">🏆</div><span class="aa123">Achievements</span></div>
+                <div class="a123" onclick="location.href='progress.html'"><div class="icon">📊</div><span class="aa123">Progress</span></div>
+            </div>
+            <div class="explore">
+                <div class="n123"><span class="nn123">Explore</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🔥</div><span class="aa123">Trending</span></div>
+                <div class="a123" onclick="location.href='index1.html#courses'"><div class="icon">🆓</div><span class="aa123">Free Courses</span></div>
+                <div class="a123 an123"><div class="icon">🎓</div><span class="aa123">Degree</span></div>
+                <div class="a123"><div class="icon">🎯</div><a href="quiz.html" class="aa123">Take Quiz</a></div>
+                <div class="a123"><div class="icon">🛒</div><a href="cart.html" class="aa123">Cart</a></div>
+            </div>
+            <div class="account">
+                <div class="n123"><span class="nn123">Account</span></div>
+                <div class="a123" onclick="location.href='profile.html'"><div class="icon">👤</div><span class="aa123">Profile</span></div>
+                <div class="a123" onclick="location.href='settings.html'"><div class="icon">⚙</div><span class="aa123">Settings</span></div>
+                <div class="a123" id="signOutBtn"><div class="icon">→</div><span class="aa123">Sign Out</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="degree-hero">
+            <div class="hero-label">STRUCTURED LEARNING PATHS</div>
+            <div class="hero-title">Earn Your <span>Developer Degree</span></div>
+            <div class="hero-sub">Curated multi-course tracks that take you from zero to job-ready. Finish a full track and earn a verifiable certificate recognised by top tech employers.</div>
+            <div class="hero-stats">
+                <div>
+                    <div class="hero-stat-val">4</div>
+                    <div class="hero-stat-label">Degree tracks</div>
+                </div>
+                <div>
+                    <div class="hero-stat-val">200+</div>
+                    <div class="hero-stat-label">Total lessons</div>
+                </div>
+                <div>
+                    <div class="hero-stat-val">92hrs</div>
+                    <div class="hero-stat-label">Guided content</div>
+                </div>
+                <div>
+                    <div class="hero-stat-val">4.8★</div>
+                    <div class="hero-stat-label">Average rating</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <div class="section-title">
+                <span class="section-title-white">Degree</span>
+                <span class="section-title-gold">Tracks</span>
+            </div>
+            <div class="section-sub">Each track is a complete learning path — finish all courses to earn your certificate.</div>
+        </div>
+
+        <div class="tracks-grid">
+
+            <div class="track-card" data-track="0">
+                <div class="track-banner" style="background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);">
+                    <div class="track-icon">🌐</div>
+                    <div>
+                        <div class="track-name">Full-Stack Web Dev</div>
+                        <span class="track-badge badge-pro">PRO TRACK</span>
+                    </div>
+                    <div class="track-duration-badge">6 months</div>
+                </div>
+                <div class="track-body">
+                    <div class="track-desc">Go from HTML basics to deploying full-stack web applications. Covers front-end, back-end, databases, and deployment on real cloud infrastructure.</div>
+                    <div class="track-courses">
+                        <div class="track-courses-label">Included courses</div>
+                        <div class="track-course-pills">
+                            <div class="course-pill"><span class="course-pill-icon">JS</span> JavaScript Mastery</div>
+                            <div class="course-pill"><span class="course-pill-icon">🎨</span> CSS & Design</div>
+                            <div class="course-pill"><span class="course-pill-icon">⚛</span> React & Next.js</div>
+                            <div class="course-pill"><span class="course-pill-icon">🟢</span> Node.js & APIs</div>
+                            <div class="course-pill"><span class="course-pill-icon">🗄</span> SQL & Databases</div>
+                        </div>
+                    </div>
+                    <div class="track-stats">
+                        <div class="track-stat"><div class="track-stat-label">Courses</div><div class="track-stat-val">5</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Total Hours</div><div class="track-stat-val">92hrs</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Rating</div><div class="track-stat-val gold">★ 4.9</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Certificate</div><div class="track-stat-val green">✓ Yes</div></div>
+                    </div>
+                    <div class="track-progress-row">
+                        <div class="track-progress-label"><span>Your progress</span><span>34%</span></div>
+                        <div class="track-progress-track"><div class="track-progress-fill" style="width:34%"></div></div>
+                    </div>
+                    <button class="track-cta" onclick="openTrackModal(0)">▶ Continue Track</button>
+                </div>
+            </div>
+
+            <div class="track-card" data-track="1">
+                <div class="track-banner" style="background:linear-gradient(135deg,#001a10,#003020);">
+                    <div class="track-icon">🤖</div>
+                    <div>
+                        <div class="track-name">AI & Data Science</div>
+                        <span class="track-badge badge-pro">PRO TRACK</span>
+                    </div>
+                    <div class="track-duration-badge">5 months</div>
+                </div>
+                <div class="track-body">
+                    <div class="track-desc">Master Python, data manipulation, machine learning and AI model deployment. Build a portfolio of real ML projects by the end of this track.</div>
+                    <div class="track-courses">
+                        <div class="track-courses-label">Included courses</div>
+                        <div class="track-course-pills">
+                            <div class="course-pill"><span class="course-pill-icon">🐍</span> Python & AI</div>
+                            <div class="course-pill"><span class="course-pill-icon">🗄</span> SQL & Databases</div>
+                            <div class="course-pill"><span class="course-pill-icon">📊</span> Data Viz</div>
+                            <div class="course-pill"><span class="course-pill-icon">🧠</span> Deep Learning</div>
+                        </div>
+                    </div>
+                    <div class="track-stats">
+                        <div class="track-stat"><div class="track-stat-label">Courses</div><div class="track-stat-val">4</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Total Hours</div><div class="track-stat-val">78hrs</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Rating</div><div class="track-stat-val gold">★ 4.8</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Certificate</div><div class="track-stat-val green">✓ Yes</div></div>
+                    </div>
+                    <div class="track-progress-row">
+                        <div class="track-progress-label"><span>Your progress</span><span>12%</span></div>
+                        <div class="track-progress-track"><div class="track-progress-fill" style="width:12%"></div></div>
+                    </div>
+                    <button class="track-cta" onclick="openTrackModal(1)">▶ Continue Track</button>
+                </div>
+            </div>
+
+            <div class="track-card" data-track="2">
+                <div class="track-banner" style="background:linear-gradient(135deg,#1a1200,#2a2000);">
+                    <div class="track-icon">🎨</div>
+                    <div>
+                        <div class="track-name">Frontend Foundations</div>
+                        <span class="track-badge badge-free">FREE TRACK</span>
+                    </div>
+                    <div class="track-duration-badge">3 months</div>
+                </div>
+                <div class="track-body">
+                    <div class="track-desc">Perfect starting point. Learn HTML, CSS, and JavaScript to build beautiful responsive interfaces from scratch with no prior experience needed.</div>
+                    <div class="track-courses">
+                        <div class="track-courses-label">Included courses</div>
+                        <div class="track-course-pills">
+                            <div class="course-pill"><span class="course-pill-icon">JS</span> JavaScript Mastery</div>
+                            <div class="course-pill"><span class="course-pill-icon">🎨</span> CSS & Design Systems</div>
+                            <div class="course-pill"><span class="course-pill-icon">🌐</span> HTML Essentials</div>
+                        </div>
+                    </div>
+                    <div class="track-stats">
+                        <div class="track-stat"><div class="track-stat-label">Courses</div><div class="track-stat-val">3</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Total Hours</div><div class="track-stat-val">44hrs</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Rating</div><div class="track-stat-val gold">★ 4.7</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Certificate</div><div class="track-stat-val green">✓ Yes</div></div>
+                    </div>
+                    <div class="track-progress-row">
+                        <div class="track-progress-label"><span>Your progress</span><span>58%</span></div>
+                        <div class="track-progress-track"><div class="track-progress-fill" style="width:58%"></div></div>
+                    </div>
+                    <button class="track-cta" onclick="openTrackModal(2)">▶ Continue Track</button>
+                </div>
+            </div>
+
+            <div class="track-card" data-track="3">
+                <div class="track-banner" style="background:linear-gradient(135deg,#10002a,#200050);">
+                    <div class="track-icon">☁️</div>
+                    <div>
+                        <div class="track-name">Backend & Cloud</div>
+                        <span class="track-badge badge-new">NEW TRACK</span>
+                    </div>
+                    <div class="track-duration-badge">5 months</div>
+                </div>
+                <div class="track-body">
+                    <div class="track-desc">Build production-grade backends, architect cloud infrastructure on AWS/GCP, and deploy containerised apps with Docker and CI/CD pipelines.</div>
+                    <div class="track-courses">
+                        <div class="track-courses-label">Included courses</div>
+                        <div class="track-course-pills">
+                            <div class="course-pill"><span class="course-pill-icon">🟢</span> Node.js & APIs</div>
+                            <div class="course-pill"><span class="course-pill-icon">🗄</span> SQL & Databases</div>
+                            <div class="course-pill"><span class="course-pill-icon">☁️</span> AWS Essentials</div>
+                            <div class="course-pill"><span class="course-pill-icon">🐳</span> Docker & DevOps</div>
+                        </div>
+                    </div>
+                    <div class="track-stats">
+                        <div class="track-stat"><div class="track-stat-label">Courses</div><div class="track-stat-val">4</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Total Hours</div><div class="track-stat-val">80hrs</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Rating</div><div class="track-stat-val gold">★ 4.8</div></div>
+                        <div class="track-stat"><div class="track-stat-label">Certificate</div><div class="track-stat-val green">✓ Yes</div></div>
+                    </div>
+                    <div class="track-progress-row">
+                        <div class="track-progress-label"><span>Your progress</span><span>0%</span></div>
+                        <div class="track-progress-track"><div class="track-progress-fill" style="width:0%"></div></div>
+                    </div>
+                    <button class="track-cta" onclick="openTrackModal(3)">▶ Start Track</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cert-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="section-title-white">Your</span>
+                    <span class="section-title-gold">Certificate</span>
+                </div>
+                <div class="section-sub">Finish any degree track to earn a verifiable certificate.</div>
+            </div>
+            <div class="cert-strip">
+                <div class="cert-icon-wrap">🏅</div>
+                <div class="cert-info">
+                    <div class="cert-title">Industry-Recognised Certificate</div>
+                    <div class="cert-desc">Every completed degree track earns you a signed PDF + blockchain-verified certificate. Share it on LinkedIn, attach it to your resume, or send it directly to recruiters.</div>
+                </div>
+                <div class="cert-features">
+                    <div class="cert-feature">Shareable LinkedIn badge</div>
+                    <div class="cert-feature">PDF + blockchain verified</div>
+                    <div class="cert-feature">Recognised by 200+ companies</div>
+                    <div class="cert-feature">Lifetime validity</div>
+                </div>
+                <button class="cert-btn" onclick="location.href='achievements.html'">View Achievements →</button>
+            </div>
+        </div>
+
+
+        <div class="compare-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <span class="section-title-white">Free vs</span>
+                    <span class="section-title-gold">Pro Tracks</span>
+                </div>
+                <div class="section-sub">See what's included at each level.</div>
+            </div>
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th><span class="compare-badge-col free">FREE</span></th>
+                        <th><span class="compare-badge-col pro">PRO</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Access to free courses</td><td><span class="compare-check">✓</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Frontend Foundations track</td><td><span class="compare-check">✓</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Module quizzes & tests</td><td><span class="compare-check">✓</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Full-Stack Web Dev track</td><td><span class="compare-cross">—</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>AI & Data Science track</td><td><span class="compare-cross">—</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Backend & Cloud track</td><td><span class="compare-cross">—</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Verified certificate</td><td><span class="compare-cross">—</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Mentor Q&A sessions</td><td><span class="compare-cross">—</span></td><td><span class="compare-check">✓</span></td></tr>
+                    <tr><td>Lifetime access + updates</td><td><span class="compare-cross">—</span></td><td><span class="compare-check">✓</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    <div class="footer1">
+        <span class="footer11">Coder<span class="footer112">Hub</span></span>
+        <div class="footer12">© 2026 CoderHub. All rights reserved.</div>
+        <div class="footer13">Built for developers, by developers.</div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="trackModal">
+    <div class="modal-box">
+        <button class="modal-close" id="modalClose">✕</button>
+        <div class="modal-banner" id="modalBanner"></div>
+        <div class="modal-body">
+            <div class="modal-desc" id="modalDesc"></div>
+            <div class="modal-section-title">COURSES IN THIS TRACK</div>
+            <div class="modal-course-list" id="modalCourseList"></div>
+            <div class="modal-actions" id="modalActions"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const TRACKS = [
+        {
+            name: 'Full-Stack Web Dev', icon: '🌐',
+            bg: 'linear-gradient(135deg,#0f2027,#203a43,#2c5364)',
+            badge: 'PRO TRACK', badgeClass: 'badge-pro',
+            desc: 'A complete journey from frontend to production deployment. You\'ll build a full-stack app that you can ship and show to employers.',
+            courses: [
+                { icon: 'JS', name: 'JavaScript Mastery', tag: 'FREE', tagClass: 'badge-free' },
+                { icon: '🎨', name: 'CSS & Design Systems', tag: 'FREE', tagClass: 'badge-free' },
+                { icon: '⚛', name: 'React & Next.js', tag: 'PRO', tagClass: 'badge-pro' },
+                { icon: '🟢', name: 'Node.js & APIs', tag: 'PRO', tagClass: 'badge-pro' },
+                { icon: '🗄', name: 'SQL & Databases', tag: 'FREE', tagClass: 'badge-free' },
+            ],
+            link: 'mycourses.html'
+        },
+        {
+            name: 'AI & Data Science', icon: '🤖',
+            bg: 'linear-gradient(135deg,#001a10,#003020)',
+            badge: 'PRO TRACK', badgeClass: 'badge-pro',
+            desc: 'Hands-on machine learning from first principles. Build and deploy real AI models, work with large datasets, and master the Python data ecosystem.',
+            courses: [
+                { icon: '🐍', name: 'Python & AI', tag: 'PRO', tagClass: 'badge-pro' },
+                { icon: '🗄', name: 'SQL & Databases', tag: 'FREE', tagClass: 'badge-free' },
+                { icon: '📊', name: 'Data Visualisation', tag: 'PRO', tagClass: 'badge-pro' },
+                { icon: '🧠', name: 'Deep Learning', tag: 'PRO', tagClass: 'badge-pro' },
+            ],
+            link: 'mycourses.html'
+        },
+        {
+            name: 'Frontend Foundations', icon: '🎨',
+            bg: 'linear-gradient(135deg,#1a1200,#2a2000)',
+            badge: 'FREE TRACK', badgeClass: 'badge-free',
+            desc: 'The ideal starting track for beginners. No prior experience needed — just a browser and willingness to build.',
+            courses: [
+                { icon: '🌐', name: 'HTML Essentials', tag: 'FREE', tagClass: 'badge-free' },
+                { icon: '🎨', name: 'CSS & Design Systems', tag: 'FREE', tagClass: 'badge-free' },
+                { icon: 'JS', name: 'JavaScript Mastery', tag: 'FREE', tagClass: 'badge-free' },
+            ],
+            link: 'mycourses.html'
+        },
+        {
+            name: 'Backend & Cloud', icon: '☁️',
+            bg: 'linear-gradient(135deg,#10002a,#200050)',
+            badge: 'NEW TRACK', badgeClass: 'badge-new',
+            desc: 'Learn to architect and deploy scalable cloud-native backends. Covers container orchestration, serverless, and real-world CI/CD pipelines.',
+            courses: [
+                { icon: '🟢', name: 'Node.js & APIs', tag: 'PRO', tagClass: 'badge-pro' },
+                { icon: '🗄', name: 'SQL & Databases', tag: 'FREE', tagClass: 'badge-free' },
+                { icon: '☁️', name: 'AWS Essentials', tag: 'PRO', tagClass: 'badge-pro' },
+                { icon: '🐳', name: 'Docker & DevOps', tag: 'PRO', tagClass: 'badge-pro' },
+            ],
+            link: 'cart.html'
+        }
+    ];
+
+    function openTrackModal(idx) {
+        const t = TRACKS[idx];
+        document.getElementById('modalBanner').style.background = t.bg;
+        document.getElementById('modalBanner').innerHTML = `
+            <div class="modal-banner-icon">${t.icon}</div>
+            <div class="modal-banner-info">
+                <div class="modal-banner-title">${t.name}</div>
+                <span class="track-badge ${t.badgeClass}">${t.badge}</span>
+            </div>`;
+        document.getElementById('modalDesc').textContent = t.desc;
+        document.getElementById('modalCourseList').innerHTML = t.courses.map(c => `
+            <div class="modal-course-row">
+                <div class="modal-course-icon">${c.icon}</div>
+                <div class="modal-course-name">${c.name}</div>
+                <span class="modal-course-tag track-badge ${c.tagClass}">${c.tag}</span>
+            </div>`).join('');
+        document.getElementById('modalActions').innerHTML = `
+            <a href="${t.link}" class="modal-btn-primary">▶ Go to Courses →</a>
+            <button class="modal-btn-secondary" onclick="closeModal()">Close</button>`;
+        document.getElementById('trackModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('trackModal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('trackModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
+    document.getElementById('signOutBtn').addEventListener('click', () => {
+        if (confirm('Sign out?')) location.href = 'index1.html';
+    });
+    function doNavSearch() {
+        const q = document.getElementById('navSearch').value.trim();
+        if (q) location.href = 'mycourses.html';
+    }
+    document.getElementById('navSearch').addEventListener('keydown', e => { if (e.key === 'Enter') doNavSearch(); });
+    window.addEventListener('load', function() {
+        const name = localStorage.getItem('profileName') || 'A';
+        const av = document.getElementById('navAvatar');
+        if (av) av.textContent = name[0].toUpperCase();
+    });
+</script>
+</body>
+</html>
